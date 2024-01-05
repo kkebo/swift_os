@@ -2,7 +2,7 @@ OBJS := boot.o kernel.o lib.o
 EXE := kernel.elf
 
 SWIFTC := swiftc
-SWIFTC_FLAGS := -target aarch64-none-none-elf -enable-experimental-feature Embedded -wmo -Osize -Xfrontend -disable-stack-protector -no-allocations -parse-as-library
+SWIFTC_FLAGS := -target aarch64-none-none-elf -enable-experimental-feature Embedded -wmo -Osize -Xfrontend -disable-stack-protector -no-allocations -parse-as-library -swift-version 6
 CFLAGS := -ffreestanding
 LDFLAGS := -nostdlib
 
