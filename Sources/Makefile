@@ -10,7 +10,6 @@ AS := $(CC) -x assembler
 ASFLAGS := -target $(TRIPLE) -c
 LD := $(CC) -fuse-ld=lld
 LDFLAGS := -nostdlib -Wl,-gc-sections -static
-RM := rm -f
 
 .PHONY: all clean
 
