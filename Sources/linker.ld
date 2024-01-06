@@ -1,6 +1,7 @@
 ENTRY(_start)
 SECTIONS {
     . = 0x40100000; /* RAM starts at 0x40000000 but if we ask to load the kernel there, QEMU will not load a DTB */
+    . = ALIGN(8);
     .startup . : { boot.o(.text) }
     .text : { *(.text) }
     .data : { *(.data) }

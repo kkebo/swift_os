@@ -1,10 +1,16 @@
 OBJS := boot.o kernel.o lib.o
 EXE := kernel.elf
 
+TRIPLE := aarch64-none-none-elf
 SWIFTC := swiftc
-SWIFTC_FLAGS := -target aarch64-none-none-elf -enable-experimental-feature Embedded -wmo -Osize -Xfrontend -disable-stack-protector -no-allocations -parse-as-library -swift-version 6
-CFLAGS := -ffreestanding
+SWIFTC_FLAGS := -target $(TRIPLE) -enable-experimental-feature Embedded -wmo -Osize -Xfrontend -disable-stack-protector -no-allocations -parse-as-library -swift-version 6
+CC := clang
+CFLAGS := -target $(TRIPLE) -ffreestanding
+AS := $(CC) -x assembler
+ASFLAGS := -target $(TRIPLE) -c
+LD := ld.lld
 LDFLAGS := -nostdlib
+RM := rm -f
 
 .PHONY: all clean
 
@@ -20,7 +26,7 @@ $(EXE): linker.ld $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.o: %.s
-	$(AS) $< -o $@
+	$(AS) $(ASFLAGS) $< -o $@
 
 clean:
 	$(RM) $(OBJS) $(EXE)

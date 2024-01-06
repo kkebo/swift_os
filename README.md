@@ -6,8 +6,6 @@ An operating system written in Swift.
 
 - Arch Linux aarch64
 - make (`sudo pacman -S make`)
-- gcc (`sudo pacman -S gcc`)
-- as, ld (`sudo pacman -S binutils`)
 - qemu (`sudo pacman -S qemu-system-aarch64`)
 - Swift trunk development (main) toolchain (because Swift Embedded is used)
 
