@@ -1,11 +1,11 @@
 ENTRY(_start)
 SECTIONS {
     . = 0x40100000; /* RAM starts at 0x40000000 but if we ask to load the kernel there, QEMU will not load a DTB */
-    . = ALIGN(8);
     .startup . : { boot.o(.text) }
-    .text : { *(.text) }
-    .data : { *(.data) }
-    .bss : { *(.bss COMMON) }
+    .text : { *(.text .text.*) }
+    .data : { *(.rodata .rodata.* .data .data.*) }
+    .bss : { *(.bss .bss.* COMMON) }
+    /DISCARD/ : { *(.eh_frame) }
     . = ALIGN(8);
     . += 0x1000; /* 4kB of stack memory */
     stack_top = .;
