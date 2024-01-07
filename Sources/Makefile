@@ -14,10 +14,10 @@ LDFLAGS := -nostdlib -Wl,-gc-sections -static
 all: $(EXE)
 
 $(EXE): linker.ld $(OBJS)
-	$(LD) $(LDFLAGS) -Tlinker.ld $(OBJS) -o $@
+	$(LD) $(LDFLAGS) -T linker.ld $(OBJS) -o $@
 
-%.o: %.swift
-	$(SWIFTC) $(SWIFTC_FLAGS) -c $< -o $@
+kernel.o: *.swift
+	$(SWIFTC) $(SWIFTC_FLAGS) -c $+ -o $@
 
 %.o: %.s
 	$(AS) $(ASFLAGS) $< -o $@
