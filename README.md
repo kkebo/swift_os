@@ -4,9 +4,9 @@ An operating system written in Swift.
 
 ## Prerequisites
 
-- GNU make
+- GNU Make
   - Arch Linux: `sudo pacman -S make`
-- qemu
+- QEMU
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
 - Swift trunk development (main) toolchain (because Swift Embedded is used)
   - On Linux, you can easily install the toolchain using [swiftly](https://swift-server.github.io/swiftly/).
