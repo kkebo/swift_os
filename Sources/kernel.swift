@@ -1,4 +1,4 @@
-@_cdecl("kmain")
+@_silgen_name("kmain")
 func kmain() {
     print("Hello Swift!")
 }
