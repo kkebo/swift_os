@@ -3,7 +3,7 @@ EXE := kernel.elf
 
 TRIPLE := aarch64-none-none-elf
 SWIFTC := swiftc
-SWIFTC_FLAGS := -target $(TRIPLE) -enable-experimental-feature Embedded -wmo -Xfrontend -no-allocations -parse-as-library -swift-version 6
+SWIFTC_FLAGS := -target $(TRIPLE) -enable-experimental-feature Embedded -wmo -Osize -Xfrontend -no-allocations -parse-as-library -swift-version 6
 AS := clang -x assembler
 ASFLAGS := -target $(TRIPLE) -c
 LD := clang -fuse-ld=lld
