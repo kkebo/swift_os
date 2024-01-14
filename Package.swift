@@ -17,6 +17,7 @@ let package = Package(
                 .enableExperimentalFeature("Embedded"),
                 .unsafeFlags(["-Xfrontend", "-no-allocations"]),
                 .unsafeFlags(["-swift-version", "6"]),
+                .define("RASPI3"),
             ]
         ),
         .systemLibrary(name: "Volatile"),
