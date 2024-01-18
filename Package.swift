@@ -10,11 +10,15 @@ let package = Package(
     targets: [
         .target(
             name: "Kernel",
+            dependencies: [
+                "Volatile"
+            ],
             swiftSettings: [
                 .enableExperimentalFeature("Embedded"),
                 .unsafeFlags(["-Xfrontend", "-no-allocations"]),
                 .unsafeFlags(["-swift-version", "6"]),
             ]
-        )
+        ),
+        .systemLibrary(name: "Volatile"),
     ]
 )

@@ -1,0 +1,4 @@
+module Volatile {
+    header "Volatile.h"
+    export *
+}
