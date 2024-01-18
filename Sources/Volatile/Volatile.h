@@ -1,3 +1,5 @@
+#pragma once
+
 static inline unsigned char volatile_load(const volatile unsigned char *ptr) {
     return *ptr;
 }
