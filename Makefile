@@ -1,5 +1,6 @@
 EXE := kernel.elf
 IMG := kernel8.img
+OBJS := boot.o asmfunc.o
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
@@ -13,8 +14,8 @@ QEMU := qemu-system-aarch64
 .PHONY: all
 all: $(IMG)
 
-$(EXE): linker.ld boot.o swift
-	$(LD) $(LDFLAGS) -T linker.ld boot.o .build/release/libKernel.a -o $@
+$(EXE): linker.ld $(OBJS) swift
+	$(LD) $(LDFLAGS) -T linker.ld $(OBJS) .build/release/libKernel.a -o $@
 
 $(IMG): $(EXE)
 	$(OBJCOPY) $< -O binary $@
@@ -32,5 +33,5 @@ run: all
 
 .PHONY: clean
 clean:
-	$(RM) boot.o $(EXE) $(IMG)
+	$(RM) $(OBJS) $(EXE) $(IMG)
 	$(SWIFT) package clean
