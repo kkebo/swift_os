@@ -24,6 +24,13 @@ An operating system written in Swift.
 make
 ```
 
+> [!WARNING]
+> If you used swiftly to install Swift, you have to modify `Makefile` until https://github.com/swift-server/swiftly/issues/92 is resolved.
+>
+> ```makefile
+> SWIFT := swift-legacy-driver
+> ```
+
 ## Cleaning build outputs
 
 ```shell
