@@ -6,10 +6,13 @@ An operating system written in Swift.
 
 - GNU Make
   - Arch Linux: `sudo pacman -S make`
+  - Fedora: `sudo dnf install make`
 - GNU Binutils
   - Arch Linux: `sudo pacman -S binutils`
+  - Fedora: `sudo dnf install binutils`
 - QEMU
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
+  - Fedora: `sudo dnf install qemu-system-aarch64-core`
 - Swift trunk development (main) toolchain (because Swift Embedded is used)
   - On Linux, you can easily install the toolchain using [swiftly](https://swift-server.github.io/swiftly/).
 
