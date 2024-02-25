@@ -79,31 +79,36 @@ struct Mbox {
         self.v9 = v9
     }
 }
-let mbox = Mbox(
-    9 * 4,
-    0,  // request
-    0x38002,  // set clock rate
-    12,
-    8,
-    2,  // UART clock
-    3000000,  // 3 Mhz
-    0,  // clear turbo
-    0  // mbox tag last
-)
+
+#if RASPI4 || RASPI3
+    let mbox = Mbox(
+        9 * 4,
+        0,  // request
+        0x38002,  // set clock rate
+        12,
+        8,
+        2,  // UART clock
+        3000000,  // 3 Mhz
+        0,  // clear turbo
+        0  // mbox tag last
+    )
+#endif
 
 func initUART() {
     // disable UART0
     volatile_store(uartCR, 0)
 
-    // set up clock to 3 MHz
-    withUnsafePointer(to: mbox) { ptr in
-        let addr = UInt32(UInt(bitPattern: ptr))
-        let r = addr & ~0xF | 8
-        while transmitMboxFull() {}
-        volatile_store(mboxWrite, r)
-        while receiveMboxEmpty() || volatile_load(mboxRead) != r {}
-        // if ptr.pointee.v2 != 0x80000000 { while true {} }
-    }
+    #if RASPI4 || RASPI3
+        // set up clock to 3 MHz
+        withUnsafePointer(to: mbox) { ptr in
+            let addr = UInt32(UInt(bitPattern: ptr))
+            let r = addr & ~0xF | 8
+            while transmitMboxFull() {}
+            volatile_store(mboxWrite, r)
+            while receiveMboxEmpty() || volatile_load(mboxRead) != r {}
+            // if ptr.pointee.v2 != 0x80000000 { while true {} }
+        }
+    #endif
 
     // map UART0 to GPIO pins
     var selector = volatile_load(gpfsel1)
