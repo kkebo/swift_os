@@ -23,11 +23,6 @@ let uartCR = UnsafeMutablePointer<UInt32>(bitPattern: uartBase + 0x30)!
 let uartIMSC = UnsafeMutablePointer<UInt32>(bitPattern: uartBase + 0x38)!
 let uartICR = UnsafeMutablePointer<UInt32>(bitPattern: uartBase + 0x44)!
 
-let videocoreMbox = mmioBase + 0xB880
-let mboxRead = UnsafePointer<UInt32>(bitPattern: videocoreMbox)!
-let mboxStatus = UnsafePointer<UInt32>(bitPattern: videocoreMbox + 0x18)!
-let mboxWrite = UnsafeMutablePointer<UInt32>(bitPattern: videocoreMbox + 0x20)!
-
 private func transmitFIFOFull() -> Bool {
     volatile_load(uartFR) & 1 << 5 > 0
 }
@@ -47,67 +42,13 @@ func getchar() -> UInt8 {
     return UInt8(volatile_load(uartDR))
 }
 
-private func transmitMboxFull() -> Bool {
-    volatile_load(mboxStatus) & 0x80000000 > 0
-}
-
-private func receiveMboxEmpty() -> Bool {
-    volatile_load(mboxStatus) & 0x40000000 > 0
-}
-
-@_alignment(16)
-struct Mbox {
-    var v1: UInt32
-    var v2: UInt32
-    var v3: UInt32
-    var v4: UInt32
-    var v5: UInt32
-    var v6: UInt32
-    var v7: UInt32
-    var v8: UInt32
-    var v9: UInt32
-
-    init(_ v1: UInt32, _ v2: UInt32, _ v3: UInt32, _ v4: UInt32, _ v5: UInt32, _ v6: UInt32, _ v7: UInt32, _ v8: UInt32, _ v9: UInt32) {
-        self.v1 = v1
-        self.v2 = v2
-        self.v3 = v3
-        self.v4 = v4
-        self.v5 = v5
-        self.v6 = v6
-        self.v7 = v7
-        self.v8 = v8
-        self.v9 = v9
-    }
-}
-
-#if RASPI4 || RASPI3
-    let mbox = Mbox(
-        9 * 4,
-        0,  // request
-        0x38002,  // set clock rate
-        12,
-        8,
-        2,  // UART clock
-        3000000,  // 3 Mhz
-        0,  // clear turbo
-        0  // mbox tag last
-    )
-#endif
-
 func initUART() {
     // disable UART0
     volatile_store(uartCR, 0)
 
     #if RASPI4 || RASPI3
         // set up clock to 3 MHz
-        withUnsafePointer(to: mbox) { ptr in
-            let addr = UInt32(UInt(bitPattern: ptr))
-            let r = addr & ~0xF | 8
-            while transmitMboxFull() {}
-            volatile_store(mboxWrite, r)
-            while receiveMboxEmpty() || volatile_load(mboxRead) != r {}
-            // if ptr.pointee.v2 != 0x80000000 { while true {} }
-        }
+        guard mboxCall(ch: 8) else { while true {} }
     #endif
 
     // map UART0 to GPIO pins
