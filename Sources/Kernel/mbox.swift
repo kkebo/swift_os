@@ -5,10 +5,12 @@ let mboxRead = UnsafePointer<UInt32>(bitPattern: videocoreMbox)!
 let mboxStatus = UnsafePointer<UInt32>(bitPattern: videocoreMbox + 0x18)!
 let mboxWrite = UnsafeMutablePointer<UInt32>(bitPattern: videocoreMbox + 0x20)!
 
+@inline(__always)
 private func transmitMboxFull() -> Bool {
     volatile_load(mboxStatus) & 0x80000000 > 0
 }
 
+@inline(__always)
 private func receiveMboxEmpty() -> Bool {
     volatile_load(mboxStatus) & 0x40000000 > 0
 }

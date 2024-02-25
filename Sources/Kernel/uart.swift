@@ -23,10 +23,12 @@ let uartCR = UnsafeMutablePointer<UInt32>(bitPattern: uartBase + 0x30)!
 let uartIMSC = UnsafeMutablePointer<UInt32>(bitPattern: uartBase + 0x38)!
 let uartICR = UnsafeMutablePointer<UInt32>(bitPattern: uartBase + 0x44)!
 
+@inline(__always)
 private func transmitFIFOFull() -> Bool {
     volatile_load(uartFR) & 1 << 5 > 0
 }
 
+@inline(__always)
 private func receiveFIFOEmpty() -> Bool {
     volatile_load(uartFR) & 1 << 4 > 0
 }
@@ -37,6 +39,7 @@ func putchar(_ c: UInt8) {
     volatile_store(uartDR, UInt32(c))
 }
 
+@usableFromInline
 func getchar() -> UInt8 {
     while receiveFIFOEmpty() {}
     return UInt8(volatile_load(uartDR))
