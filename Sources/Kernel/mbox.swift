@@ -2,17 +2,23 @@ import Volatile
 
 let videocoreMbox = mmioBase + 0xB880
 let mboxRead = UnsafePointer<UInt32>(bitPattern: videocoreMbox)!
+let mboxPoll = UnsafePointer<UInt32>(bitPattern: videocoreMbox + 0x10)!
+let mboxSender = UnsafePointer<UInt32>(bitPattern: videocoreMbox + 0x14)!
 let mboxStatus = UnsafePointer<UInt32>(bitPattern: videocoreMbox + 0x18)!
+let mboxConfig = UnsafePointer<UInt32>(bitPattern: videocoreMbox + 0x1C)!
 let mboxWrite = UnsafeMutablePointer<UInt32>(bitPattern: videocoreMbox + 0x20)!
+let mboxResponse: UInt32 = 0x80000000
+let mboxFull: UInt32 = 0x80000000
+let mboxEmpty: UInt32 = 0x40000000
 
 @inline(__always)
 private func transmitMboxFull() -> Bool {
-    volatile_load(mboxStatus) & 0x80000000 > 0
+    volatile_load(mboxStatus) & mboxFull > 0
 }
 
 @inline(__always)
 private func receiveMboxEmpty() -> Bool {
-    volatile_load(mboxStatus) & 0x40000000 > 0
+    volatile_load(mboxStatus) & mboxEmpty > 0
 }
 
 @_alignment(16)
@@ -63,7 +69,7 @@ func mboxCall(ch: UInt8) -> Bool {
         while true {
             while receiveMboxEmpty() {}
             if volatile_load(mboxRead) == r {
-                return ptr.pointee.v2 == 0x80000000
+                return ptr.pointee.v2 == mboxResponse
             }
         }
     }
