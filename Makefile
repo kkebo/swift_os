@@ -7,7 +7,7 @@ SWIFT := swift
 AS := clang -x assembler
 ASFLAGS := -target $(TRIPLE) -c
 LD := clang -fuse-ld=lld
-LDFLAGS := -nostdlib -Wl,-gc-sections -static -lgcc
+LDFLAGS := -target $(TRIPLE) -nostdlib -Wl,-gc-sections -static
 OBJCOPY := objcopy
 QEMU := qemu-system-aarch64
 
