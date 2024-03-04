@@ -8,10 +8,10 @@ An operating system written in Swift.
   - Arch Linux: `sudo pacman -S make`
   - Fedora: `sudo dnf install make`
   - Ubuntu: `sudo apt install make`
-- GNU Binutils
-  - Arch Linux: `sudo pacman -S binutils`
-  - Fedora: `sudo dnf install binutils`
-  - Ubuntu: `sudo apt install binutils`
+- llvm-objcopy
+  - Arch Linux: `sudo pacman -S llvm`
+  - Fedora: `sudo dnf install llvm`
+  - Ubuntu: `sudo apt install llvm`
 - QEMU
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
   - Fedora: `sudo dnf install qemu-system-aarch64-core`

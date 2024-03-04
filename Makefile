@@ -8,7 +8,7 @@ AS := clang -x assembler
 ASFLAGS := -target $(TRIPLE) -c
 LD := clang -fuse-ld=lld
 LDFLAGS := -target $(TRIPLE) -nostdlib -Wl,-gc-sections -static
-OBJCOPY := objcopy
+OBJCOPY := llvm-objcopy
 QEMU := qemu-system-aarch64
 
 .PHONY: all
