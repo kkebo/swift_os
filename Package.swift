@@ -16,6 +16,7 @@ let package = Package(
             swiftSettings: [
                 .enableExperimentalFeature("Embedded"),
                 .unsafeFlags(["-Xfrontend", "-no-allocations"]),
+                .unsafeFlags(["-Xfrontend", "-function-sections"]),
                 .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
                 .unsafeFlags(["-swift-version", "6"]),
                 .define("RASPI3"),

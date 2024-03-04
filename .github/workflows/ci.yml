@@ -1,0 +1,14 @@
+name: ci
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    container: swiftlang/swift:nightly-main-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt-get update && apt-get install --no-install-recommends -y make llvm
+      - run: make
