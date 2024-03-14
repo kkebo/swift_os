@@ -5,9 +5,9 @@ let mboxSender = videocoreMbox + 0x14
 let mboxStatus = videocoreMbox + 0x18
 let mboxConfig = videocoreMbox + 0x1C
 let mboxWrite = videocoreMbox + 0x20
-let mboxResponse: UInt32 = 0x80000000
-let mboxFull: UInt32 = 0x80000000
-let mboxEmpty: UInt32 = 0x40000000
+let mboxResponse: UInt32 = 0x8000_0000
+let mboxFull: UInt32 = 0x8000_0000
+let mboxEmpty: UInt32 = 0x4000_0000
 
 @inline(__always)
 private func transmitMboxFull() -> Bool {
@@ -52,7 +52,7 @@ struct Mbox {
         12,
         8,
         2,  // UART clock
-        3000000,  // 3 Mhz
+        3_000_000,  // 3 Mhz
         0,  // clear turbo
         0  // mbox tag last
     )

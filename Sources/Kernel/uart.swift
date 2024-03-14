@@ -1,9 +1,9 @@
 #if RASPI4
-    let mmioBase: UInt = 0xFE000000
+    let mmioBase: UInt = 0xFE00_0000
 #elseif RASPI3 || RASPI2
-    let mmioBase: UInt = 0x3F000000
+    let mmioBase: UInt = 0x3F00_0000
 #else
-    let mmioBase: UInt = 0x20000000
+    let mmioBase: UInt = 0x2000_0000
 #endif
 
 let gpioBase = mmioBase + 0x200000
@@ -69,6 +69,6 @@ func initUART() {
     mmioStore(1, to: uartIBRD)  // 3000000 / (16 * 115200) = 1.627 = ~1
     mmioStore(40, to: uartFBRD)  // (0.627 * 64) + 0.5 = 40.6 = ~40
     mmioStore(0b1110000, to: uartLCRH)  // enable FIFO & 8 bit data transmission (1 stop bit, no parity)
-    mmioStore(0b11111110010, to: uartIMSC)  // mask all interrupts
-    mmioStore(0b1100000001, to: uartCR)  // enable Tx, Rx, UART0
+    mmioStore(0b111_11110010, to: uartIMSC)  // mask all interrupts
+    mmioStore(0b11_00000001, to: uartCR)  // enable Tx, Rx, UART0
 }
