@@ -1,3 +1,5 @@
+@preconcurrency import var MailboxMessage.mbox
+
 let videocoreMbox = mmioBase + 0xB880
 let mboxRead = videocoreMbox
 let mboxPoll = videocoreMbox + 0x10
@@ -19,47 +21,8 @@ private func receiveMboxEmpty() -> Bool {
     mmioLoad(mboxStatus) & mboxEmpty > 0
 }
 
-@_alignment(16)
-struct Mbox {
-    var v1: UInt32
-    var v2: UInt32
-    var v3: UInt32
-    var v4: UInt32
-    var v5: UInt32
-    var v6: UInt32
-    var v7: UInt32
-    var v8: UInt32
-    var v9: UInt32
-
-    init(_ v1: UInt32, _ v2: UInt32, _ v3: UInt32, _ v4: UInt32, _ v5: UInt32, _ v6: UInt32, _ v7: UInt32, _ v8: UInt32, _ v9: UInt32) {
-        self.v1 = v1
-        self.v2 = v2
-        self.v3 = v3
-        self.v4 = v4
-        self.v5 = v5
-        self.v6 = v6
-        self.v7 = v7
-        self.v8 = v8
-        self.v9 = v9
-    }
-}
-
-#if RASPI4 || RASPI3
-    let mbox = Mbox(
-        9 * 4,
-        0,  // request
-        0x38002,  // set clock rate
-        12,
-        8,
-        2,  // UART clock
-        3_000_000,  // 3 Mhz
-        0,  // clear turbo
-        0  // mbox tag last
-    )
-#endif
-
 func mboxCall(ch: UInt8) -> Bool {
-    withUnsafePointer(to: mbox) { ptr in
+    withUnsafePointer(to: &mbox) { ptr in
         let addr = UInt32(UInt(bitPattern: ptr))
         let r = addr & ~0xF | UInt32(ch & 0xF)
         while transmitMboxFull() {}
@@ -67,7 +30,7 @@ func mboxCall(ch: UInt8) -> Bool {
         while true {
             while receiveMboxEmpty() {}
             if mmioLoad(mboxRead) == r {
-                return ptr.pointee.v2 == mboxResponse
+                return mbox.1 == mboxResponse
             }
         }
     }

@@ -1,3 +1,7 @@
+#if RASPI4 || RASPI3
+    @preconcurrency import var MailboxMessage.mbox
+#endif
+
 #if RASPI4
     let mmioBase: UInt = 0xFE00_0000
 #elseif RASPI3 || RASPI2
@@ -49,6 +53,15 @@ func initUART() {
 
     #if RASPI4 || RASPI3
         // set up clock to 3 MHz
+        mbox.0 = 9 * 4
+        mbox.1 = 0  // request
+        mbox.2 = 0x38002  // set clock rate
+        mbox.3 = 12
+        mbox.4 = 8
+        mbox.5 = 2  // UART clock
+        mbox.6 = 3_000_000  // 3 Mhz
+        mbox.7 = 0  // clear turbo
+        mbox.8 = 0  // mbox tag last
         guard mboxCall(ch: 8) else { while true {} }
     #endif
 

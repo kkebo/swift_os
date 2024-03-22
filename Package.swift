@@ -11,7 +11,8 @@ let package = Package(
         .target(
             name: "Kernel",
             dependencies: [
-                "Volatile"
+                "Volatile",
+                "MailboxMessage",
             ],
             swiftSettings: [
                 .enableExperimentalFeature("Embedded"),
@@ -22,6 +23,7 @@ let package = Package(
             ]
         ),
         .systemLibrary(name: "Volatile"),
+        .target(name: "MailboxMessage"),
     ],
     swiftLanguageVersions: [.version("6")]
 )
