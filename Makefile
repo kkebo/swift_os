@@ -25,7 +25,7 @@ swift:
 
 .PHONY: run
 run: all
-	$(QEMU) -machine raspi3b -kernel $(IMG) -serial stdio -display none
+	$(QEMU) -machine raspi4b -kernel $(IMG) -serial stdio -display none
 
 .PHONY: clean
 clean:

@@ -14,7 +14,7 @@ An operating system written in Swift.
   - Fedora: `sudo dnf install llvm`
   - Ubuntu: `sudo apt install llvm`
   - macOS: `brew install llvm` and add `/opt/homebrew/opt/llvm/bin` to your `$PATH`
-- QEMU
+- QEMU 9.0+
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
   - Fedora: `sudo dnf install qemu-system-aarch64-core`
   - Ubuntu: `sudo apt install qemu-system-arm`
