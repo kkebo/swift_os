@@ -27,11 +27,11 @@ func mboxCall(ch: UInt8) -> Bool {
         let r = addr & ~0xF | UInt32(ch & 0xF)
         while transmitMboxFull() {}
         mmioStore(r, to: mboxWrite)
-        while true {
+        repeat {
             while receiveMboxEmpty() {}
             if mmioLoad(mboxRead) == r {
                 return mbox.1 == mboxResponse
             }
-        }
+        } while true
     }
 }

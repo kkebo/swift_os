@@ -4,5 +4,5 @@ public func kmain() {
 
     print("Hello Swift!")
 
-    while true { putchar(getchar()) }
+    repeat { putchar(getchar()) } while true
 }
