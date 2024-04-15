@@ -13,6 +13,7 @@ let package = Package(
             dependencies: [
                 "Volatile",
                 "MailboxMessage",
+                "Support",
             ],
             swiftSettings: [
                 .enableExperimentalFeature("Embedded"),
@@ -24,6 +25,7 @@ let package = Package(
         ),
         .systemLibrary(name: "Volatile"),
         .target(name: "MailboxMessage"),
+        .target(name: "Support"),
     ],
     swiftLanguageVersions: [.version("6")]
 )
