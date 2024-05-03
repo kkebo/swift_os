@@ -20,6 +20,7 @@ let package = Package(
                 .unsafeFlags(["-Xfrontend", "-no-allocations"]),
                 .unsafeFlags(["-Xfrontend", "-function-sections"]),
                 .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
+                .unsafeFlags(["-experimental-hermetic-seal-at-link"]),
                 .define("RASPI3"),
             ]
         ),

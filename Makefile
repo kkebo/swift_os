@@ -3,6 +3,7 @@ IMG := kernel8.img
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
+SWIFT_BUILD_FLAGS := --triple $(TRIPLE) -c release --experimental-lto-mode=full
 LD := clang -fuse-ld=lld
 LDFLAGS := -target $(TRIPLE) -nostdlib -Wl,-gc-sections -static
 OBJCOPY := llvm-objcopy
@@ -19,7 +20,7 @@ $(IMG): $(EXE)
 
 .PHONY: swift
 swift:
-	$(SWIFT) build --triple $(TRIPLE) -c release
+	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 
 .PHONY: run
 run: all
