@@ -5,7 +5,7 @@ TRIPLE := aarch64-none-none-elf
 SWIFT := swift
 SWIFT_BUILD_FLAGS := --triple $(TRIPLE) -c release --experimental-lto-mode=full
 LD := clang -fuse-ld=lld
-LDFLAGS := -target $(TRIPLE) -nostdlib -Wl,-gc-sections -static
+LDFLAGS := -target $(TRIPLE) -nostdlib -Xlinker -gc-sections -static
 OBJCOPY := llvm-objcopy
 QEMU := qemu-system-aarch64
 
