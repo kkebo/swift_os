@@ -2,6 +2,13 @@
 
 import PackageDescription
 
+let swiftSettings: [SwiftSetting] = [
+    .enableExperimentalFeature("Embedded"),
+    .unsafeFlags(["-Xfrontend", "-no-allocations"]),
+    .unsafeFlags(["-Xfrontend", "-function-sections"]),
+    .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
+]
+
 let package = Package(
     name: "swift_os",
     products: [
@@ -15,14 +22,8 @@ let package = Package(
                 "MailboxMessage",
                 "Support",
             ],
-            swiftSettings: [
-                .enableExperimentalFeature("Embedded"),
-                .unsafeFlags(["-Xfrontend", "-no-allocations"]),
-                .unsafeFlags(["-Xfrontend", "-function-sections"]),
-                .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
-                .unsafeFlags(["-experimental-hermetic-seal-at-link"]),
-                .unsafeFlags(["-Osize"]),
-                .define("RASPI3"),
+            swiftSettings: swiftSettings + [
+                .define("RASPI3")
             ]
         ),
         .systemLibrary(name: "Volatile"),

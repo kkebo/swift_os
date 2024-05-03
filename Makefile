@@ -3,7 +3,8 @@ IMG := kernel8.img
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
-SWIFT_BUILD_FLAGS := --triple $(TRIPLE) -c release --experimental-lto-mode=full
+SWIFT_BUILD_FLAGS := --triple $(TRIPLE) -c release -Xswiftc -Osize \
+					 --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
 LD := clang -fuse-ld=lld
 LDFLAGS := -target $(TRIPLE) -nostdlib -Xlinker -gc-sections -static
 OBJCOPY := llvm-objcopy
