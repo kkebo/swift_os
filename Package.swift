@@ -30,5 +30,5 @@ let package = Package(
         .target(name: "MailboxMessage"),
         .target(name: "Support"),
     ],
-    swiftLanguageVersions: [.version("6")]
+    swiftLanguageVersions: [.v6]
 )
