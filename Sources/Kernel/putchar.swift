@@ -1,4 +1,4 @@
-@_silgen_name("putchar")
+@_cdecl("putchar")
 @discardableResult
 @inlinable
 public func putchar(_ c: CInt) -> CInt {
