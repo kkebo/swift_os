@@ -1,4 +1,4 @@
-@_silgen_name("kmain")
+@_cdecl("kmain")
 public func kmain() {
     initUART()
 

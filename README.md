@@ -19,12 +19,12 @@ An operating system written in Swift.
   - Fedora: `sudo dnf install qemu-system-aarch64-core`
   - Ubuntu: `sudo apt install qemu-system-arm`
   - macOS: `brew install qemu`
-- Swift 6.0 (because Embedded Swift is used)
+- Swift trunk development (main) toolchain (because Embedded Swift is used)
   - On Linux, you can easily install the toolchain using [swiftly](https://swift-server.github.io/swiftly/).
 
     ```shell
     curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash
-    swiftly install 6.0-snapshot
+    swiftly install main-snapshot
     ```
 
 ## Building
@@ -32,13 +32,6 @@ An operating system written in Swift.
 ```shell
 make
 ```
-
-> [!WARNING]
-> If you used swiftly to install Swift, you have to modify `Makefile` until https://github.com/swift-server/swiftly/issues/92 is resolved.
->
-> ```makefile
-> SWIFT := swift-legacy-driver
-> ```
 
 ## Cleaning build outputs
 
