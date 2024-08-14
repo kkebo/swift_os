@@ -1,6 +1,6 @@
 ENTRY(_start)
 SECTIONS {
-    . = 0x80000;
+    . = 0x80000;  /* aarch64 */
     .startup . : { boot.o(.text) }
     .text : { *(.text .text.*) }
     .data : { *(.rodata .rodata.* .data .data.*) }
