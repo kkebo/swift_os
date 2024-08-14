@@ -1,8 +1,8 @@
 ENTRY(_start)
 SECTIONS {
     . = 0x80000;  /* aarch64 */
-    .text : { KEEP(*(.text.boot)) *(.text .text.*) }
-    .data : { *(.rodata .rodata.* .data .data.*) }
+    .text : { KEEP(*(.text.boot)) *(.text*) }
+    .data : { *(.rodata* .data*) }
     .bss : ALIGN(16) {  /* ALIGN(16) prevents unaligned stores */
         __bss_start = .;
         *(.bss*)
