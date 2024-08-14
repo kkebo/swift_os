@@ -6,19 +6,20 @@ An operating system written in Swift.
 
 - Make
   - Arch Linux: `sudo pacman -S make`
-  - Fedora: `sudo dnf install make`
-  - Ubuntu: `sudo apt install make`
-  - macOS: bulit-in (`/usr/bin/make`)
+  - Fedora 40: `sudo dnf install make`
+  - Ubuntu 22.04: `sudo apt install make`
+  - macOS 14: bulit-in (`/usr/bin/make`)
 - llvm-objcopy
   - Arch Linux: `sudo pacman -S llvm`
-  - Fedora: `sudo dnf install llvm`
-  - Ubuntu: `sudo apt install llvm`
-  - macOS: `brew install llvm` and add `/opt/homebrew/opt/llvm/bin` to your `$PATH`
-- QEMU 9.0+
+  - Fedora 40: `sudo dnf install llvm`
+  - Ubuntu 22.04: `sudo apt install llvm`
+  - macOS 14: `brew install llvm` and add `/opt/homebrew/opt/llvm/bin` to your `$PATH`
+- QEMU 9.0 or later
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
-  - Fedora: ~~`sudo dnf install qemu-system-aarch64-core`~~ Build from [source](https://www.qemu.org/download/#source)
-  - Ubuntu: ~~`sudo apt install qemu-system-arm`~~ Build from [source](https://www.qemu.org/download/#source)
-  - macOS: `brew install qemu`
+  - Fedora Rawhide: `sudo dnf install qemu-system-aarch64-core`
+  - Fedora 40: Build from [source](https://www.qemu.org/download/#source)
+  - Ubuntu 22.04: ~~`sudo apt install qemu-system-arm`~~ Build from [source](https://www.qemu.org/download/#source)
+  - macOS 14: `brew install qemu`
 - Swift (main snapshot)
   - On Linux, you can easily install the toolchain using [swiftly](https://swift-server.github.io/swiftly/).
 
@@ -39,7 +40,7 @@ make
 make clean
 ```
 
-## Running (QEMU)
+## Running on QEMU
 
 ```shell
 make run
