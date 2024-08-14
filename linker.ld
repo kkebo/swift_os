@@ -4,9 +4,17 @@ SECTIONS {
     .startup . : { boot.o(.text) }
     .text : { *(.text .text.*) }
     .data : { *(.rodata .rodata.* .data .data.*) }
-    __bss_start = .;
-    .bss : { *(.bss .bss.* COMMON) }
-    __bss_end = .;
-    /DISCARD/ : { *(.comment) *(.debug*) *(.eh_frame*) }
+    .bss : {
+        __bss_start = .;
+        *(.bss*)
+        *(COMMON)
+        . = ALIGN(8);
+        __bss_end = .;
+    }
+    /DISCARD/ : {
+        *(.comment)
+        *(.debug*)
+        *(.eh_frame*)
+    }
 }
-__bss_size = __bss_end - __bss_start;
+__bss_size = (__bss_end - __bss_start) >> 3;
