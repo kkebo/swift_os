@@ -23,7 +23,7 @@ let package = Package(
                 "Support",
             ],
             swiftSettings: swiftSettings + [
-                .define("RASPI3")
+                .define("RASPI4")
             ]
         ),
         .systemLibrary(name: "Volatile"),
