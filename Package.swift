@@ -4,6 +4,7 @@ import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Embedded"),
+    .enableExperimentalFeature("Volatile"),
     .unsafeFlags(["-Xfrontend", "-no-allocations"]),
     .unsafeFlags(["-Xfrontend", "-function-sections"]),
     .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
@@ -18,7 +19,6 @@ let package = Package(
         .target(
             name: "Kernel",
             dependencies: [
-                "Volatile",
                 "MailboxMessage",
                 "Support",
             ],
@@ -26,7 +26,6 @@ let package = Package(
                 .define("RASPI4")
             ]
         ),
-        .systemLibrary(name: "Volatile"),
         .target(name: "MailboxMessage"),
         .target(name: "Support"),
     ],
