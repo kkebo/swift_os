@@ -20,12 +20,12 @@ An operating system written in Swift.
   - Fedora 40: Build from [source](https://www.qemu.org/download/#source)
   - Ubuntu 22.04: ~~`sudo apt install qemu-system-arm`~~ Build from [source](https://www.qemu.org/download/#source)
   - macOS 14: `brew install qemu`
-- Swift (6.0 snapshot)
+- Swift (main snapshot)
   - On Linux, you can easily install the toolchain using [swiftly](https://swift-server.github.io/swiftly/).
 
     ```shell
     curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash
-    swiftly install 6.0-snapshot
+    swiftly install main-snapshot
     ```
 
 ## Building
