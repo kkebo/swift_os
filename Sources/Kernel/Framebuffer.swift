@@ -23,9 +23,10 @@ struct Framebuffer: ~Copyable {
         .init(bitPattern: self.baseAddress)!
     }
 
-    static let shared = Self()
+    // FIXME: it doesn't work on a real hardware
+    // static let shared = Self()
 
-    private init() {
+    init() {
         mbox.0 = 35 * 4
         mbox.1 = 0  // request
 
