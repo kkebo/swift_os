@@ -11,6 +11,11 @@ let mboxResponse: UInt32 = 0x8000_0000
 let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
 
+enum MboxTag {
+    static let end: UInt32 = 0
+    static let setClockRate: UInt32 = 0x0003_8002
+}
+
 @inline(__always)
 private func transmitMboxFull() -> Bool {
     mmioLoad(mboxStatus) & mboxFull > 0

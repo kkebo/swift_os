@@ -57,13 +57,13 @@ func initUART() {
         // set up clock to 3 MHz
         mbox.0 = 9 * 4
         mbox.1 = 0  // request
-        mbox.2 = 0x38002  // set clock rate
+        mbox.2 = MboxTag.setClockRate
         mbox.3 = 12
         mbox.4 = 8
         mbox.5 = 2  // UART clock
         mbox.6 = 3_000_000  // 3 Mhz
         mbox.7 = 0  // clear turbo
-        mbox.8 = 0  // mbox tag last
+        mbox.8 = MboxTag.end
         guard mboxCall(ch: 8) else { repeat {} while true }
     #endif
 
