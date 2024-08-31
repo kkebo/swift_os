@@ -1,3 +1,3 @@
 #pragma once
 
-volatile unsigned int __attribute__((aligned(16))) mbox[9];
+volatile unsigned int __attribute__((aligned(16))) mbox[36];
