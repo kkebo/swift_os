@@ -64,7 +64,7 @@ func initUART() {
         mbox.6 = 3_000_000  // 3 Mhz
         mbox.7 = 0  // clear turbo
         mbox.8 = MboxTag.end
-        guard mboxCall(ch: 8) else { repeat {} while true }
+        guard mboxCall(ch: 8) else { fatalError() }
     #endif
 
     // map UART0 to GPIO pins
