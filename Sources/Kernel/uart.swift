@@ -58,8 +58,8 @@ func initUART() {
         mbox.0 = 9 * 4
         mbox.1 = 0  // request
         mbox.2 = MboxTag.setClockRate
-        mbox.3 = 12
-        mbox.4 = 8
+        mbox.3 = 12  // TODO: Understand what this is.
+        mbox.4 = 8  // TODO: Understand what this is.
         mbox.5 = 2  // UART clock
         mbox.6 = 3_000_000  // 3 Mhz
         mbox.7 = 0  // clear turbo
