@@ -11,6 +11,19 @@ let mboxResponse: UInt32 = 0x8000_0000
 let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
 
+enum MboxChannel: UInt8 {
+    case power = 0
+    case framebuffer
+    case virtualUART
+    case vchiq
+    case leds
+    case buttons
+    case touchScreen
+    case count  // TODO: Understand what this is.
+    case property  // ARM -> VC
+    // case property  // VC -> ARM
+}
+
 enum MboxTag {
     static let end: UInt32 = 0
     static let setClockRate: UInt32 = 0x0003_8002
@@ -26,10 +39,10 @@ private func receiveMboxEmpty() -> Bool {
     mmioLoad(mboxStatus) & mboxEmpty > 0
 }
 
-func mboxCall(ch: UInt8) -> Bool {
+func mboxCall(ch: MboxChannel) -> Bool {
     withUnsafePointer(to: &mbox) { ptr in
         let addr = UInt32(UInt(bitPattern: ptr))
-        let r = addr & ~0xF | UInt32(ch & 0xF)
+        let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
         while transmitMboxFull() {}
         mmioStore(r, to: mboxWrite)
         repeat {
