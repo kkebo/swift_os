@@ -27,6 +27,13 @@ enum MboxChannel: UInt8 {
 enum MboxTag {
     static let end: UInt32 = 0
     static let setClockRate: UInt32 = 0x0003_8002
+    static let allocateBuffer: UInt32 = 0x0004_0001
+    static let setPhysicalWH: UInt32 = 0x0004_8003
+    static let setVirtualWH: UInt32 = 0x0004_8004
+    static let setDepth: UInt32 = 0x0004_8005
+    static let setPixelOrder: UInt32 = 0x0004_8006
+    static let getPitch: UInt32 = 0x0004_0008
+    static let setVirtualOffset: UInt32 = 0x0004_8009
 }
 
 @inline(__always)
