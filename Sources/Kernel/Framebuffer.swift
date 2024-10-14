@@ -1,7 +1,7 @@
 @preconcurrency import var MailboxMessage.mbox
 
-enum PixelOrder: UInt32 {
-    case bgr = 0
+enum PixelOrder {
+    case bgr
     case rgb
 }
 
@@ -23,35 +23,24 @@ struct Framebuffer: ~Copyable {
         .init(bitPattern: self.baseAddress)!
     }
 
-    static let shared = Self(
-        width: 1920,
-        height: 1080,
-        depth: 32,  // 4 channels
-        pixelOrder: .rgb
-    )
+    // FIXME: it doesn't work on a real hardware
+    // static let shared = Self()
 
-    // FIXME: I don't know why, but if `init` is optimized, then the execution stops before reaching the last line.
-    @_optimize(none)
-    private init(
-        width: UInt32,
-        height: UInt32,
-        depth: UInt32,
-        pixelOrder: PixelOrder
-    ) {
+    init() {
         mbox.0 = 35 * 4
         mbox.1 = 0  // request
 
         mbox.2 = MboxTag.setPhysicalWH
         mbox.3 = 8  // TODO: Understand what this is.
         mbox.4 = 0  // TODO: Understand what this is.
-        mbox.5 = width
-        mbox.6 = height
+        mbox.5 = 1920
+        mbox.6 = 1080
 
         mbox.7 = MboxTag.setVirtualWH
         mbox.8 = 8  // TODO: Understand what this is.
         mbox.9 = 8  // TODO: Understand what this is.
-        mbox.10 = width
-        mbox.11 = height
+        mbox.10 = 1920
+        mbox.11 = 1080
 
         mbox.12 = MboxTag.setVirtualOffset
         mbox.13 = 8  // TODO: Understand what this is.
@@ -62,12 +51,12 @@ struct Framebuffer: ~Copyable {
         mbox.17 = MboxTag.setDepth
         mbox.18 = 4  // TODO: Understand what this is.
         mbox.19 = 4  // TODO: Understand what this is.
-        mbox.20 = depth
+        mbox.20 = 32
 
         mbox.21 = MboxTag.setPixelOrder
         mbox.22 = 4  // TODO: Understand what this is.
         mbox.23 = 4  // TODO: Understand what this is.
-        mbox.24 = pixelOrder.rawValue
+        mbox.24 = 1  // RGB
 
         mbox.25 = MboxTag.allocateBuffer
         mbox.26 = 8  // TODO: Understand what this is.
@@ -84,7 +73,7 @@ struct Framebuffer: ~Copyable {
 
         guard
             mboxCall(ch: .property),  // success
-            mbox.20 == depth,
+            mbox.20 == 32,  // depth
             mbox.28 != 0  // pointer is not null
         else { fatalError() }
 
@@ -94,8 +83,12 @@ struct Framebuffer: ~Copyable {
         self.width = mbox.10
         self.height = mbox.11
         self.pitch = mbox.33
-        // swift-format-ignore: NeverForceUnwrap
-        self.pixelOrder = .init(rawValue: mbox.24)!
+        self.pixelOrder =
+            switch mbox.24 {
+            case 0: .bgr
+            case 1: .rgb
+            case _: preconditionFailure("unreachable")
+            }
         self.baseAddress = UInt(mbox.28)
 
         print("Framebufer is ready")
