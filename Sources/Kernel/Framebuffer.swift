@@ -1,7 +1,7 @@
 @preconcurrency import var MailboxMessage.mbox
 
-enum PixelOrder {
-    case bgr
+enum PixelOrder: UInt32 {
+    case bgr = 0
     case rgb
 }
 
@@ -83,12 +83,8 @@ struct Framebuffer: ~Copyable {
         self.width = mbox.10
         self.height = mbox.11
         self.pitch = mbox.33
-        self.pixelOrder =
-            switch mbox.24 {
-            case 0: .bgr
-            case 1: .rgb
-            case _: preconditionFailure("unreachable")
-            }
+        // swift-format-ignore: NeverForceUnwrap
+        self.pixelOrder = .init(rawValue: mbox.24)!
         self.baseAddress = UInt(mbox.28)
 
         print("Framebufer is ready")
