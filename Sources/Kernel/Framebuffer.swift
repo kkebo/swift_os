@@ -23,14 +23,6 @@ struct Framebuffer: ~Copyable {
         .init(bitPattern: self.baseAddress)!
     }
 
-    // FIXME: it doesn't work on a real hardware
-    // static let shared = Self(
-    //     width: 1920,
-    //     height: 1080,
-    //     depth: 32,
-    //     pixelOrder: .rgb
-    // )
-
     // FIXME: I don't know why, but if `init` is optimized, then the execution stops before reaching the last line.
     @_optimize(none)
     init(
