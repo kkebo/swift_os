@@ -1,5 +1,6 @@
 EXE := kernel.elf
 IMG := kernel8.img
+MAP := kernel.map
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
@@ -14,7 +15,7 @@ QEMU := qemu-system-aarch64
 all: $(IMG)
 
 $(EXE): linker.ld swift
-	$(LD) $(LDFLAGS) -T linker.ld .build/release/libKernel.a -o $@
+	$(LD) $(LDFLAGS) -T linker.ld -Xlinker -Map=$(MAP) .build/release/libKernel.a -o $@
 
 $(IMG): $(EXE)
 	$(OBJCOPY) $< -O binary $@
@@ -29,5 +30,5 @@ run: all
 
 .PHONY: clean
 clean:
-	$(RM) $(EXE) $(IMG)
+	$(RM) $(EXE) $(IMG) $(MAP)
 	$(SWIFT) package clean

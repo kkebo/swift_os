@@ -1,6 +1,7 @@
 *.o
 *.elf
 *.img
+*.map
 
 .DS_Store
 /.build
