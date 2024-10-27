@@ -24,10 +24,10 @@ An operating system written in Swift.
   - Debian 12: Build from [source](https://www.qemu.org/download/#source)
   - macOS 14: `brew install qemu`
 - Swift (main snapshot)
-  - On Linux, you can easily install the toolchain using [swiftly](https://swift-server.github.io/swiftly/).
+  - On Linux, you can easily install the toolchain using [swiftly](https://swiftlang.github.io/swiftly/).
 
     ```shell
-    curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash
+    curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash
     swiftly install main-snapshot
     ```
 
