@@ -29,7 +29,7 @@ struct Framebuffer: ~Copyable {
         width: UInt32,
         height: UInt32,
         depth: UInt32,
-        pixelOrder: PixelOrder
+        pixelOrder: PixelOrder,
     ) {
         mbox.0 = 35 * 4
         mbox.1 = 0  // request

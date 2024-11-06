@@ -24,10 +24,10 @@ let package = Package(
             ],
             swiftSettings: swiftSettings + [
                 .define("RASPI4")
-            ]
+            ],
         ),
         .target(name: "MailboxMessage"),
         .target(name: "Support"),
     ],
-    swiftLanguageModes: [.v6]
+    swiftLanguageModes: [.v6],
 )
