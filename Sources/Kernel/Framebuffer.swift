@@ -96,7 +96,7 @@ struct Framebuffer: ~Copyable {
 
     @inlinable
     func drawPoint(x: Int, y: Int, color: UInt32) {
-        self.pointer.advanced(by: y * Int(self.width) + x).pointee = color
+        self.pointer[y * Int(self.width) + x] = color
     }
 
     func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {
