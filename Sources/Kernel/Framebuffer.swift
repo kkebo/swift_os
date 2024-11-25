@@ -107,4 +107,33 @@ struct Framebuffer: ~Copyable {
             }
         }
     }
+
+    func drawChar(_ c: UInt8, x: Int, y: Int, color: UInt32) {
+        guard c < font.count else { return }
+        for i in 0..<fontHeight {
+            for j in 0..<fontWidth {
+                if font[Int(c)][i] & 1 << j != 0 {
+                    unsafe self.drawPoint(x: x &+ j, y: y &+ i, color: color)
+                }
+            }
+        }
+    }
+
+    func drawString(_ s: StaticString, x: Int, y: Int, color: UInt32) {
+        var p = unsafe s.utf8Start
+        var x = x
+        var y = y
+        while unsafe p.pointee != 0 {
+            switch unsafe p.pointee {
+            case 0x0d: x = 0
+            case 0x0a:
+                x = 0
+                y &+= fontHeight
+            case let c:
+                unsafe self.drawChar(c, x: x, y: y, color: color)
+                x &+= fontWidth
+            }
+            unsafe p += 1
+        }
+    }
 }
