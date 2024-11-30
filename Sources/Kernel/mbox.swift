@@ -1,4 +1,4 @@
-@preconcurrency import var MailboxMessage.mbox
+import var MailboxMessage.mbox
 
 let videocoreMbox = mmioBase + 0xB880
 let mboxRead = videocoreMbox
