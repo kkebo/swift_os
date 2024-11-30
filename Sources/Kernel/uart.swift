@@ -1,7 +1,7 @@
 import Support
 
 #if RASPI4 || RASPI3
-    @preconcurrency import var MailboxMessage.mbox
+    import var MailboxMessage.mbox
 #endif
 
 #if RASPI4

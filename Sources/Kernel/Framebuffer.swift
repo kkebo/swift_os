@@ -1,4 +1,4 @@
-@preconcurrency import var MailboxMessage.mbox
+import var MailboxMessage.mbox
 
 enum PixelOrder: UInt32 {
     case bgr = 0
