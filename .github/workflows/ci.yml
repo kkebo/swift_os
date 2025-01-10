@@ -18,3 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: swift format lint -rsp .
+  yamllint:
+    runs-on: ubuntu-latest
+    container: alpine:3.21
+    steps:
+      - uses: actions/checkout@v4
+      - run: apk update && apk add yamllint
+      - run: yamllint --version
+      - run: yamllint --strict --config-file .yamllint.yml .
