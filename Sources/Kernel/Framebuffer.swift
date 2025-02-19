@@ -1,3 +1,5 @@
+import Font
+
 import var MailboxMessage.mbox
 
 enum PixelOrder: UInt32 {
@@ -105,5 +107,40 @@ struct Framebuffer: ~Copyable {
                 self.drawPoint(x: x, y: y, color: color)
             }
         }
+    }
+
+    func drawChar(_ c: UInt8, x: Int, y: Int, color: UInt32) {
+        guard c < FONT_NUMGLYPHS else { fatalError() }
+        withUnsafeBytes(of: font) { ptr in
+            var offset = Int(c) * FONT_BPG
+            for i in 0..<FONT_HEIGHT {
+                for j in 0..<FONT_WIDTH {
+                    let mask: UInt8 = 1 << j
+                    if ptr[offset] & mask != 0 {
+                        self.drawPoint(x: x + j, y: y + i, color: color)
+                    }
+                }
+                offset += FONT_BPL
+            }
+        }
+    }
+
+    func drawString(_ s: StaticString, x: Int, y: Int, color: UInt32) {
+        var p = s.utf8Start
+        var x = x
+        var y = y
+        repeat {
+            switch p.pointee {
+            case 0: break
+            case 0x0d: x = 0
+            case 0x0a:
+                x = 0
+                y += FONT_HEIGHT
+            case let c:
+                self.drawChar(c, x: x, y: y, color: color)
+                p += 1
+                x += FONT_WIDTH
+            }
+        } while true
     }
 }

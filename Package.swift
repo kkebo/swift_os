@@ -20,6 +20,7 @@ let package = Package(
             name: "Kernel",
             dependencies: [
                 "MailboxMessage",
+                "Font",
                 "Support",
             ],
             swiftSettings: swiftSettings + [
@@ -27,6 +28,7 @@ let package = Package(
             ],
         ),
         .target(name: "MailboxMessage"),
+        .target(name: "Font"),
         .target(name: "Support"),
     ],
     swiftLanguageModes: [.v6],
