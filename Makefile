@@ -7,7 +7,7 @@ SWIFT := swift
 SWIFT_BUILD_FLAGS := --triple $(TRIPLE) -c release -Xswiftc -Osize \
 					 --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
 LD := clang -fuse-ld=lld
-LDFLAGS := -target $(TRIPLE) -nostdlib -Xlinker -gc-sections -static
+LDFLAGS := --target=$(TRIPLE) -nostdlib -static -Xlinker --gc-sections
 OBJCOPY := llvm-objcopy
 QEMU := qemu-system-aarch64
 
