@@ -14,14 +14,8 @@ struct Framebuffer: ~Copyable {
     let pitch: UInt32
     /// Pixel order.
     let pixelOrder: PixelOrder
-    /// Frame buffer base address in bytes.
-    let baseAddress: UInt
-
-    // swift-format-ignore: NeverForceUnwrap
-    @inlinable
-    var pointer: UnsafeMutablePointer<UInt32> {
-        .init(bitPattern: self.baseAddress)!
-    }
+    /// Frame buffer base address.
+    let baseAddress: UnsafeMutablePointer<UInt32>
 
     // FIXME: I don't know why, but if `init` is optimized, then the execution stops before reaching the last line.
     @_optimize(none)
@@ -89,14 +83,15 @@ struct Framebuffer: ~Copyable {
         self.pitch = mbox.33
         // swift-format-ignore: NeverForceUnwrap
         self.pixelOrder = .init(rawValue: mbox.24)!
-        self.baseAddress = UInt(mbox.28)
+        // swift-format-ignore: NeverForceUnwrap
+        self.baseAddress = .init(bitPattern: UInt(mbox.28))!
 
         print("Framebufer is ready")
     }
 
     @inlinable
     func drawPoint(x: Int, y: Int, color: UInt32) {
-        self.pointer[y * Int(self.width) + x] = color
+        self.baseAddress[y * Int(self.width) + x] = color
     }
 
     func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {

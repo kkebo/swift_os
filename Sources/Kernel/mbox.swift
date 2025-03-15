@@ -1,12 +1,14 @@
+import _Volatile
+
 import var MailboxMessage.mbox
 
 let videocoreMbox = mmioBase + 0xB880
-let mboxRead = videocoreMbox
-let mboxPoll = videocoreMbox + 0x10
-let mboxSender = videocoreMbox + 0x14
-let mboxStatus = videocoreMbox + 0x18
-let mboxConfig = videocoreMbox + 0x1C
-let mboxWrite = videocoreMbox + 0x20
+let mboxRead = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox)
+let mboxPoll = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x10)
+let mboxSender = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x14)
+let mboxStatus = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x18)
+let mboxConfig = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x1C)
+let mboxWrite = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x20)
 let mboxResponse: UInt32 = 0x8000_0000
 let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
@@ -38,12 +40,12 @@ enum MboxTag {
 
 @inline(__always)
 private func transmitMboxFull() -> Bool {
-    mmioLoad(mboxStatus) & mboxFull > 0
+    mboxStatus.load() & mboxFull > 0
 }
 
 @inline(__always)
 private func receiveMboxEmpty() -> Bool {
-    mmioLoad(mboxStatus) & mboxEmpty > 0
+    mboxStatus.load() & mboxEmpty > 0
 }
 
 func mboxCall(ch: MboxChannel) -> Bool {
@@ -51,10 +53,10 @@ func mboxCall(ch: MboxChannel) -> Bool {
         let addr = UInt32(UInt(bitPattern: ptr))
         let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
         while transmitMboxFull() {}
-        mmioStore(r, to: mboxWrite)
+        mboxWrite.store(r)
         repeat {
             while receiveMboxEmpty() {}
-            if mmioLoad(mboxRead) == r {
+            if mboxRead.load() == r {
                 return mbox.1 == mboxResponse
             }
         } while true
