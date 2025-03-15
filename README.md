@@ -21,7 +21,7 @@ An operating system written in Swift.
   - Fedora Rawhide: `sudo dnf install qemu-system-aarch64-core`
   - Fedora 40: Build from [source](https://www.qemu.org/download/#source)
   - Ubuntu 22.04: ~~`sudo apt install qemu-system-arm`~~ Build from [source](https://www.qemu.org/download/#source)
-  - Debian 12: Build from [source](https://www.qemu.org/download/#source)
+  - Debian 12: `sudo apt install -t bookwarm-backports qemu-system-arm` (you need [add backports to `sources.list`](https://backports.debian.org/Instructions/#index2h2))
   - macOS 14: `brew install qemu`
 - Swift (6.1 development snapshot)
   - On Linux, you can easily install the toolchain using [swiftly](https://swiftlang.github.io/swiftly/).
