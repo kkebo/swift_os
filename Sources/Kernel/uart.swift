@@ -1,10 +1,6 @@
 import Support
 import _Volatile
 
-#if RASPI4 || RASPI3
-    import var MailboxMessage.mbox
-#endif
-
 #if RASPI4
     let mmioBase: UInt = 0xFE00_0000
 #elseif RASPI3 || RASPI2

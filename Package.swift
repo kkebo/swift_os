@@ -20,14 +20,12 @@ let package = Package(
         .target(
             name: "Kernel",
             dependencies: [
-                "MailboxMessage",
-                "Support",
+                "Support"
             ],
             swiftSettings: swiftSettings + [
                 .define("RASPI4")
             ],
         ),
-        .target(name: "MailboxMessage"),
         .target(name: "Support"),
     ],
 )
