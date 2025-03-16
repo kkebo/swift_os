@@ -25,6 +25,6 @@ _start:
     cbnz w2, 3b
 
     // jump to Swift code, should not return
-4:  bl kmain
+4:  bl main
     // for failsafe, halt this core too
     b 1b
