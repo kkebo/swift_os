@@ -18,7 +18,6 @@ struct Framebuffer: ~Copyable {
     /// Frame buffer base address.
     let baseAddress: UnsafeMutablePointer<UInt32>
 
-    // FIXME: I don't know why, but if `init` is optimized, then the execution stops before reaching the last line.
     @_optimize(none)
     init(
         width: UInt32,
@@ -90,9 +89,7 @@ struct Framebuffer: ~Copyable {
         print("Framebufer is ready")
     }
 
-    // FIXME: I don't know why, but if this function is optimized, memory writes won't happen.
-    @_optimize(none)
-    @inlinable
+    @inline(never)
     func drawPoint(x: Int, y: Int, color: UInt32) {
         unsafe self.baseAddress[y * Int(self.width) + x] = color
     }
