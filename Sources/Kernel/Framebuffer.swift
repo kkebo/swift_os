@@ -89,6 +89,8 @@ struct Framebuffer: ~Copyable {
         print("Framebufer is ready")
     }
 
+    // FIXME: I don't know why, but if this function is optimized, memory writes won't happen.
+    @_optimize(none)
     @inlinable
     func drawPoint(x: Int, y: Int, color: UInt32) {
         self.baseAddress[y * Int(self.width) + x] = color
