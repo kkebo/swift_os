@@ -14,19 +14,19 @@ import _Volatile
 #endif
 
 let gpioBase = mmioBase + 0x200000
-let gpfsel1 = VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x4)
-let gppud = VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x94)
-let gppudclk0 = VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x98)
+let gpfsel1 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x4)
+let gppud = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x94)
+let gppudclk0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x98)
 
 let uartBase = gpioBase + 0x1000
-let uartDR = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase)
-let uartFR = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x18)
-let uartIBRD = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x24)
-let uartFBRD = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x28)
-let uartLCRH = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x2C)
-let uartCR = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x30)
-let uartIMSC = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x38)
-let uartICR = VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x44)
+let uartDR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase)
+let uartFR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x18)
+let uartIBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x24)
+let uartFBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x28)
+let uartLCRH = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x2C)
+let uartCR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x30)
+let uartIMSC = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x38)
+let uartICR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x44)
 
 @inline(__always)
 private func transmitFIFOFull() -> Bool {
@@ -56,15 +56,15 @@ func initUART() {
 
     #if RASPI4 || RASPI3
         // set up clock to 3 MHz
-        mbox.0 = 9 * 4
-        mbox.1 = 0  // request
-        mbox.2 = MboxTag.setClockRate
-        mbox.3 = 12  // TODO: Understand what this is.
-        mbox.4 = 8  // TODO: Understand what this is.
-        mbox.5 = 2  // UART clock
-        mbox.6 = 3_000_000  // 3 Mhz
-        mbox.7 = 0  // clear turbo
-        mbox.8 = MboxTag.end
+        unsafe mbox.0 = 9 * 4
+        unsafe mbox.1 = 0  // request
+        unsafe mbox.2 = MboxTag.setClockRate
+        unsafe mbox.3 = 12  // TODO: Understand what this is.
+        unsafe mbox.4 = 8  // TODO: Understand what this is.
+        unsafe mbox.5 = 2  // UART clock
+        unsafe mbox.6 = 3_000_000  // 3 Mhz
+        unsafe mbox.7 = 0  // clear turbo
+        unsafe mbox.8 = MboxTag.end
         guard mboxCall(ch: .property) else { fatalError() }
     #endif
 

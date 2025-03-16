@@ -3,12 +3,12 @@ import _Volatile
 import var MailboxMessage.mbox
 
 let videocoreMbox = mmioBase + 0xB880
-let mboxRead = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox)
-let mboxPoll = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x10)
-let mboxSender = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x14)
-let mboxStatus = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x18)
-let mboxConfig = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x1C)
-let mboxWrite = VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x20)
+let mboxRead = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox)
+let mboxPoll = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x10)
+let mboxSender = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x14)
+let mboxStatus = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x18)
+let mboxConfig = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x1C)
+let mboxWrite = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x20)
 let mboxResponse: UInt32 = 0x8000_0000
 let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
@@ -49,7 +49,7 @@ private func receiveMboxEmpty() -> Bool {
 }
 
 func mboxCall(ch: MboxChannel) -> Bool {
-    withUnsafePointer(to: &mbox) { ptr in
+    unsafe withUnsafePointer(to: &mbox) { ptr in
         let addr = UInt32(UInt(bitPattern: ptr))
         let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
         while transmitMboxFull() {}
@@ -57,7 +57,7 @@ func mboxCall(ch: MboxChannel) -> Bool {
         repeat {
             while receiveMboxEmpty() {}
             if mboxRead.load() == r {
-                return mbox.1 == mboxResponse
+                return unsafe mbox.1 == mboxResponse
             }
         } while true
     }
