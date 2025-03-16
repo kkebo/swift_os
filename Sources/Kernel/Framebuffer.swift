@@ -91,7 +91,7 @@ struct Framebuffer: ~Copyable {
 
     @inline(never)
     func drawPoint(x: Int, y: Int, color: UInt32) {
-        unsafe self.baseAddress[y * Int(self.width) + x] = color
+        unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
     }
 
     func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {
