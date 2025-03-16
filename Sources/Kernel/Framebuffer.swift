@@ -97,7 +97,7 @@ struct Framebuffer: ~Copyable {
         print("Framebufer is ready")
     }
 
-    @inline(never)
+    @inlinable
     func drawPoint(x: Int, y: Int, color: UInt32) {
         unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
     }
