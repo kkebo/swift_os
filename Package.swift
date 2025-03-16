@@ -30,5 +30,4 @@ let package = Package(
         .target(name: "MailboxMessage"),
         .target(name: "Support"),
     ],
-    swiftLanguageModes: [.v6],
 )
