@@ -23,12 +23,12 @@ An operating system written in Swift.
   - Ubuntu 22.04: ~~`sudo apt install qemu-system-arm`~~ Build from [source](https://www.qemu.org/download/#source)
   - Debian 12: `sudo apt install -t bookwarm-backports qemu-system-arm` (you need [add backports to `sources.list`](https://backports.debian.org/Instructions/#index2h2))
   - macOS 14: `brew install qemu`
-- Swift (6.1 development snapshot)
+- Swift (main development snapshot)
   - On Linux, you can easily install the toolchain using [swiftly](https://swiftlang.github.io/swiftly/).
 
     ```shell
     curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash
-    swiftly install 6.1-snapshot
+    swiftly install main-snapshot
     ```
 
 ## Building
