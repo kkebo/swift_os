@@ -4,7 +4,6 @@ import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Embedded"),
-    .enableExperimentalFeature("Volatile"),
     .unsafeFlags(["-Xfrontend", "-no-allocations"]),
     .unsafeFlags(["-Xfrontend", "-function-sections"]),
     .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
@@ -18,19 +17,29 @@ let package = Package(
     ],
     traits: [
         .default(enabledTraits: ["RASPI4"]),
-        "RASPI4",
-        "RASPI3",
-        "RASPI2",
-        "RASPI1",
+        .trait(name: "RASPI4", enabledTraits: ["RASPI"]),
+        .trait(name: "RASPI3", enabledTraits: ["RASPI"]),
+        .trait(name: "RASPI2", enabledTraits: ["RASPI"]),
+        .trait(name: "RASPI1", enabledTraits: ["RASPI"]),
+        "RASPI",
     ],
     targets: [
         .target(
             name: "Kernel",
             dependencies: [
-                "Support"
+                "Support",
+                .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
         ),
+        .target(
+            name: "RaspberryPi",
+            dependencies: ["Font", "Support"],
+            swiftSettings: swiftSettings + [
+                .enableExperimentalFeature("Volatile")
+            ],
+        ),
+        .target(name: "Font", swiftSettings: swiftSettings),
         .target(name: "Support"),
     ],
 )

@@ -35,13 +35,13 @@ private func receiveFIFOEmpty() -> Bool {
 }
 
 @usableFromInline
-func putchar(_ c: UInt8) {
+package func putchar(_ c: UInt8) {
     while transmitFIFOFull() {}
     uartDR.store(UInt32(c))
 }
 
 @usableFromInline
-func getchar() -> UInt8 {
+package func getchar() -> UInt8 {
     while receiveFIFOEmpty() {}
     return UInt8(uartDR.load())
 }
@@ -62,7 +62,7 @@ func getchar() -> UInt8 {
     }
 #endif
 
-func initUART() {
+package func initUART() {
     // disable UART0
     uartCR.store(0)
 

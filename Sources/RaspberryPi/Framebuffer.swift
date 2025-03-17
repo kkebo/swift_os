@@ -1,4 +1,6 @@
-enum PixelOrder: UInt32 {
+import Font
+
+package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
     case bgr = 0
     case rgb
 }
@@ -56,19 +58,19 @@ private func setFramebufferMbox(
 }
 
 @unsafe
-struct Framebuffer: ~Copyable {
+package struct Framebuffer: ~Copyable {
     /// Actual physical width.
-    let width: UInt32
+    package let width: UInt32
     /// Actual physical height.
-    let height: UInt32
+    package let height: UInt32
     /// Number of bytes per line.
-    let pitch: UInt32
+    package let pitch: UInt32
     /// Pixel order.
-    let pixelOrder: PixelOrder
+    package let pixelOrder: PixelOrder
     /// Frame buffer base address.
-    let baseAddress: UnsafeMutablePointer<UInt32>
+    package let baseAddress: UnsafeMutablePointer<UInt32>
 
-    init(
+    package init(
         width: UInt32,
         height: UInt32,
         depth: UInt32,
@@ -100,7 +102,7 @@ struct Framebuffer: ~Copyable {
         unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
     }
 
-    func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {
+    package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {
         for y in y0...y1 {
             for x in x0...x1 {
                 unsafe self.drawPoint(x: x, y: y, color: color)
@@ -108,7 +110,7 @@ struct Framebuffer: ~Copyable {
         }
     }
 
-    func drawChar(_ c: UInt8, x: Int, y: Int, color: UInt32) {
+    package func drawChar(_ c: UInt8, x: Int, y: Int, color: UInt32) {
         guard c < font.count else { return }
         for i in 0..<fontHeight {
             for j in 0..<fontWidth {
@@ -119,7 +121,7 @@ struct Framebuffer: ~Copyable {
         }
     }
 
-    func drawString(_ s: StaticString, x: Int, y: Int, color: UInt32) {
+    package func drawString(_ s: StaticString, x: Int, y: Int, color: UInt32) {
         var p = unsafe s.utf8Start
         var x = x
         var y = y

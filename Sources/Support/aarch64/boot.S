@@ -1,7 +1,8 @@
+#ifdef __aarch64__
+
 .section ".text.boot"
 
 .global _start
-
 _start:
     // read cpu id, stop slave cores
     mrs x1, mpidr_el1
@@ -28,3 +29,5 @@ _start:
 4:  bl main
     // for failsafe, halt this core too
     b 1b
+
+#endif
