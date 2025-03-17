@@ -1,7 +1,5 @@
 import _Volatile
 
-import var MailboxMessage.mbox
-
 let videocoreMbox = mmioBase + 0xB880
 let mboxRead = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox)
 let mboxPoll = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocoreMbox + 0x10)
@@ -12,6 +10,48 @@ let mboxWrite = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: videocor
 let mboxResponse: UInt32 = 0x8000_0000
 let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
+
+@_alignment(16)
+struct Mbox {
+    var `0`: UInt32 = 0
+    var `1`: UInt32 = 0
+    var `2`: UInt32 = 0
+    var `3`: UInt32 = 0
+    var `4`: UInt32 = 0
+    var `5`: UInt32 = 0
+    var `6`: UInt32 = 0
+    var `7`: UInt32 = 0
+    var `8`: UInt32 = 0
+    var `9`: UInt32 = 0
+    var `10`: UInt32 = 0
+    var `11`: UInt32 = 0
+    var `12`: UInt32 = 0
+    var `13`: UInt32 = 0
+    var `14`: UInt32 = 0
+    var `15`: UInt32 = 0
+    var `16`: UInt32 = 0
+    var `17`: UInt32 = 0
+    var `18`: UInt32 = 0
+    var `19`: UInt32 = 0
+    var `20`: UInt32 = 0
+    var `21`: UInt32 = 0
+    var `22`: UInt32 = 0
+    var `23`: UInt32 = 0
+    var `24`: UInt32 = 0
+    var `25`: UInt32 = 0
+    var `26`: UInt32 = 0
+    var `27`: UInt32 = 0
+    var `28`: UInt32 = 0
+    var `29`: UInt32 = 0
+    var `30`: UInt32 = 0
+    var `31`: UInt32 = 0
+    var `32`: UInt32 = 0
+    var `33`: UInt32 = 0
+    var `34`: UInt32 = 0
+    var `35`: UInt32 = 0
+}
+
+nonisolated(unsafe) var mbox: Mbox = .init()
 
 enum MboxChannel: UInt8 {
     case power = 0
