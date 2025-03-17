@@ -16,15 +16,20 @@ let package = Package(
     products: [
         .library(name: "Kernel", type: .static, targets: ["Kernel"])
     ],
+    traits: [
+        .default(enabledTraits: ["RASPI4"]),
+        "RASPI4",
+        "RASPI3",
+        "RASPI2",
+        "RASPI1",
+    ],
     targets: [
         .target(
             name: "Kernel",
             dependencies: [
                 "Support"
             ],
-            swiftSettings: swiftSettings + [
-                .define("RASPI4")
-            ],
+            swiftSettings: swiftSettings,
         ),
         .target(name: "Support"),
     ],
