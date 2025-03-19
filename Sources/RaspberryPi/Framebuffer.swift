@@ -47,7 +47,7 @@ private func setFramebufferMbox(
     unsafe mbox.26 = 8  // TODO: Understand what this is.
     unsafe mbox.27 = 8  // TODO: Understand what this is.
     unsafe mbox.28 = 4096  // FrameBufferInfo.pointer
-    unsafe mbox.29 = 0
+    unsafe mbox.29 = 0  //FrameBufferInfo.size
 
     unsafe mbox.30 = MboxTag.getPitch
     unsafe mbox.31 = 4  // TODO: Understand what this is.
@@ -90,9 +90,10 @@ package struct Framebuffer: ~Copyable {
         // swift-format-ignore: NeverForceUnwrap
         unsafe self.pixelOrder = .init(rawValue: mbox.24)!
         // GPU address to ARM address
-        let addr = unsafe mbox.28 & 0x3FFF_FFFF
+        let addr = unsafe UInt(mbox.28 & 0x3FFF_FFFF)
         // swift-format-ignore: NeverForceUnwrap
-        unsafe self.baseAddress = .init(bitPattern: UInt(addr))!
+        unsafe self.baseAddress = UnsafeMutableRawPointer(bitPattern: addr)!
+            .bindMemory(to: UInt32.self, capacity: Int(mbox.29))
 
         print("Framebufer is ready")
     }
