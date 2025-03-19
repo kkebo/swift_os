@@ -122,11 +122,11 @@ package struct Framebuffer: ~Copyable {
     }
 
     package func drawString(_ s: StaticString, x: Int, y: Int, color: UInt32) {
-        var p = unsafe s.utf8Start
+        let span = unsafe Span(_unsafeStart: s.utf8Start, count: s.utf8CodeUnitCount)
         var x = x
         var y = y
-        while unsafe p.pointee != 0 {
-            switch unsafe p.pointee {
+        for i in span.indices {
+            switch span[i] {
             case 0x0d: x = 0
             case 0x0a:
                 x = 0
@@ -135,7 +135,6 @@ package struct Framebuffer: ~Copyable {
                 unsafe self.drawChar(c, x: x, y: y, color: color)
                 x &+= fontWidth
             }
-            unsafe p += 1
         }
     }
 }
