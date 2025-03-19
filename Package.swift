@@ -35,12 +35,13 @@ let package = Package(
         ),
         .target(
             name: "RaspberryPi",
-            dependencies: ["Font", "AsmSupport"],
+            dependencies: ["Font", "Support", "AsmSupport"],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
             ],
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
+        .target(name: "Support", swiftSettings: swiftSettings),
         .target(name: "AsmSupport"),
     ],
 )
