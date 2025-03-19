@@ -57,8 +57,7 @@ private func setFramebufferMbox(
     unsafe mbox.34 = MboxTag.end
 }
 
-@unsafe
-package struct Framebuffer: ~Copyable {
+package struct Framebuffer: ~Copyable, ~Escapable {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
@@ -68,8 +67,9 @@ package struct Framebuffer: ~Copyable {
     /// Pixel order.
     package let pixelOrder: PixelOrder
     /// Frame buffer base address.
-    package let baseAddress: UnsafeMutablePointer<UInt32>
+    package var span: MutableSpan<UInt32>
 
+    @lifetime(immortal)
     package init(
         width: UInt32,
         height: UInt32,
@@ -92,20 +92,23 @@ package struct Framebuffer: ~Copyable {
         // GPU address to ARM address
         let addr = unsafe mbox.28 & 0x3FFF_FFFF
         // swift-format-ignore: NeverForceUnwrap
-        unsafe self.baseAddress = .init(bitPattern: UInt(addr))!
+        self.span = unsafe .init(
+            _unsafeStart: .init(bitPattern: UInt(addr))!,
+            count: Int(self.width &* self.height),
+        )
 
         print("Framebufer is ready")
     }
 
     @inlinable
     func drawPoint(x: Int, y: Int, color: UInt32) {
-        unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
+        self.span[y &* Int(self.width) &+ x] = color
     }
 
     package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {
         for y in y0...y1 {
             for x in x0...x1 {
-                unsafe self.drawPoint(x: x, y: y, color: color)
+                self.drawPoint(x: x, y: y, color: color)
             }
         }
     }
@@ -115,7 +118,7 @@ package struct Framebuffer: ~Copyable {
         for i in 0..<fontHeight {
             for j in 0..<fontWidth {
                 if font[Int(c)][i] & 1 << j != 0 {
-                    unsafe self.drawPoint(x: x &+ j, y: y &+ i, color: color)
+                    self.drawPoint(x: x &+ j, y: y &+ i, color: color)
                 }
             }
         }
@@ -132,7 +135,7 @@ package struct Framebuffer: ~Copyable {
                 x = 0
                 y &+= fontHeight
             case let c:
-                unsafe self.drawChar(c, x: x, y: y, color: color)
+                self.drawChar(c, x: x, y: y, color: color)
                 x &+= fontWidth
             }
         }
