@@ -70,6 +70,11 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     private let baseAddress: UnsafeMutablePointer<Depth>
     /// The number of pixels of Framebuffer.
     private let pixelCount: Int
+    /// Framebuffer.
+    package var buffer: MutableSpan<Depth> {
+        @inlinable
+        mutating get { unsafe .init(_unsafeStart: self.baseAddress, count: self.pixelCount) }
+    }
 
     package init(
         width: UInt32,
@@ -105,13 +110,13 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     }
 
     @inlinable
-    package func drawPoint(x: Int, y: Int, color: Depth) {
-        let i = y &* Int(self.width) &+ x
-        guard i < self.pixelCount else { fatalError() }
-        unsafe self.baseAddress[i] = color
+    package mutating func drawPoint(x: Int, y: Int, color: Depth) {
+        let width = Int(self.width)
+        var buf = self.buffer
+        buf[y &* width &+ x] = color
     }
 
-    package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Depth) {
+    package mutating func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Depth) {
         for y in y0...y1 {
             for x in x0...x1 {
                 self.drawPoint(x: x, y: y, color: color)
@@ -119,7 +124,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         }
     }
 
-    package func drawChar(_ c: UInt8, x: Int, y: Int, color: Depth) {
+    package mutating func drawChar(_ c: UInt8, x: Int, y: Int, color: Depth) {
         guard c < font.count else { return }
         for i in 0..<fontHeight {
             for j in 0..<fontWidth {
@@ -130,7 +135,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         }
     }
 
-    package func drawString(_ s: StaticString, x: Int, y: Int, color: Depth) {
+    package mutating func drawString(_ s: StaticString, x: Int, y: Int, color: Depth) {
         let span = unsafe Span(_unsafeStart: s.utf8Start, count: s.utf8CodeUnitCount)
         var x = x
         var y = y
