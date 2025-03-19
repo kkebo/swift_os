@@ -28,19 +28,19 @@ let package = Package(
         .target(
             name: "Kernel",
             dependencies: [
-                "Support",
+                "AsmSupport",
                 .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
         ),
         .target(
             name: "RaspberryPi",
-            dependencies: ["Font", "Support"],
+            dependencies: ["Font", "AsmSupport"],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
             ],
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
-        .target(name: "Support"),
+        .target(name: "AsmSupport"),
     ],
 )

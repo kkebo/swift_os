@@ -1,4 +1,4 @@
-import Support
+import AsmSupport
 #if RASPI
     import RaspberryPi
 #endif
