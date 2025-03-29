@@ -7,16 +7,16 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    container: swiftlang/swift:nightly-main-jammy
+    container: swiftlang/swift:nightly-main-noble
     steps:
       - uses: actions/checkout@v4
-      - run: apt-get update && apt-get install --no-install-recommends -y make llvm-14
+      - run: apt-get update && apt-get install --no-install-recommends -y make llvm-19
       - run: swift --version
-      - run: make OBJCOPY=llvm-objcopy-14
+      - run: make OBJCOPY=llvm-objcopy-19
   lint:
     if: false  # because swift-format doesn't support the `unsafe` expression yet
     runs-on: ubuntu-latest
-    container: swiftlang/swift:nightly-main-jammy
+    container: swiftlang/swift:nightly-main-noble
     steps:
       - uses: actions/checkout@v4
       - run: swift --version
