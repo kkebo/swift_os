@@ -25,11 +25,11 @@ An operating system written in Swift.
   - Debian 12: `sudo apt install -t bookwarm-backports qemu-system-arm` (you need to [add backports to `sources.list`](https://backports.debian.org/Instructions/#index2h2))
   - macOS 14: `brew install qemu`
 - Swift (main development snapshot)
-  - On Linux, you can easily install the toolchain using [swiftly](https://swiftlang.github.io/swiftly/).
+  - You can easily install the toolchain using [Swiftly](https://www.swift.org/install/).
 
     ```shell
-    curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash
     swiftly install main-snapshot
+    swiftly use main-snapshot
     ```
 
 ## Building
