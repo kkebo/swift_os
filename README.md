@@ -27,8 +27,7 @@ An operating system written in Swift.
   - You can easily install the toolchain using [Swiftly](https://www.swift.org/install/).
 
     ```shell
-    swiftly install main-snapshot
-    swiftly use main-snapshot
+    swiftly install
     ```
 
 ## Building
