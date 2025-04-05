@@ -1,3 +1,4 @@
+// swift-format-ignore-file
 import _Volatile
 
 let videocoreMbox = mmioBase + 0xB880

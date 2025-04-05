@@ -1,3 +1,4 @@
+// swift-format-ignore-file
 import Font
 
 package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
