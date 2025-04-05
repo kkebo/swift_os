@@ -1,4 +1,3 @@
-// swift-format-ignore-file
 import AsmSupport
 import _Volatile
 
