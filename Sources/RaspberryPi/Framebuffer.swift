@@ -64,8 +64,6 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     package let width: UInt32
     /// Actual physical height.
     package let height: UInt32
-    /// Number of bytes per line.
-    package let pitch: UInt32
     /// Pixel order.
     package let pixelOrder: PixelOrder
     /// Frame buffer base address.
@@ -92,7 +90,6 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
 
         self.width = unsafe mbox.10
         self.height = unsafe mbox.11
-        self.pitch = unsafe mbox.33
         // swift-format-ignore: NeverForceUnwrap
         self.pixelOrder = unsafe .init(rawValue: mbox.24)!
         // GPU address to ARM address
