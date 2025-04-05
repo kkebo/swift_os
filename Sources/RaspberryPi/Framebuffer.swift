@@ -66,7 +66,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     package let height: UInt32
     /// Pixel order.
     package let pixelOrder: PixelOrder
-    /// Frame buffer base address.
+    /// Framebuffer base address.
     private let baseAddress: UnsafeMutablePointer<Depth>
 
     package init(
