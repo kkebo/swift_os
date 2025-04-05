@@ -57,7 +57,7 @@ private func setFramebufferMbox(
     unsafe mbox.34 = MboxTag.end
 }
 
-@unsafe
+@safe
 package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Actual physical width.
     package let width: UInt32
@@ -68,7 +68,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Pixel order.
     package let pixelOrder: PixelOrder
     /// Frame buffer base address.
-    package let baseAddress: UnsafeMutablePointer<Depth>
+    private let baseAddress: UnsafeMutablePointer<Depth>
 
     package init(
         width: UInt32,
@@ -89,11 +89,11 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
             unsafe pixelCount == mbox.10 &* mbox.11
         else { fatalError() }
 
-        unsafe self.width = mbox.10
-        unsafe self.height = mbox.11
-        unsafe self.pitch = mbox.33
+        self.width = unsafe mbox.10
+        self.height = unsafe mbox.11
+        self.pitch = unsafe mbox.33
         // swift-format-ignore: NeverForceUnwrap
-        unsafe self.pixelOrder = .init(rawValue: mbox.24)!
+        self.pixelOrder = unsafe .init(rawValue: mbox.24)!
         // GPU address to ARM address
         let addr = unsafe UInt(mbox.28 & 0x3FFF_FFFF)
         // swift-format-ignore: NeverForceUnwrap
@@ -111,7 +111,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Depth) {
         for y in y0...y1 {
             for x in x0...x1 {
-                unsafe self.drawPoint(x: x, y: y, color: color)
+                self.drawPoint(x: x, y: y, color: color)
             }
         }
     }
@@ -121,7 +121,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         for i in 0..<fontHeight {
             for j in 0..<fontWidth {
                 if font[Int(c)][i] & 1 << j != 0 {
-                    unsafe self.drawPoint(x: x &+ j, y: y &+ i, color: color)
+                    self.drawPoint(x: x &+ j, y: y &+ i, color: color)
                 }
             }
         }
@@ -138,7 +138,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
                 x = 0
                 y &+= fontHeight
             case let c:
-                unsafe self.drawChar(c, x: x, y: y, color: color)
+                self.drawChar(c, x: x, y: y, color: color)
                 x &+= fontWidth
             }
         }
