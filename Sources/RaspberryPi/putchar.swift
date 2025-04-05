@@ -1,3 +1,4 @@
+/// Write a character to UART.
 @_cdecl("putchar")
 @discardableResult
 @inlinable
