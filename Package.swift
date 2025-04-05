@@ -5,6 +5,7 @@ import PackageDescription
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Embedded"),
     .enableExperimentalFeature("LifetimeDependence"),
+    .enableExperimentalFeature("InlineArrayTypeSugar"),
     .unsafeFlags(["-Xfrontend", "-no-allocations"]),
     .unsafeFlags(["-Xfrontend", "-function-sections"]),
     .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
