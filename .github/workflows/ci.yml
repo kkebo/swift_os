@@ -14,7 +14,6 @@ jobs:
       - run: swift --version
       - run: make OBJCOPY=llvm-objcopy-19
   lint:
-    if: false  # because swift-format doesn't support the `unsafe` expression yet
     runs-on: ubuntu-latest
     container: swiftlang/swift:nightly-main-noble
     steps:
