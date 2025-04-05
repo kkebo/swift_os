@@ -58,7 +58,7 @@ private func setFramebufferMbox(
 }
 
 @unsafe
-package struct Framebuffer: ~Copyable {
+package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
@@ -68,20 +68,25 @@ package struct Framebuffer: ~Copyable {
     /// Pixel order.
     package let pixelOrder: PixelOrder
     /// Frame buffer base address.
-    package let baseAddress: UnsafeMutablePointer<UInt32>
+    package let baseAddress: UnsafeMutablePointer<Depth>
 
     package init(
         width: UInt32,
         height: UInt32,
-        depth: UInt32,
         pixelOrder: PixelOrder,
     ) {
+        let depth = UInt32(MemoryLayout<Depth>.size &* 8)
         setFramebufferMbox(width: width, height: height, depth: depth, pixelOrder: pixelOrder)
 
+        // success?
+        guard mboxCall(ch: .property) else { fatalError() }
+
+        let pixelCount = unsafe Int(mbox.29) / MemoryLayout<Depth>.stride
+
         guard
-            mboxCall(ch: .property),  // success
             unsafe mbox.20 == depth,
-            unsafe mbox.28 != 0  // pointer is not null
+            unsafe mbox.28 != 0,  // pointer is not null
+            unsafe pixelCount == mbox.10 &* mbox.11
         else { fatalError() }
 
         unsafe self.width = mbox.10
@@ -93,17 +98,17 @@ package struct Framebuffer: ~Copyable {
         let addr = unsafe UInt(mbox.28 & 0x3FFF_FFFF)
         // swift-format-ignore: NeverForceUnwrap
         unsafe self.baseAddress = UnsafeMutableRawPointer(bitPattern: addr)!
-            .bindMemory(to: UInt32.self, capacity: Int(mbox.29))
+            .bindMemory(to: Depth.self, capacity: pixelCount)
 
         print("Framebufer is ready")
     }
 
     @inlinable
-    func drawPoint(x: Int, y: Int, color: UInt32) {
+    func drawPoint(x: Int, y: Int, color: Depth) {
         unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
     }
 
-    package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: UInt32) {
+    package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Depth) {
         for y in y0...y1 {
             for x in x0...x1 {
                 unsafe self.drawPoint(x: x, y: y, color: color)
@@ -111,7 +116,7 @@ package struct Framebuffer: ~Copyable {
         }
     }
 
-    package func drawChar(_ c: UInt8, x: Int, y: Int, color: UInt32) {
+    package func drawChar(_ c: UInt8, x: Int, y: Int, color: Depth) {
         guard c < font.count else { return }
         for i in 0..<fontHeight {
             for j in 0..<fontWidth {
@@ -122,7 +127,7 @@ package struct Framebuffer: ~Copyable {
         }
     }
 
-    package func drawString(_ s: StaticString, x: Int, y: Int, color: UInt32) {
+    package func drawString(_ s: StaticString, x: Int, y: Int, color: Depth) {
         let span = unsafe Span(_unsafeStart: s.utf8Start, count: s.utf8CodeUnitCount)
         var x = x
         var y = y
