@@ -14,13 +14,12 @@ jobs:
       - run: swift --version
       - run: make OBJCOPY=llvm-objcopy-19
   lint:
-    if: false  # because swift-format doesn't support the `unsafe` expression yet
     runs-on: ubuntu-latest
     container: swiftlang/swift:nightly-main-noble
     steps:
       - uses: actions/checkout@v4
       - run: swift --version
-      - run: swift format lint -rsp .
+      - run: swift format lint -rp .
   yamllint:
     runs-on: ubuntu-latest
     container: alpine:3.21
