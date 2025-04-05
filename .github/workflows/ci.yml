@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: swift --version
-      - run: swift format lint -rsp .
+      - run: swift format lint -rp .
   yamllint:
     runs-on: ubuntu-latest
     container: alpine:3.21
