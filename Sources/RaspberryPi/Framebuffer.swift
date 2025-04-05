@@ -104,7 +104,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     }
 
     @inlinable
-    func drawPoint(x: Int, y: Int, color: Depth) {
+    package func drawPoint(x: Int, y: Int, color: Depth) {
         unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
     }
 
