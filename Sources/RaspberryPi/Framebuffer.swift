@@ -68,6 +68,8 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     package let pixelOrder: PixelOrder
     /// Framebuffer base address.
     private let baseAddress: UnsafeMutablePointer<Depth>
+    /// The number of pixels of Framebuffer.
+    private let pixelCount: Int
 
     package init(
         width: UInt32,
@@ -97,13 +99,16 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         // swift-format-ignore: NeverForceUnwrap
         unsafe self.baseAddress = UnsafeMutableRawPointer(bitPattern: addr)!
             .bindMemory(to: Depth.self, capacity: pixelCount)
+        self.pixelCount = pixelCount
 
         print("Framebufer is ready")
     }
 
     @inlinable
     package func drawPoint(x: Int, y: Int, color: Depth) {
-        unsafe self.baseAddress[y &* Int(self.width) &+ x] = color
+        let i = y &* Int(self.width) &+ x
+        guard i < self.pixelCount else { fatalError() }
+        unsafe self.baseAddress[i] = color
     }
 
     package func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Depth) {
