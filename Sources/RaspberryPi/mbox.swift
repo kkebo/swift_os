@@ -13,7 +13,7 @@ let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
 
 @_alignment(16)
-struct Mbox {
+struct Mbox: ~Copyable {
     var `0`: UInt32 = 0
     var `1`: UInt32 = 0
     var `2`: UInt32 = 0
