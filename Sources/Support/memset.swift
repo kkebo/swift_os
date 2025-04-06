@@ -1,4 +1,3 @@
-// swift-format-ignore-file
 @_silgen_name("memset")
 func memset(
     _ dst: UnsafeMutableRawPointer,
