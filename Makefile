@@ -32,3 +32,11 @@ run: all
 clean:
 	$(RM) $(EXE) $(IMG) $(MAP)
 	$(SWIFT) package clean
+
+.PHONY: lint
+lint:
+	$(SWIFT) format lint --enable-experimental-feature InlineArrayTypeSugar -rp .
+
+.PHONY: fmt
+fmt:
+	$(SWIFT) format format --enable-experimental-feature InlineArrayTypeSugar -rip .
