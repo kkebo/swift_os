@@ -6,25 +6,23 @@ on:
     branches: ["main"]
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     container: swiftlang/swift:nightly-main-noble
     steps:
       - uses: actions/checkout@v4
-      - run: apt-get update && apt-get install --no-install-recommends -y make llvm-19
+      - run: apt-get update && apt-get install --no-install-recommends -y make
       - run: swift --version
-      - run: make OBJCOPY=llvm-objcopy-19
+      - run: make OBJCOPY=objcopy
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     container: swiftlang/swift:nightly-main-noble
     steps:
       - uses: actions/checkout@v4
       - run: swift --version
       - run: swift format lint --enable-experimental-feature InlineArrayTypeSugar -rp .
   yamllint:
-    runs-on: ubuntu-latest
-    container: alpine:3.21
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
-      - run: apk update && apk add yamllint
       - run: yamllint --version
       - run: yamllint --strict --config-file .yamllint.yml .
