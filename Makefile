@@ -35,8 +35,8 @@ clean:
 
 .PHONY: lint
 lint:
-	$(SWIFT) format lint --enable-experimental-feature InlineArrayTypeSugar -rp .
+	$(SWIFT) format lint -rp .
 
 .PHONY: fmt
 fmt:
-	$(SWIFT) format format --enable-experimental-feature InlineArrayTypeSugar -rip .
+	$(SWIFT) format format -rip .
