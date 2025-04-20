@@ -87,12 +87,14 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         // success?
         guard mboxCall(ch: .property) else { fatalError() }
 
-        let pixelCount = unsafe Int(mbox.29) / MemoryLayout<Depth>.stride
+        let pixelCount = unsafe Int(mbox.10 &* mbox.11)
+        let byteCount = unsafe mbox.29
+        let gpuAddr = unsafe mbox.28
 
         guard
             unsafe mbox.20 == depth,
-            unsafe mbox.28 != 0,  // pointer is not null
-            unsafe pixelCount == mbox.10 &* mbox.11
+            gpuAddr != 0,
+            byteCount >= pixelCount &* MemoryLayout<Depth>.size
         else { fatalError() }
 
         self.width = unsafe mbox.10
@@ -100,7 +102,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         // swift-format-ignore: NeverForceUnwrap
         self.pixelOrder = unsafe .init(rawValue: mbox.24)!
         // GPU address to ARM address
-        let addr = unsafe UInt(mbox.28 & 0x3FFF_FFFF)
+        let addr = UInt(gpuAddr & 0x3FFF_FFFF)
         // swift-format-ignore: NeverForceUnwrap
         unsafe self.baseAddress = UnsafeMutableRawPointer(bitPattern: addr)!
             .bindMemory(to: Depth.self, capacity: pixelCount)
