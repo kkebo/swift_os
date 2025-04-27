@@ -8,6 +8,7 @@ let swiftSettings: [SwiftSetting] = [
     .unsafeFlags(["-Xfrontend", "-no-allocations"]),
     .unsafeFlags(["-Xfrontend", "-function-sections"]),
     .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
+    .unsafeFlags(["-Xfrontend", "-mergeable-symbols"]),
     .unsafeFlags(["-strict-memory-safety"]),
 ]
 
