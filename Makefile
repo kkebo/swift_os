@@ -1,7 +1,7 @@
 LIB := .build/release/libKernel.a
-EXE := kernel.elf
-IMG := kernel8.img
-MAP := kernel.map
+EXE := .build/kernel.elf
+IMG := .build/kernel8.img
+MAP := .build/kernel.map
 LINKER_SCRIPT := linker.ld
 
 TRIPLE := aarch64-none-none-elf
@@ -31,7 +31,6 @@ run: $(IMG)
 
 .PHONY: clean
 clean:
-	$(RM) $(EXE) $(IMG) $(MAP)
 	$(SWIFT) package clean
 
 .PHONY: lint
