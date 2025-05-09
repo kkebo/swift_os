@@ -128,11 +128,10 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
 
     package mutating func drawChar(_ c: UInt8, x: Int, y: Int, color: Depth) {
         guard c < font.count else { return }
+        let glyph = font[Int(c)]
         for i in 0..<fontHeight {
-            for j in 0..<fontWidth {
-                if font[Int(c)][i] & 1 << j != 0 {
-                    self.drawPoint(x: x &+ j, y: y &+ i, color: color)
-                }
+            for j in 0..<fontWidth where glyph[i] & 1 << j != 0 {
+                self.drawPoint(x: x &+ j, y: y &+ i, color: color)
             }
         }
     }
