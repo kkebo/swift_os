@@ -1,6 +1,8 @@
+LIB := .build/release/libKernel.a
 EXE := kernel.elf
 IMG := kernel8.img
 MAP := kernel.map
+LINKER_SCRIPT := linker.ld
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
@@ -14,18 +16,17 @@ QEMU := qemu-system-aarch64
 .PHONY: all
 all: $(IMG)
 
-$(EXE): linker.ld swift
-	$(LD) $(LDFLAGS) -T linker.ld -Xlinker -Map=$(MAP) .build/release/libKernel.a -o $@
+$(EXE): Makefile $(LINKER_SCRIPT) $(LIB)
+	$(LD) $(LDFLAGS) -T $(LINKER_SCRIPT) -Xlinker -Map=$(MAP) $(LIB) -o $@
 
-$(IMG): $(EXE)
-	$(OBJCOPY) $< -O binary $@
+$(IMG): Makefile $(EXE)
+	$(OBJCOPY) $(EXE) -O binary $@
 
-.PHONY: swift
-swift:
+$(LIB): Makefile .swift-version Package.swift $(wildcard Package.resolved) Sources
 	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 
 .PHONY: run
-run: all
+run: $(IMG)
 	$(QEMU) -machine raspi4b -kernel $(IMG) -serial stdio
 
 .PHONY: clean
