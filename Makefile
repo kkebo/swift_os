@@ -7,7 +7,7 @@ LINKER_SCRIPT := linker.ld
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
 SWIFT_BUILD_FLAGS := --triple $(TRIPLE) -c release -Xswiftc -Osize \
-					 --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
+                     --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
 LD := clang -fuse-ld=lld
 LDFLAGS := --target=$(TRIPLE) -nostdlib -static -Wl,--gc-sections,--print-gc-sections,--strip-all
 OBJCOPY := llvm-objcopy
