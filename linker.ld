@@ -15,5 +15,8 @@ SECTIONS {
         *(.debug*)
         *(.eh_frame*)
     }
+    .symtab : { *(.symtab) }
+    .strtab : { *(.strtab) }
+    .shstrtab : { *(.shstrtab) }
 }
 __bss_size = (__bss_end - __bss_start) >> 3;

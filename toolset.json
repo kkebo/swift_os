@@ -18,6 +18,7 @@
             "--gc-sections",
             "--print-gc-sections",
             "--strip-all",
+            "--orphan-handling=error",
             "-T", "linker.ld",
             "-Map", ".build/kernel.map",
         ]
