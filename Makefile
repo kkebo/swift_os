@@ -1,7 +1,6 @@
 EXE := .build/release/Kernel
 IMG := .build/kernel8.img
 TOOLSET := toolset.json
-LINKER_SCRIPT := linker.ld
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
@@ -16,7 +15,10 @@ all: $(IMG)
 $(IMG): Makefile $(EXE)
 	$(OBJCOPY) $(EXE) -O binary $@
 
-$(EXE): Makefile .swift-version $(TOOLSET) $(LINKER_SCRIPT) Package.swift $(wildcard Package.resolved) Sources
+$(EXE): Makefile swift
+
+.PHONY: swift
+swift:
 	$(SWIFT) build $(SWIFT_BUILD_FLAGS)
 
 .PHONY: run
