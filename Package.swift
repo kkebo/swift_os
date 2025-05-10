@@ -3,19 +3,14 @@
 import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
-    .enableExperimentalFeature("Embedded"),
     .enableExperimentalFeature("LifetimeDependence"),
-    .unsafeFlags(["-Xfrontend", "-no-allocations"]),
-    .unsafeFlags(["-Xfrontend", "-function-sections"]),
-    .unsafeFlags(["-Xfrontend", "-disable-stack-protector"]),
-    .unsafeFlags(["-Xfrontend", "-mergeable-symbols"]),
     .unsafeFlags(["-strict-memory-safety"]),
 ]
 
 let package = Package(
     name: "swift_os",
     products: [
-        .library(name: "Kernel", type: .static, targets: ["Kernel"])
+        .executable(name: "Kernel", targets: ["Kernel"])
     ],
     traits: [
         .default(enabledTraits: ["RASPI4"]),
@@ -26,7 +21,7 @@ let package = Package(
         "RASPI",
     ],
     targets: [
-        .target(
+        .executableTarget(
             name: "Kernel",
             dependencies: [
                 "AsmSupport",
