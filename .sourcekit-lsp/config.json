@@ -1,0 +1,9 @@
+{
+    "swiftPM": {
+        "configuration": "release",
+        "triple": "aarch64-none-none-elf",
+        "swiftCompilerFlags": [
+            "-enable-experimental-feature", "Embedded",
+        ]
+    }
+}
