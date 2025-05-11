@@ -16,7 +16,6 @@
             "-nostdlib",
             "-static",
             "--gc-sections",
-            "--print-gc-sections",
             "--strip-all",
             "--orphan-handling=error",
             "-T", "linker.ld",

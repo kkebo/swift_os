@@ -4,8 +4,7 @@ TOOLSET := toolset.json
 
 TRIPLE := aarch64-none-none-elf
 SWIFT := swift
-SWIFT_BUILD_FLAGS := --triple $(TRIPLE) --toolset $(TOOLSET) -c release -Xswiftc -Osize \
-                     --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
+SWIFT_BUILD_FLAGS := --triple $(TRIPLE) --toolset $(TOOLSET) -c release -Xswiftc -Osize
 OBJCOPY := llvm-objcopy
 QEMU := qemu-system-aarch64
 
