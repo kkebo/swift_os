@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: swift --version
-      - run: swift format lint --enable-experimental-feature InlineArrayTypeSugar -rp .
+      - run: swift format lint -rp .
   yamllint:
     runs-on: ubuntu-24.04-arm
     steps:
