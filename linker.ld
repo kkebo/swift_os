@@ -14,6 +14,7 @@ SECTIONS {
         *(.comment)
         *(.debug*)
         *(.eh_frame*)
+        *(.swift_modhash*)
     }
     .symtab : { *(.symtab) }
     .strtab : { *(.strtab) }
