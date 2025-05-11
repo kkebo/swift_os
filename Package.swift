@@ -24,6 +24,7 @@ let package = Package(
         .executableTarget(
             name: "Kernel",
             dependencies: [
+                "Support",
                 "AsmSupport",
                 .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
@@ -37,6 +38,7 @@ let package = Package(
             ],
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
+        .target(name: "Support", swiftSettings: swiftSettings),
         .target(name: "AsmSupport"),
     ],
 )
