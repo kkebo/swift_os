@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: apt-get update && apt-get install --no-install-recommends -y make
       - run: swift --version
-      - run: make OBJCOPY=objcopy
+      - run: make
   lint:
     runs-on: ubuntu-24.04-arm
     container: swiftlang/swift:nightly-main-noble
