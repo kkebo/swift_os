@@ -8,7 +8,7 @@ func memmove(
     var dstSpan = unsafe MutableSpan(_unsafeStart: dst, count: n)
     let src = unsafe src.bindMemory(to: UInt8.self, capacity: n)
     let srcSpan = unsafe Span(_unsafeStart: src, count: n)
-    if UInt(bitPattern: dst) < UInt(bitPattern: src) {
+    if unsafe dst < src {
         for i in dstSpan.indices {
             dstSpan[i] = srcSpan[i]
         }
