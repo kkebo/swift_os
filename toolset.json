@@ -8,7 +8,7 @@
             "-Xfrontend", "-disable-stack-protector",
             "-Xfrontend", "-mergeable-symbols",
             "-Xclang-linker", "-nostdlib",
-            "-Xclang-linker", "-fuse-ld=lld",
+            "-Xclang-linker", "-fuse-ld=lld"
         ]
     },
     "linker": {
@@ -19,7 +19,7 @@
             "--strip-all",
             "--orphan-handling=error",
             "-T", "linker.ld",
-            "-Map", ".build/kernel.map",
+            "-Map", ".build/kernel.map"
         ]
     }
 }
