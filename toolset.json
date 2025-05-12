@@ -7,7 +7,6 @@
             "-Xfrontend", "-no-allocations",
             "-Xfrontend", "-function-sections",
             "-Xfrontend", "-disable-stack-protector",
-            "-Xfrontend", "-mergeable-symbols",
             "-Xclang-linker", "-nostdlib",
             "-Xclang-linker", "-fuse-ld=lld"
         ]
