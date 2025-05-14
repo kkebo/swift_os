@@ -81,5 +81,5 @@ swift format format -rip .
 Lint:
 
 ```shell
-swift format lint -rp .
+swift format lint -rsp .
 ```
