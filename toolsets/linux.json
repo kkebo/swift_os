@@ -1,0 +1,34 @@
+{
+    "schemaVersion": "1.0",
+    "swiftCompiler": {
+        "extraCLIOptions": [
+            "-Osize",
+            "-enable-experimental-feature", "Embedded",
+            "-Xfrontend", "-no-allocations",
+            "-Xfrontend", "-function-sections",
+            "-Xfrontend", "-disable-stack-protector",
+            "-Xfrontend", "-mergeable-symbols",
+            "-Xclang-linker", "-nostdlib",
+            "-Xclang-linker", "-fuse-ld=lld"
+        ]
+    },
+    "linker": {
+        "extraCLIOptions": [
+            "-nostdlib",
+            "-static",
+            "--gc-sections",
+            "--strip-all",
+            "--orphan-handling=error",
+            "-T", "linker.ld",
+            "-Map", ".build/kernel.map"
+        ]
+    },
+    "debugger": {
+        "path": "/usr/bin/qemu-system-aarch64",
+        "extraCLIOptions": [
+            "-machine", "raspi4b",
+            "-serial", "stdio",
+            "-kernel"
+        ]
+    }
+}

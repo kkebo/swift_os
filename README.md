@@ -4,12 +4,6 @@ An operating system written in Swift.
 
 ## Prerequisites
 
-- Make
-  - Arch Linux: `sudo pacman -S make`
-  - Fedora 40 or later: `sudo dnf install make`
-  - Ubuntu 24.04/22.04: `sudo apt install make`
-  - Debian 12: `sudo apt install make`
-  - macOS 14: bulit-in (`/usr/bin/make`)
 - QEMU 9.0 or later
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
   - Fedora 41 or later: `sudo dnf install qemu-system-aarch64-core`
@@ -24,20 +18,68 @@ An operating system written in Swift.
     swiftly install
     ```
 
-## Building
+## Building for emulators
+
+On Linux,
 
 ```shell
-make
+swift build -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json
+```
+
+On macOS,
+
+```shell
+swift build -c release --triple aarch64-none-none-elf --toolset toolsets/macos.json
+```
+
+## Running on QEMU
+
+On Linux,
+
+```shell
+swift run -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json
+```
+
+On macOS,
+
+```shell
+swift run -c release --triple aarch64-none-none-elf --toolset toolsets/macos.json
+```
+
+## Building for real hardwares
+
+On Linux,
+
+```shell
+swift build -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json
+llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
+```
+
+On macOS,
+
+```shell
+swift build -c release --triple aarch64-none-none-elf --toolset toolsets/macos.json
+llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 ```
 
 ## Cleaning build outputs
 
 ```shell
-make clean
+swift package clean
 ```
 
-## Running on QEMU
+## swift-format
+
+This project is using [swift-format](https://github.com/swiftlang/swift-format) for formatting and linting.
+
+Format:
 
 ```shell
-make run
+swift format format -rip .
+```
+
+Lint:
+
+```shell
+swift format lint -rp .
 ```
