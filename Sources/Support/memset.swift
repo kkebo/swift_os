@@ -1,4 +1,4 @@
-@_silgen_name("memset")
+@_cdecl("memset")
 func memset(
     _ dst: UnsafeMutableRawPointer,
     _ val: CInt,
