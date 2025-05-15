@@ -48,6 +48,8 @@ package func getchar() -> UInt8 {
 
 #if RASPI4 || RASPI3
     // set up clock to 3 MHz
+    // FIXME: Remove NoAssignmentInExpressions: https://github.com/swiftlang/swift-format/issues/977
+    // swift-format-ignore: NoAssignmentInExpressions
     @_optimize(none)
     private func setClockRateMbox() {
         unsafe mbox.0 = 9 * 4
