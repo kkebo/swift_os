@@ -24,8 +24,9 @@
         ]
     },
     "debugger": {
-        "path": "/opt/homebrew/bin/qemu-system-aarch64",
+        "path": "/usr/bin/env",
         "extraCLIOptions": [
+            "qemu-system-aarch64",
             "-machine", "raspi4b",
             "-serial", "stdio",
             "-kernel"
