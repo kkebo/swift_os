@@ -16,59 +16,34 @@ An operating system written in Swift.
 
 ## Building for emulators
 
-On Linux,
-
 ```shell
-swift build -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json
-```
-
-On macOS,
-
-```shell
-swift build -c release --triple aarch64-none-none-elf --toolset toolsets/macos.json
+swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
 ```
 
 > [!TIP]
 > If you want to reduce the binary size significantly, you can use a `-experimental-hermetic-seal-at-link` flag. However, when using it, swift_os may not work as expected.
 >
 > ```shell
-> swift build -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
+> swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
 > ```
 
 ## Running on QEMU
 
-On Linux,
-
 ```shell
-swift run -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json
-```
-
-On macOS,
-
-```shell
-swift run -c release --triple aarch64-none-none-elf --toolset toolsets/macos.json
+swift run -c release --triple aarch64-none-none-elf --toolset toolset.json
 ```
 
 > [!TIP]
 > If you want to reduce the binary size significantly, you can use a `-experimental-hermetic-seal-at-link` flag. However, when using it, swift_os may not work as expected.
 >
 > ```shell
-> swift run -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
+> swift run -c release --triple aarch64-none-none-elf --toolset toolset.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
 > ```
 
 ## Building for real hardwares
 
-On Linux,
-
 ```shell
-swift build -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json
-llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
-```
-
-On macOS,
-
-```shell
-swift build -c release --triple aarch64-none-none-elf --toolset toolsets/macos.json
+swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
 llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 ```
 
@@ -76,7 +51,7 @@ llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 > If you want to reduce the binary size significantly, you can use a `-experimental-hermetic-seal-at-link` flag. However, when using it, swift_os may not work as expected.
 >
 > ```shell
-> swift build -c release --triple aarch64-none-none-elf --toolset toolsets/linux.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
+> swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link
 > llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 > ```
 
