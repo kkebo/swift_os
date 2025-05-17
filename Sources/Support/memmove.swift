@@ -1,4 +1,4 @@
-@_silgen_name("memmove")
+@_cdecl("memmove")
 func memmove(
     _ dst: UnsafeMutableRawPointer,
     _ src: UnsafeRawPointer,
