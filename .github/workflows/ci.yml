@@ -7,7 +7,7 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-24.04-arm
-    container: swiftlang/swift:nightly-main-noble
+    container: swiftlang/swift:nightly-main-noble@sha256:e4f11eda505368dbdb7ef7db50fd6ef519a4e52b408d8728d383ef5a72dcd507  # main-snapshot-2025-05-12
     steps:
       - uses: actions/checkout@v4
       - run: swift --version
