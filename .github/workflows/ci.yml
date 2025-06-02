@@ -7,16 +7,34 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-24.04-arm
-    container: swiftlang/swift:nightly-main-noble
+    container: ubuntu:24.04
     steps:
       - uses: actions/checkout@v4
+      - run: apt-get update && apt-get install --no-install-recommends -y ca-certificates curl gpg
+      - name: Install Swift
+        run: |
+          curl -O "https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz"
+          tar zxf "swiftly-$(uname -m).tar.gz"
+          ./swiftly init -y --skip-install
+          . /root/.local/share/swiftly/env.sh
+          swiftly install
+        shell: bash
       - run: swift --version
       - run: swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
   lint:
     runs-on: ubuntu-24.04-arm
-    container: swiftlang/swift:nightly-main-noble
+    container: ubuntu:24.04
     steps:
       - uses: actions/checkout@v4
+      - run: apt-get update && apt-get install --no-install-recommends -y ca-certificates curl gpg
+      - name: Install Swift
+        run: |
+          curl -O "https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz"
+          tar zxf "swiftly-$(uname -m).tar.gz"
+          ./swiftly init -y --skip-install
+          . /root/.local/share/swiftly/env.sh
+          swiftly install
+        shell: bash
       - run: swift --version
       - run: swift format lint -rsp .
   yamllint:
