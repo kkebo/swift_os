@@ -25,3 +25,9 @@ jobs:
       - uses: actions/checkout@v4
       - run: yamllint --version
       - run: yamllint --strict --config-file .yamllint.yml .
+  shellcheck:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - run: shellcheck -V
+      - run: git ls-files -z '*.sh' | xargs -0 --no-run-if-empty shellcheck
