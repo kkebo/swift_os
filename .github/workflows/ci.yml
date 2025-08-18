@@ -8,26 +8,26 @@ jobs:
   build-linux:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: ./scripts/ci-install-swift.sh
       - run: swift --version
       - run: swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
   lint:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: ./scripts/ci-install-swift.sh
       - run: swift --version
       - run: swift format lint -rsp .
   yamllint:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: yamllint --version
       - run: yamllint --strict --config-file .yamllint.yml .
   shellcheck:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: shellcheck -V
       - run: git ls-files -z '*.sh' | xargs -0 --no-run-if-empty shellcheck
