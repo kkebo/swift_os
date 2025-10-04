@@ -78,12 +78,12 @@ enum MboxTag {
     static let setVirtualOffset: UInt32 = 0x0004_8009
 }
 
-@inline(__always)
+@inline(always)
 private func transmitMboxFull() -> Bool {
     mboxStatus.load() & mboxFull > 0
 }
 
-@inline(__always)
+@inline(always)
 private func receiveMboxEmpty() -> Bool {
     mboxStatus.load() & mboxEmpty > 0
 }

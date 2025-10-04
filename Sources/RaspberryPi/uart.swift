@@ -24,12 +24,12 @@ let uartCR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 
 let uartIMSC = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x38)
 let uartICR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x44)
 
-@inline(__always)
+@inline(always)
 private func transmitFIFOFull() -> Bool {
     uartFR.load() & 1 << 5 > 0
 }
 
-@inline(__always)
+@inline(always)
 private func receiveFIFOEmpty() -> Bool {
     uartFR.load() & 1 << 4 > 0
 }
