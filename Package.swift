@@ -7,6 +7,7 @@ let swiftSettings: [SwiftSetting] = [
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),
     .unsafeFlags(["-strict-memory-safety"]),
+    .treatWarning("StrictMemorySafety", as: .error),
 ]
 
 let package = Package(
