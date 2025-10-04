@@ -73,7 +73,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     private let pixelCount: Int
     /// Framebuffer.
     package var buffer: MutableSpan<Depth> {
-        @inlinable
+        @inline(always)
         mutating get { unsafe .init(_unsafeStart: self.baseAddress, count: self.pixelCount) }
     }
 
@@ -113,7 +113,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         print("Framebufer is ready")
     }
 
-    @inlinable
+    @inline(always)
     package mutating func drawPoint(x: Int, y: Int, color: Depth) {
         let width = Int(self.width)
         var buf = self.buffer
