@@ -4,6 +4,8 @@ import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("LifetimeDependence"),
+    .enableUpcomingFeature("InternalImportsByDefault"),
+    .enableUpcomingFeature("MemberImportVisibility"),
     .unsafeFlags(["-strict-memory-safety"]),
 ]
 
