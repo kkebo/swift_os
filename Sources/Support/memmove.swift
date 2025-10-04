@@ -1,4 +1,4 @@
-@_cdecl("memmove")
+@c
 func memmove(
     _ dst: UnsafeMutableRawPointer,
     _ src: UnsafeRawPointer,

@@ -4,6 +4,7 @@ import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("LifetimeDependence"),
+    .enableExperimentalFeature("CDecl"),
     .enableExperimentalFeature("InlineAlways"),
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),

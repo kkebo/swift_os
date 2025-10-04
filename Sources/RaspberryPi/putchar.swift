@@ -1,5 +1,5 @@
 /// Write a character to UART.
-@_cdecl("putchar")
+@c
 @discardableResult
 @inlinable
 public func putchar(_ c: CInt) -> CInt {

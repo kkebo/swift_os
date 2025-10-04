@@ -1,4 +1,4 @@
-@_cdecl("memcpy")
+@c
 func memcpy(
     _ dst: UnsafeMutableRawPointer,
     _ src: UnsafeRawPointer,

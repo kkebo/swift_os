@@ -1,4 +1,4 @@
-@_cdecl("memset")
+@c
 func memset(
     _ dst: UnsafeMutableRawPointer,
     _ val: CInt,
