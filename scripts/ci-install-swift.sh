@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 sudo apt-get update && sudo apt-get install --no-install-recommends -y libcurl4-openssl-dev
 
 curl -O "https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz"
