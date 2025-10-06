@@ -9,7 +9,13 @@ let swiftSettings: [SwiftSetting] = [
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),
     .unsafeFlags(["-strict-memory-safety"]),
-    .treatWarning("StrictMemorySafety", as: .error),
+    .treatAllWarnings(as: .error),
+]
+
+let cSettings: [CSetting] = [
+    .enableWarning("all"),
+    .enableWarning("extra"),
+    .treatAllWarnings(as: .error),
 ]
 
 let package = Package(
@@ -44,6 +50,6 @@ let package = Package(
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
         .target(name: "Support", swiftSettings: swiftSettings),
-        .target(name: "AsmSupport"),
+        .target(name: "AsmSupport", cSettings: cSettings),
     ],
 )
