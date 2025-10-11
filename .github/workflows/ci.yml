@@ -25,7 +25,7 @@ jobs:
           restore-keys: ${{ runner.os }}-swiftpm-
       - run: ./scripts/ci-install-swift.sh
       - run: swift --version
-      - run: swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
+      - run: swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --build-system swiftbuild
   build-macos:
     runs-on: macos-26
     permissions:
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
       - run: ./scripts/ci-install-swift.sh
       - run: swift --version
-      - run: swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
+      - run: swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --build-system swiftbuild
   lint:
     runs-on: ubuntu-24.04-arm
     permissions:
