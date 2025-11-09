@@ -101,6 +101,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     }
 
     @inline(always)
+    @export(implementation)
     package mutating func drawPoint(x: Int, y: Int, color: Depth) {
         let width = Int(self.width)
         var buf = self.buffer
