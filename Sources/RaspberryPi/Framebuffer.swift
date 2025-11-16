@@ -5,57 +5,6 @@ package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
     case rgb
 }
 
-private func setFramebufferMbox(
-    width: UInt32,
-    height: UInt32,
-    depth: UInt32,
-    pixelOrder: PixelOrder,
-) {
-    unsafe mbox[0] = 35 * 4
-    unsafe mbox[1] = 0  // request
-
-    unsafe mbox[2] = MboxTag.setPhysicalWH
-    unsafe mbox[3] = 8  // TODO: Understand what this is.
-    unsafe mbox[4] = 0  // TODO: Understand what this is.
-    unsafe mbox[5] = width
-    unsafe mbox[6] = height
-
-    unsafe mbox[7] = MboxTag.setVirtualWH
-    unsafe mbox[8] = 8  // TODO: Understand what this is.
-    unsafe mbox[9] = 8  // TODO: Understand what this is.
-    unsafe mbox[10] = width
-    unsafe mbox[11] = height
-
-    unsafe mbox[12] = MboxTag.setVirtualOffset
-    unsafe mbox[13] = 8  // TODO: Understand what this is.
-    unsafe mbox[14] = 8  // TODO: Understand what this is.
-    unsafe mbox[15] = 0
-    unsafe mbox[16] = 0
-
-    unsafe mbox[17] = MboxTag.setDepth
-    unsafe mbox[18] = 4  // TODO: Understand what this is.
-    unsafe mbox[19] = 4  // TODO: Understand what this is.
-    unsafe mbox[20] = depth
-
-    unsafe mbox[21] = MboxTag.setPixelOrder
-    unsafe mbox[22] = 4  // TODO: Understand what this is.
-    unsafe mbox[23] = 4  // TODO: Understand what this is.
-    unsafe mbox[24] = pixelOrder.rawValue
-
-    unsafe mbox[25] = MboxTag.allocateBuffer
-    unsafe mbox[26] = 8  // TODO: Understand what this is.
-    unsafe mbox[27] = 8  // TODO: Understand what this is.
-    unsafe mbox[28] = 4096  // FrameBufferInfo.pointer
-    unsafe mbox[29] = 0  //FrameBufferInfo.size
-
-    unsafe mbox[30] = MboxTag.getPitch
-    unsafe mbox[31] = 4  // TODO: Understand what this is.
-    unsafe mbox[32] = 4  // TODO: Understand what this is.
-    unsafe mbox[33] = 0
-
-    unsafe mbox[34] = MboxTag.end
-}
-
 @safe
 package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Actual physical width.
@@ -80,7 +29,49 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         pixelOrder: PixelOrder,
     ) {
         let depth = UInt32(MemoryLayout<Depth>.size &* 8)
-        setFramebufferMbox(width: width, height: height, depth: depth, pixelOrder: pixelOrder)
+        unsafe mbox[0] = 35 * 4
+        unsafe mbox[1] = 0  // request
+
+        unsafe mbox[2] = MboxTag.setPhysicalWH
+        unsafe mbox[3] = 8  // TODO: Understand what this is.
+        unsafe mbox[4] = 0  // TODO: Understand what this is.
+        unsafe mbox[5] = width
+        unsafe mbox[6] = height
+
+        unsafe mbox[7] = MboxTag.setVirtualWH
+        unsafe mbox[8] = 8  // TODO: Understand what this is.
+        unsafe mbox[9] = 8  // TODO: Understand what this is.
+        unsafe mbox[10] = width
+        unsafe mbox[11] = height
+
+        unsafe mbox[12] = MboxTag.setVirtualOffset
+        unsafe mbox[13] = 8  // TODO: Understand what this is.
+        unsafe mbox[14] = 8  // TODO: Understand what this is.
+        unsafe mbox[15] = 0
+        unsafe mbox[16] = 0
+
+        unsafe mbox[17] = MboxTag.setDepth
+        unsafe mbox[18] = 4  // TODO: Understand what this is.
+        unsafe mbox[19] = 4  // TODO: Understand what this is.
+        unsafe mbox[20] = depth
+
+        unsafe mbox[21] = MboxTag.setPixelOrder
+        unsafe mbox[22] = 4  // TODO: Understand what this is.
+        unsafe mbox[23] = 4  // TODO: Understand what this is.
+        unsafe mbox[24] = pixelOrder.rawValue
+
+        unsafe mbox[25] = MboxTag.allocateBuffer
+        unsafe mbox[26] = 8  // TODO: Understand what this is.
+        unsafe mbox[27] = 8  // TODO: Understand what this is.
+        unsafe mbox[28] = 4096  // FrameBufferInfo.pointer
+        unsafe mbox[29] = 0  //FrameBufferInfo.size
+
+        unsafe mbox[30] = MboxTag.getPitch
+        unsafe mbox[31] = 4  // TODO: Understand what this is.
+        unsafe mbox[32] = 4  // TODO: Understand what this is.
+        unsafe mbox[33] = 0
+
+        unsafe mbox[34] = MboxTag.end
 
         // success?
         guard mboxCall(ch: .property) else { fatalError() }

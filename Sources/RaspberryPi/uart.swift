@@ -46,9 +46,12 @@ package func getchar() -> UInt8 {
     return UInt8(uartDR.load())
 }
 
-#if RASPI4 || RASPI3
-    // set up clock to 3 MHz
-    private func setClockRateMbox() {
+package func initUART() {
+    // disable UART0
+    uartCR.store(0)
+
+    #if RASPI4 || RASPI3
+        // set up clock to 3 MHz
         unsafe mbox[0] = 9 * 4
         unsafe mbox[1] = 0  // request
         unsafe mbox[2] = MboxTag.setClockRate
@@ -58,15 +61,6 @@ package func getchar() -> UInt8 {
         unsafe mbox[6] = 3_000_000  // 3 Mhz
         unsafe mbox[7] = 0  // clear turbo
         unsafe mbox[8] = MboxTag.end
-    }
-#endif
-
-package func initUART() {
-    // disable UART0
-    uartCR.store(0)
-
-    #if RASPI4 || RASPI3
-        setClockRateMbox()
         guard mboxCall(ch: .property) else { fatalError() }
     #endif
 
