@@ -50,15 +50,15 @@ package func getchar() -> UInt8 {
     // set up clock to 3 MHz
     @_optimize(none)
     private func setClockRateMbox() {
-        unsafe mbox.0 = 9 * 4
-        unsafe mbox.1 = 0  // request
-        unsafe mbox.2 = MboxTag.setClockRate
-        unsafe mbox.3 = 12  // TODO: Understand what this is.
-        unsafe mbox.4 = 8  // TODO: Understand what this is.
-        unsafe mbox.5 = 2  // UART clock
-        unsafe mbox.6 = 3_000_000  // 3 Mhz
-        unsafe mbox.7 = 0  // clear turbo
-        unsafe mbox.8 = MboxTag.end
+        unsafe mbox[0] = 9 * 4
+        unsafe mbox[1] = 0  // request
+        unsafe mbox[2] = MboxTag.setClockRate
+        unsafe mbox[3] = 12  // TODO: Understand what this is.
+        unsafe mbox[4] = 8  // TODO: Understand what this is.
+        unsafe mbox[5] = 2  // UART clock
+        unsafe mbox[6] = 3_000_000  // 3 Mhz
+        unsafe mbox[7] = 0  // clear turbo
+        unsafe mbox[8] = MboxTag.end
     }
 #endif
 

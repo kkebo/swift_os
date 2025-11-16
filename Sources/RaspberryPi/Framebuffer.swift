@@ -12,49 +12,49 @@ private func setFramebufferMbox(
     depth: UInt32,
     pixelOrder: PixelOrder,
 ) {
-    unsafe mbox.0 = 35 * 4
-    unsafe mbox.1 = 0  // request
+    unsafe mbox[0] = 35 * 4
+    unsafe mbox[1] = 0  // request
 
-    unsafe mbox.2 = MboxTag.setPhysicalWH
-    unsafe mbox.3 = 8  // TODO: Understand what this is.
-    unsafe mbox.4 = 0  // TODO: Understand what this is.
-    unsafe mbox.5 = width
-    unsafe mbox.6 = height
+    unsafe mbox[2] = MboxTag.setPhysicalWH
+    unsafe mbox[3] = 8  // TODO: Understand what this is.
+    unsafe mbox[4] = 0  // TODO: Understand what this is.
+    unsafe mbox[5] = width
+    unsafe mbox[6] = height
 
-    unsafe mbox.7 = MboxTag.setVirtualWH
-    unsafe mbox.8 = 8  // TODO: Understand what this is.
-    unsafe mbox.9 = 8  // TODO: Understand what this is.
-    unsafe mbox.10 = width
-    unsafe mbox.11 = height
+    unsafe mbox[7] = MboxTag.setVirtualWH
+    unsafe mbox[8] = 8  // TODO: Understand what this is.
+    unsafe mbox[9] = 8  // TODO: Understand what this is.
+    unsafe mbox[10] = width
+    unsafe mbox[11] = height
 
-    unsafe mbox.12 = MboxTag.setVirtualOffset
-    unsafe mbox.13 = 8  // TODO: Understand what this is.
-    unsafe mbox.14 = 8  // TODO: Understand what this is.
-    unsafe mbox.15 = 0
-    unsafe mbox.16 = 0
+    unsafe mbox[12] = MboxTag.setVirtualOffset
+    unsafe mbox[13] = 8  // TODO: Understand what this is.
+    unsafe mbox[14] = 8  // TODO: Understand what this is.
+    unsafe mbox[15] = 0
+    unsafe mbox[16] = 0
 
-    unsafe mbox.17 = MboxTag.setDepth
-    unsafe mbox.18 = 4  // TODO: Understand what this is.
-    unsafe mbox.19 = 4  // TODO: Understand what this is.
-    unsafe mbox.20 = depth
+    unsafe mbox[17] = MboxTag.setDepth
+    unsafe mbox[18] = 4  // TODO: Understand what this is.
+    unsafe mbox[19] = 4  // TODO: Understand what this is.
+    unsafe mbox[20] = depth
 
-    unsafe mbox.21 = MboxTag.setPixelOrder
-    unsafe mbox.22 = 4  // TODO: Understand what this is.
-    unsafe mbox.23 = 4  // TODO: Understand what this is.
-    unsafe mbox.24 = pixelOrder.rawValue
+    unsafe mbox[21] = MboxTag.setPixelOrder
+    unsafe mbox[22] = 4  // TODO: Understand what this is.
+    unsafe mbox[23] = 4  // TODO: Understand what this is.
+    unsafe mbox[24] = pixelOrder.rawValue
 
-    unsafe mbox.25 = MboxTag.allocateBuffer
-    unsafe mbox.26 = 8  // TODO: Understand what this is.
-    unsafe mbox.27 = 8  // TODO: Understand what this is.
-    unsafe mbox.28 = 4096  // FrameBufferInfo.pointer
-    unsafe mbox.29 = 0  //FrameBufferInfo.size
+    unsafe mbox[25] = MboxTag.allocateBuffer
+    unsafe mbox[26] = 8  // TODO: Understand what this is.
+    unsafe mbox[27] = 8  // TODO: Understand what this is.
+    unsafe mbox[28] = 4096  // FrameBufferInfo.pointer
+    unsafe mbox[29] = 0  //FrameBufferInfo.size
 
-    unsafe mbox.30 = MboxTag.getPitch
-    unsafe mbox.31 = 4  // TODO: Understand what this is.
-    unsafe mbox.32 = 4  // TODO: Understand what this is.
-    unsafe mbox.33 = 0
+    unsafe mbox[30] = MboxTag.getPitch
+    unsafe mbox[31] = 4  // TODO: Understand what this is.
+    unsafe mbox[32] = 4  // TODO: Understand what this is.
+    unsafe mbox[33] = 0
 
-    unsafe mbox.34 = MboxTag.end
+    unsafe mbox[34] = MboxTag.end
 }
 
 @safe
@@ -86,20 +86,20 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         // success?
         guard mboxCall(ch: .property) else { fatalError() }
 
-        let pixelCount = unsafe Int(mbox.10 &* mbox.11)
-        let byteCount = unsafe mbox.29
-        let gpuAddr = unsafe mbox.28
+        let pixelCount = unsafe Int(mbox[10] &* mbox[11])
+        let byteCount = unsafe mbox[29]
+        let gpuAddr = unsafe mbox[28]
 
         guard
-            unsafe mbox.20 == depth,
+            unsafe mbox[20] == depth,
             gpuAddr != 0,
             byteCount >= pixelCount &* MemoryLayout<Depth>.size
         else { fatalError() }
 
-        self.width = unsafe mbox.10
-        self.height = unsafe mbox.11
+        self.width = unsafe mbox[10]
+        self.height = unsafe mbox[11]
         // swift-format-ignore: NeverForceUnwrap
-        self.pixelOrder = unsafe .init(rawValue: mbox.24)!
+        self.pixelOrder = unsafe .init(rawValue: mbox[24])!
         // GPU address to ARM address
         let addr = UInt(gpuAddr & 0x3FFF_FFFF)
         // swift-format-ignore: NeverForceUnwrap
