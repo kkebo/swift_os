@@ -5,7 +5,6 @@ package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
     case rgb
 }
 
-@_optimize(none)
 private func setFramebufferMbox(
     width: UInt32,
     height: UInt32,

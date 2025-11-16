@@ -48,7 +48,6 @@ package func getchar() -> UInt8 {
 
 #if RASPI4 || RASPI3
     // set up clock to 3 MHz
-    @_optimize(none)
     private func setClockRateMbox() {
         unsafe mbox[0] = 9 * 4
         unsafe mbox[1] = 0  // request
