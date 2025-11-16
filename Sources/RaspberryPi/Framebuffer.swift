@@ -5,8 +5,6 @@ package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
     case rgb
 }
 
-// FIXME: Remove NoAssignmentInExpressions: https://github.com/swiftlang/swift-format/issues/977
-// swift-format-ignore: NoAssignmentInExpressions
 @_optimize(none)
 private func setFramebufferMbox(
     width: UInt32,
@@ -104,8 +102,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         self.pixelOrder = unsafe .init(rawValue: mbox.24)!
         // GPU address to ARM address
         let addr = UInt(gpuAddr & 0x3FFF_FFFF)
-        // FIXME: Remove NoAssignmentInExpressions: https://github.com/swiftlang/swift-format/issues/977
-        // swift-format-ignore: NeverForceUnwrap, NoAssignmentInExpressions
+        // swift-format-ignore: NeverForceUnwrap
         unsafe self.baseAddress = UnsafeMutableRawPointer(bitPattern: addr)!
             .bindMemory(to: Depth.self, capacity: pixelCount)
         self.pixelCount = pixelCount
