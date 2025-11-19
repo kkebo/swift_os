@@ -3,5 +3,6 @@
         "configuration": "release",
         "triple": "aarch64-none-none-elf",
         "toolsets": ["toolset.json"]
-    }
+    },
+    "backgroundIndexing": false
 }
