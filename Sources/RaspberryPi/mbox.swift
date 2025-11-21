@@ -45,6 +45,7 @@ enum MboxChannel: UInt8 {
 
 enum MboxTag {
     static let end: UInt32 = 0
+    static let getARMMemory: UInt32 = 0x0001_0005
     static let setClockRate: UInt32 = 0x0003_8002
     static let allocateBuffer: UInt32 = 0x0004_0001
     static let setPhysicalWH: UInt32 = 0x0004_8003
