@@ -38,9 +38,8 @@ enum MboxChannel: UInt8 {
     case leds
     case buttons
     case touchScreen
-    case count  // TODO: Understand what this is.
-    case property  // ARM -> VC
-    // case property  // VC -> ARM
+    case propertyARM2VC = 8
+    case propertyVC2ARM
 }
 
 enum MboxTag {
