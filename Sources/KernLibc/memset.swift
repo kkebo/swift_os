@@ -1,5 +1,7 @@
+/// <https://pubs.opengroup.org/onlinepubs/9799919799/functions/memset.html>.
 @c
-func memset(
+@export(interface)
+public func memset(
     _ dst: UnsafeMutableRawPointer,
     _ val: CInt,
     _ len: Int,

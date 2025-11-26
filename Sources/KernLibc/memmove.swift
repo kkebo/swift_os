@@ -1,5 +1,7 @@
+/// <https://pubs.opengroup.org/onlinepubs/9799919799/functions/memmove.html>.
 @c
-func memcpy(
+@export(interface)
+public func memmove(
     _ dst: UnsafeMutableRawPointer,
     _ src: UnsafeRawPointer,
     _ n: Int,
@@ -8,8 +10,14 @@ func memcpy(
     var dstSpan = unsafe MutableSpan(_unsafeStart: dst, count: n)
     let src = unsafe src.bindMemory(to: UInt8.self, capacity: n)
     let srcSpan = unsafe Span(_unsafeStart: src, count: n)
-    for i in dstSpan.indices {
-        dstSpan[i] = srcSpan[i]
+    if unsafe dst < src {
+        for i in dstSpan.indices {
+            dstSpan[i] = srcSpan[i]
+        }
+    } else {
+        for i in dstSpan.indices.reversed() {
+            dstSpan[i] = srcSpan[i]
+        }
     }
     return .init(dst)
 }

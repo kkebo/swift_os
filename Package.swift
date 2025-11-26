@@ -19,7 +19,9 @@ let cSettings: [CSetting] = [
 let package = Package(
     name: "swift_os",
     products: [
-        .executable(name: "Kernel", targets: ["Kernel"])
+        .executable(name: "Kernel", targets: ["Kernel"]),
+        .library(name: "KernLibc", targets: ["KernLibc"]),
+        .library(name: "AppLibc", targets: ["AppLibc"]),
     ],
     traits: [
         .default(enabledTraits: ["RASPI4"]),
@@ -33,9 +35,16 @@ let package = Package(
         .executableTarget(
             name: "Kernel",
             dependencies: [
-                "Support",
+                "KernLibc",
                 "AsmSupport",
                 .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
+            ],
+            swiftSettings: swiftSettings,
+        ),
+        .target(
+            name: "KernLibc",
+            dependencies: [
+                .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"]))
             ],
             swiftSettings: swiftSettings,
         ),
@@ -47,7 +56,7 @@ let package = Package(
             ],
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
-        .target(name: "Support", swiftSettings: swiftSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
+        .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
 )

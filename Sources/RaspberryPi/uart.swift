@@ -34,13 +34,14 @@ private func receiveFIFOEmpty() -> Bool {
     uartFR.load() & 1 << 4 > 0
 }
 
+/// Write a character to UART.
 @usableFromInline
 package func putchar(_ c: UInt8) {
     while transmitFIFOFull() {}
     uartDR.store(UInt32(c))
 }
 
-@usableFromInline
+/// Read a character from UART.
 package func getchar() -> UInt8 {
     while receiveFIFOEmpty() {}
     return UInt8(uartDR.load())
