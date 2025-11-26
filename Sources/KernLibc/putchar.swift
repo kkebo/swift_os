@@ -6,7 +6,7 @@
 @c
 @discardableResult
 @inline(always)
-@export(interface)
+@inlinable  // @export(implementation, interface)
 public func putchar(_ c: CInt) -> CInt {
     #if RASPI
         putchar(UInt8(c))
