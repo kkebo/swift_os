@@ -1,7 +1,7 @@
-import AsmSupport
+private import AsmSupport
 
 #if RASPI
-    import RaspberryPi
+    private import RaspberryPi
 #endif
 
 @main

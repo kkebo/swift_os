@@ -1,4 +1,4 @@
-import AsmSupport
+private import AsmSupport
 import _Volatile
 
 #if RASPI4

@@ -1,4 +1,4 @@
-import Font
+private import Font
 
 package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
     case bgr = 0
