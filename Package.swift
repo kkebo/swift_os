@@ -29,28 +29,31 @@ let package = Package(
         .trait(name: "RASPI3", enabledTraits: ["RASPI"]),
         .trait(name: "RASPI2", enabledTraits: ["RASPI"]),
         .trait(name: "RASPI1", enabledTraits: ["RASPI"]),
-        "RASPI",
+        .trait(name: "RASPI"),
     ],
     targets: [
         .executableTarget(
             name: "Kernel",
             dependencies: [
-                "KernLibc",
-                "AsmSupport",
-                .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
+                .target(name: "KernLibc"),
+                .target(name: "AsmSupport"),
+                .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
         ),
         .target(
             name: "KernLibc",
             dependencies: [
-                .byName(name: "RaspberryPi", condition: .when(traits: ["RASPI"]))
+                .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"]))
             ],
             swiftSettings: swiftSettings,
         ),
         .target(
             name: "RaspberryPi",
-            dependencies: ["Font", "AsmSupport"],
+            dependencies: [
+                .target(name: "Font"),
+                .target(name: "AsmSupport"),
+            ],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
             ],
