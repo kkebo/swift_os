@@ -6,7 +6,7 @@ package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
 }
 
 @safe
-package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
+package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable, ~Escapable {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
@@ -23,9 +23,11 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     @inline(always)
     @export(implementation)
     package var buffer: MutableSpan<Depth> {
+        @_lifetime(&self)
         mutating get { unsafe .init(_unsafeStart: self.baseAddress, count: self.pixelCount) }
     }
 
+    @_lifetime(immortal)
     package init(
         width: UInt32,
         height: UInt32,
@@ -77,7 +79,7 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         unsafe mbox[34] = MboxTag.end
 
         // success?
-        guard mboxCall(ch: .propertyARM2VC) else { fatalError() }
+        guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
 
         let pixelCount = unsafe Int(mbox[10] &* mbox[11])
         let byteCount = unsafe mbox[29]
