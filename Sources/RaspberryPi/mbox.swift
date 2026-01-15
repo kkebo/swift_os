@@ -15,6 +15,7 @@ let mboxEmpty: UInt32 = 0x4000_0000
 struct Mbox: ~Copyable {
     private var storage: [36 of UInt32] = .init(repeating: 0)
 
+    @inline(always)
     private mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
         unsafe withUnsafePointer(to: &self.storage[i]) { ptr in
             unsafe VolatileMappedRegister(unsafeBitPattern: UInt(bitPattern: ptr))
@@ -22,6 +23,7 @@ struct Mbox: ~Copyable {
     }
 
     @inline(always)
+    @export(implementation)
     subscript(_ i: Int) -> UInt32 {
         mutating get { self.volatilePointer(at: i).load() }
         set { self.volatilePointer(at: i).store(newValue) }
