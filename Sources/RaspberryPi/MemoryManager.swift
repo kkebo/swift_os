@@ -1,7 +1,8 @@
-package struct MemoryManager {
+package struct MemoryManager: ~Copyable, ~Escapable {
     /// Total physical memory size in bytes.
     package let total: UInt
 
+    @_lifetime(immortal)
     package init() {
         unsafe mbox[0] = 8 * 4
         unsafe mbox[1] = 0  // request
@@ -14,7 +15,7 @@ package struct MemoryManager {
 
         unsafe mbox[7] = MboxTag.end
 
-        guard mboxCall(ch: .propertyARM2VC) else { fatalError() }
+        guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
 
         self.total = UInt(unsafe mbox[6])
     }

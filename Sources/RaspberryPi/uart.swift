@@ -62,7 +62,7 @@ package func initUART() {
         unsafe mbox[6] = 3_000_000  // 3 Mhz
         unsafe mbox[7] = 0  // clear turbo
         unsafe mbox[8] = MboxTag.end
-        guard mboxCall(ch: .propertyARM2VC) else { fatalError() }
+        guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
     #endif
 
     // map UART0 to GPIO pins

@@ -12,13 +12,18 @@ let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
 
 @_alignment(16)
-struct Mbox: ~Copyable {
+struct Mbox: ~Copyable, ~Escapable {
     private var storage: [36 of UInt32] = .init(repeating: 0)
+
+    @_lifetime(immortal)
+    init() {}
 
     @inline(always)
     private mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
-        unsafe withUnsafePointer(to: &self.storage[i]) { ptr in
-            unsafe VolatileMappedRegister(unsafeBitPattern: UInt(bitPattern: ptr))
+        var span = self.storage.mutableSpan
+        return unsafe span.withUnsafeMutableBufferPointer { ptr in
+            // swift-format-ignore: NeverForceUnwrap
+            unsafe VolatileMappedRegister(unsafeBitPattern: UInt(bitPattern: ptr.baseAddress!.advanced(by: i)))
         }
     }
 
@@ -27,6 +32,22 @@ struct Mbox: ~Copyable {
     subscript(_ i: Int) -> UInt32 {
         mutating get { self.volatilePointer(at: i).load() }
         set { self.volatilePointer(at: i).store(newValue) }
+    }
+
+    mutating func call(ch: MboxChannel) -> Bool {
+        var span = self.storage.mutableSpan
+        let addr = unsafe span.withUnsafeMutableBytes { ptr in
+            UInt32(UInt(bitPattern: ptr.baseAddress))
+        }
+        let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
+        while transmitMboxFull() {}
+        mboxWrite.store(r)
+        repeat {
+            while receiveMboxEmpty() {}
+            if mboxRead.load() == r {
+                return unsafe mbox[1] == mboxResponse
+            }
+        } while true
     }
 }
 
@@ -65,19 +86,4 @@ private func transmitMboxFull() -> Bool {
 @inline(always)
 private func receiveMboxEmpty() -> Bool {
     mboxStatus.load() & mboxEmpty > 0
-}
-
-func mboxCall(ch: MboxChannel) -> Bool {
-    unsafe withUnsafePointer(to: &mbox) { ptr in
-        let addr = UInt32(UInt(bitPattern: ptr))
-        let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
-        while transmitMboxFull() {}
-        mboxWrite.store(r)
-        repeat {
-            while receiveMboxEmpty() {}
-            if mboxRead.load() == r {
-                return unsafe mbox[1] == mboxResponse
-            }
-        } while true
-    }
 }
