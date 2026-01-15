@@ -18,8 +18,9 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// The number of pixels of Framebuffer.
     private let pixelCount: Int
     /// Framebuffer.
+    @inline(always)
+    @export(implementation)
     package var buffer: MutableSpan<Depth> {
-        @inline(always)
         mutating get { unsafe .init(_unsafeStart: self.baseAddress, count: self.pixelCount) }
     }
 
