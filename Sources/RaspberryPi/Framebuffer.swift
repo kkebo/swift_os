@@ -14,9 +14,11 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Pixel order.
     package let pixelOrder: PixelOrder
     /// Framebuffer base address.
-    private let baseAddress: UnsafeMutablePointer<Depth>
+    @usableFromInline
+    let baseAddress: UnsafeMutablePointer<Depth>
     /// The number of pixels of Framebuffer.
-    private let pixelCount: Int
+    @usableFromInline
+    let pixelCount: Int
     /// Framebuffer.
     @inline(always)
     @export(implementation)
