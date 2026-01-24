@@ -60,3 +60,10 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
       - run: shellcheck -V
       - run: git ls-files -z '*.sh' | xargs -0 --no-run-if-empty shellcheck -x
+  results:
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04-arm
+    needs: [build-linux, build-macos, lint, yamllint, shellcheck]
+    steps:
+      - run: exit 1
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
