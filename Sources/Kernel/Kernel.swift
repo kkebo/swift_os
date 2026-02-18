@@ -12,6 +12,9 @@ struct Kernel {
 
             print("Hello Swift!")
 
+            print("Exception Level:", terminator: " ")
+            print(get_el())
+
             let memoryManager = MemoryManager()
             print("RAM:", terminator: " ")
             print(memoryManager.total / 1024 / 1024, terminator: " ")
