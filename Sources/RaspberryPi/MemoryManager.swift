@@ -1,4 +1,8 @@
+import AsmSupport
+
 package struct MemoryManager: ~Copyable, ~Escapable {
+    /// The base address in bytes.
+    package let baseAddress: UInt
     /// Total physical memory size in bytes.
     package let total: UInt
 
@@ -17,6 +21,13 @@ package struct MemoryManager: ~Copyable, ~Escapable {
 
         guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
 
-        self.total = UInt(unsafe mbox[6])
+        let base = UInt(unsafe mbox[5])
+        let size = UInt(unsafe mbox[6])
+
+        precondition(get_kernel_start() >= base)
+        precondition(get_kernel_end() < base + size)
+
+        self.baseAddress = base
+        self.total = size
     }
 }
