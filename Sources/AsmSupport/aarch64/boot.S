@@ -61,9 +61,8 @@ from_el3:
     eret
 
 el1_entry:
-    // set top of stack just before our code
-    ldr x1, =_start
-    mov sp, x1
+    ldr x0, =__stack_top
+    mov sp, x0
 
 jump_to_main:
     // jump to Swift code, should not return

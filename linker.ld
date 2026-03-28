@@ -11,7 +11,13 @@ SECTIONS {
         . = ALIGN(8);
         __bss_end = .;
     }
-    __kernel_end = .;
+    __kernel_end = ALIGN(16);
+    .stack (NOLOAD) : ALIGN(16) {
+        __stack_bottom = .;
+        . += 0x20000;  /* 128 KiB */
+        __stack_top = .;
+    }
+    __kernel_image_end = .;
     .nonalloc (NOLOAD) : {
         *(.symtab)
         *(.strtab)
