@@ -29,4 +29,16 @@ get_kernel_end:
     add x0, x0, :lo12:__kernel_end
     ret
 
+.global get_bss_start
+get_bss_start:
+    adrp x0, __bss_start
+    add x0, x0, :lo12:__bss_start
+    ret
+
+.global get_bss_end
+get_bss_end:
+    adrp x0, __bss_end
+    add x0, x0, :lo12:__bss_end
+    ret
+
 #endif
