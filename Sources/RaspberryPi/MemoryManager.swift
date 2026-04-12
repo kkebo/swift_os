@@ -1,4 +1,5 @@
 import AsmSupport
+private import LinkerSupport
 
 package struct MemoryManager: ~Copyable, ~Escapable {
     /// The base address in bytes.
@@ -24,8 +25,8 @@ package struct MemoryManager: ~Copyable, ~Escapable {
         let base = UInt(unsafe mbox[5])
         let size = UInt(unsafe mbox[6])
 
-        precondition(get_kernel_start() >= base)
-        precondition(get_kernel_end() < base + size)
+        precondition(ImageLayout.kernelStart >= base)
+        precondition(ImageLayout.kernelEnd < base + size)
 
         self.baseAddress = base
         self.total = size

@@ -3,7 +3,7 @@ SECTIONS {
     . = 0x80000;  /* aarch64 */
     __kernel_start = .;
     .text : { KEEP(*(.text.boot)) *(.text*) }
-    .data : { *(.rodata* .data*) }
+    .data : { *(.rodata* .got* .data*) }
     .bss (NOLOAD) : ALIGN(16) {  /* ALIGN(16) prevents unaligned stores */
         __bss_start = .;
         *(.bss*)

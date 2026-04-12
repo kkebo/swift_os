@@ -4,6 +4,7 @@ import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Lifetimes"),
+    .enableExperimentalFeature("Extern"),
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),
     .unsafeFlags(["-strict-memory-safety"]),
@@ -37,6 +38,7 @@ let package = Package(
             dependencies: [
                 .target(name: "KernLibc"),
                 .target(name: "AsmSupport"),
+                .target(name: "LinkerSupport"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
@@ -53,12 +55,14 @@ let package = Package(
             dependencies: [
                 .target(name: "Font"),
                 .target(name: "AsmSupport"),
+                .target(name: "LinkerSupport"),
             ],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
             ],
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
+        .target(name: "LinkerSupport", swiftSettings: swiftSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
         .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
