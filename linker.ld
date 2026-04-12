@@ -18,7 +18,7 @@ SECTIONS {
         __stack_top = .;
     }
     __kernel_image_end = .;
-    .nonalloc (NOLOAD) : {
+    .nonalloc : {
         *(.symtab)
         *(.strtab)
         *(.shstrtab)
