@@ -36,6 +36,7 @@ let package = Package(
         .executableTarget(
             name: "Kernel",
             dependencies: [
+                .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
                 .target(name: "AsmSupport"),
                 .target(name: "LinkerSupport"),
@@ -43,11 +44,20 @@ let package = Package(
             ],
             swiftSettings: swiftSettings,
         ),
+        .target(
+            name: "KernelCore",
+            dependencies: [
+                .target(name: "Hardware"),
+                .target(name: "Font"),
+            ],
+            swiftSettings: swiftSettings,
+        ),
+        .target(name: "Hardware", swiftSettings: swiftSettings),
         .target(name: "KernLibc", swiftSettings: swiftSettings),
         .target(
             name: "RaspberryPi",
             dependencies: [
-                .target(name: "Font"),
+                .target(name: "Hardware"),
                 .target(name: "AsmSupport"),
                 .target(name: "LinkerSupport"),
             ],

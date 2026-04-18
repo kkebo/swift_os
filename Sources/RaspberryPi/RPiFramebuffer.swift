@@ -1,12 +1,7 @@
-private import Font
-
-package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
-    case bgr = 0
-    case rgb
-}
+package import Hardware
 
 @safe
-package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
+package struct RPiFramebuffer<Depth: UnsignedInteger>: ~Copyable, Framebuffer {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
@@ -14,18 +9,9 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Pixel order.
     package let pixelOrder: PixelOrder
     /// Framebuffer base address.
-    @usableFromInline
-    let baseAddress: UnsafeMutablePointer<Depth>
+    package let baseAddress: UnsafeMutablePointer<Depth>
     /// The number of pixels of Framebuffer.
-    @usableFromInline
-    let pixelCount: Int
-    /// Framebuffer.
-    @inline(always)
-    @export(implementation)
-    package var buffer: MutableSpan<Depth> {
-        @_lifetime(&self)
-        mutating get { unsafe .init(_unsafeStart: self.baseAddress, count: self.pixelCount) }
-    }
+    package let pixelCount: Int
 
     package init(
         width: UInt32,
@@ -102,48 +88,5 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
         self.pixelCount = pixelCount
 
         print("Framebufer is ready")
-    }
-
-    @inline(always)
-    @export(implementation)
-    package mutating func drawPoint(x: Int, y: Int, color: Depth) {
-        let width = Int(self.width)
-        var buf = self.buffer
-        buf[y &* width &+ x] = color
-    }
-
-    package mutating func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Depth) {
-        for y in y0...y1 {
-            for x in x0...x1 {
-                self.drawPoint(x: x, y: y, color: color)
-            }
-        }
-    }
-
-    package mutating func drawChar(_ c: UInt8, x: Int, y: Int, color: Depth) {
-        guard c < font.count else { return }
-        let glyph = font[Int(c)]
-        for i in 0..<fontHeight {
-            for j in 0..<fontWidth where glyph[i] & 1 << j != 0 {
-                self.drawPoint(x: x &+ j, y: y &+ i, color: color)
-            }
-        }
-    }
-
-    package mutating func drawString(_ s: StaticString, x: Int, y: Int, color: Depth) {
-        let span = unsafe Span(_unsafeStart: s.utf8Start, count: s.utf8CodeUnitCount)
-        var x = x
-        var y = y
-        for i in span.indices {
-            switch span[i] {
-            case 0x0d: x = 0
-            case 0x0a:
-                x = 0
-                y &+= fontHeight
-            case let c:
-                self.drawChar(c, x: x, y: y, color: color)
-                x &+= fontWidth
-            }
-        }
     }
 }
