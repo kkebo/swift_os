@@ -6,7 +6,7 @@ package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
 }
 
 @safe
-package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable, ~Escapable {
+package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
@@ -27,7 +27,6 @@ package struct Framebuffer<Depth: UnsignedInteger>: ~Copyable, ~Escapable {
         mutating get { unsafe .init(_unsafeStart: self.baseAddress, count: self.pixelCount) }
     }
 
-    @_lifetime(immortal)
     package init(
         width: UInt32,
         height: UInt32,

@@ -12,10 +12,9 @@ let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
 
 @_alignment(16)
-struct Mbox: ~Copyable, ~Escapable {
+struct Mbox: ~Copyable {
     private var storage: [36 of UInt32] = .init(repeating: 0)
 
-    @_lifetime(immortal)
     init() {}
 
     @inline(always)

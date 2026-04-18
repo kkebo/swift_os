@@ -1,13 +1,12 @@
 import AsmSupport
 private import LinkerSupport
 
-package struct MemoryManager: ~Copyable, ~Escapable {
+package struct MemoryManager: ~Copyable {
     /// The base address in bytes.
     package let baseAddress: UInt
     /// Total physical memory size in bytes.
     package let total: UInt
 
-    @_lifetime(immortal)
     package init() {
         unsafe mbox[0] = 8 * 4
         unsafe mbox[1] = 0  // request
