@@ -36,6 +36,7 @@ let package = Package(
         .executableTarget(
             name: "Kernel",
             dependencies: [
+                .target(name: "Boot"),
                 .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
                 .target(name: "AsmSupport"),
@@ -67,6 +68,7 @@ let package = Package(
         ),
         .target(name: "Font", swiftSettings: swiftSettings),
         .target(name: "LinkerSupport", swiftSettings: swiftSettings),
+        .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
         .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
