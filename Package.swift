@@ -43,13 +43,7 @@ let package = Package(
             ],
             swiftSettings: swiftSettings,
         ),
-        .target(
-            name: "KernLibc",
-            dependencies: [
-                .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"]))
-            ],
-            swiftSettings: swiftSettings,
-        ),
+        .target(name: "KernLibc", swiftSettings: swiftSettings),
         .target(
             name: "RaspberryPi",
             dependencies: [

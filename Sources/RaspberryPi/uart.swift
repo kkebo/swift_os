@@ -35,6 +35,7 @@ private func receiveFIFOEmpty() -> Bool {
 }
 
 /// Write a character to UART.
+@c(__platform_putchar)
 @usableFromInline
 package func putchar(_ c: UInt8) {
     while transmitFIFOFull() {}

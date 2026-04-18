@@ -1,6 +1,6 @@
-#if RASPI
-    public import RaspberryPi
-#endif
+@_extern(c, "__platform_putchar")
+@usableFromInline
+package func putchar(_ c: UInt8)
 
 /// <https://pubs.opengroup.org/onlinepubs/9799919799/functions/putchar.html>.
 @c
@@ -8,8 +8,6 @@
 @inline(always)
 @inlinable  // @export(implementation, interface)
 public func putchar(_ c: CInt) -> CInt {
-    #if RASPI
-        putchar(UInt8(c))
-    #endif
+    putchar(UInt8(c))
     return c
 }
