@@ -92,7 +92,6 @@ extension UART0: UART {
 
 /// Write a character to UART.
 @c(__platform_putchar)
-@usableFromInline
 package func putchar(_ c: UInt8) {
     while transmitFIFOFull() {}
     uartDR.store(UInt32(c))
