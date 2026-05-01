@@ -20,7 +20,7 @@ struct Mbox: ~Copyable {
     @inline(always)
     private mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
         var span = self.storage.mutableSpan
-        return unsafe span.withUnsafeMutableBufferPointer { ptr in
+        return span.withUnsafeMutableBufferPointer { ptr in
             // swift-format-ignore: NeverForceUnwrap
             unsafe VolatileMappedRegister(unsafeBitPattern: UInt(bitPattern: ptr.baseAddress!.advanced(by: i)))
         }
@@ -35,7 +35,7 @@ struct Mbox: ~Copyable {
 
     mutating func call(ch: MboxChannel) -> Bool {
         var span = self.storage.mutableSpan
-        let addr = unsafe span.withUnsafeMutableBytes { ptr in
+        let addr = span.withUnsafeMutableBytes { ptr in
             UInt32(UInt(bitPattern: ptr.baseAddress))
         }
         let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
