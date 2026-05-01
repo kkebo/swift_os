@@ -28,6 +28,8 @@
             "qemu-system-aarch64",
             "-machine", "raspi4b",
             "-serial", "stdio",
+            "-device", "usb-mouse",
+            "-device", "usb-kbd",
             "-kernel"
         ]
     }
