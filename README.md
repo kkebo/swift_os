@@ -18,19 +18,19 @@ An operating system written in Swift.
 ## Building for emulators
 
 ```shell
-swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
+swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --build-system native
 ```
 
 ## Running on QEMU
 
 ```shell
-swift run -c release --triple aarch64-none-none-elf --toolset toolset.json
+swift run -c release --triple aarch64-none-none-elf --toolset toolset.json --build-system native
 ```
 
 ## Building for real hardwares
 
 ```shell
-swift build -c release --triple aarch64-none-none-elf --toolset toolset.json
+swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --build-system native
 llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 ```
 
