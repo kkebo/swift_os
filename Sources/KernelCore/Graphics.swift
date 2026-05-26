@@ -1,4 +1,3 @@
-private import Font
 package import Hardware
 
 package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {

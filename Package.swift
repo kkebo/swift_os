@@ -48,8 +48,7 @@ let package = Package(
         .target(
             name: "KernelCore",
             dependencies: [
-                .target(name: "Hardware"),
-                .target(name: "Font"),
+                .target(name: "Hardware")
             ],
             swiftSettings: swiftSettings,
         ),
@@ -66,7 +65,6 @@ let package = Package(
                 .enableExperimentalFeature("Volatile")
             ],
         ),
-        .target(name: "Font", swiftSettings: swiftSettings),
         .target(name: "LinkerSupport", swiftSettings: swiftSettings),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
