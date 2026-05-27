@@ -36,7 +36,7 @@ struct Kernel {
         g.drawString("Hello Swift!", x: 0, y: 100, color: 0xffffff)
 
         #if RASPI
-            let el = get_el()
+            let el = getEL()
             let elLabel: StaticString = "Exception Level:"
             print(elLabel, terminator: " ")
             print(el)
