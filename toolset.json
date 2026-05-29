@@ -7,8 +7,8 @@
             "-Xfrontend", "-no-allocations",
             "-Xfrontend", "-function-sections",
             "-Xfrontend", "-disable-stack-protector",
-            "-Xclang-linker", "-nostdlib",
-            "-Xclang-linker", "-fuse-ld=lld"
+            "-Xlinker-driver", "-nostdlib",
+            "-Xlinker-driver", "-fuse-ld=lld"
         ]
     },
     "linker": {
