@@ -31,7 +31,7 @@ struct Kernel {
             // let fb = OtherFramebuffer()
             fatalError("not implemented")
         #endif
-        let g = Graphics(target: fb)
+        var g = Graphics(target: fb)
         g.fillRect(x0: 0, y0: 0, x1: 100, y1: 100, color: 0xffffff)
         g.drawString("Hello Swift!", x: 0, y: 100, color: 0xffffff)
 

@@ -14,7 +14,7 @@ package protocol Framebuffer: ~Copyable, ~Escapable, RenderTarget {
 extension Framebuffer where Self: ~Copyable {
     @inline(always)
     @export(implementation)
-    package func drawPoint(x: Int, y: Int, color: Depth) {
+    package mutating func drawPoint(x: Int, y: Int, color: Depth) {
         let width = Int(self.width)
         var buf = unsafe MutableSpan(_unsafeStart: self.baseAddress, count: self.pixelCount)
         buf[y &* width &+ x] = color
