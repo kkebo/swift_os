@@ -1,7 +1,7 @@
 package import Hardware
 
 @safe
-package struct RPiFramebuffer<Depth: UnsignedInteger>: ~Copyable, Framebuffer {
+package struct RPiFramebuffer<Depth: FixedWidthInteger & UnsignedInteger>: ~Copyable, Framebuffer {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
@@ -18,7 +18,7 @@ package struct RPiFramebuffer<Depth: UnsignedInteger>: ~Copyable, Framebuffer {
         height: UInt32,
         pixelOrder: PixelOrder,
     ) {
-        let depth = UInt32(MemoryLayout<Depth>.size &* 8)
+        let depth = UInt32(Depth.bitWidth)
         unsafe mbox[0] = 35 * 4
         unsafe mbox[1] = 0  // request
 
