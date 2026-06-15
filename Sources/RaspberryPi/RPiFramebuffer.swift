@@ -8,10 +8,8 @@ package struct RPiFramebuffer<Depth: FixedWidthInteger & UnsignedInteger>: ~Copy
     package let height: UInt32
     /// Pixel order.
     package let pixelOrder: PixelOrder
-    /// Framebuffer base address.
-    package let baseAddress: UnsafeMutablePointer<Depth>
-    /// The number of pixels of Framebuffer.
-    package let pixelCount: Int
+    /// Framebuffer.
+    package let buffer: UnsafeMutableBufferPointer<Depth>
 
     package init(
         width: UInt32,
@@ -82,10 +80,7 @@ package struct RPiFramebuffer<Depth: FixedWidthInteger & UnsignedInteger>: ~Copy
         self.pixelOrder = unsafe .init(rawValue: mbox[24])!
         // GPU address to ARM address
         let addr = UInt(gpuAddr & 0x3FFF_FFFF)
-        // swift-format-ignore: NeverForceUnwrap
-        unsafe self.baseAddress = UnsafeMutableRawPointer(bitPattern: addr)!
-            .bindMemory(to: Depth.self, capacity: pixelCount)
-        self.pixelCount = pixelCount
+        unsafe self.buffer = UnsafeMutableBufferPointer(start: .init(bitPattern: addr), count: pixelCount)
 
         print("Framebufer is ready")
     }
