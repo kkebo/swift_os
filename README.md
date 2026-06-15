@@ -2,6 +2,22 @@
 
 An operating system written in Swift.
 
+## Modules
+
+- `Boot` — Minimal boot code before entering Swift.
+- `Kernel` — Kernel executable and system entry point.
+- `KernelCore` — Architecture- and platform-independent kernel logic (scheduler, memory management, core services).
+- `Hardware` — Hardware abstraction layer defining device interfaces independent of CPU architecture and platform (console, timer, framebuffer, etc.).
+- CPU architecture support
+  - `ArchAArch64` - (planned) AArch64 CPU support (exceptions, MMU, vector tables, system registers).
+  - `ArchX8664` - (planned) x86_64 CPU support (IDT, paging, interrupts).
+- Platform support
+  - `RaspberryPi` — Raspberry Pi platform implementation (UART, mailbox, framebuffer, interrupt controller).
+- `KernLibc` — Minimal libc for kernel space.
+- `AppLibc` — Minimal libc for user space.
+- `AsmSupport` — Assembly helper functions.
+- `LinkerSupport` — Swift bindings for linker-defined symbols.
+
 ## Prerequisites
 
 - QEMU 9.0 or later
