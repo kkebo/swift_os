@@ -1,15 +1,15 @@
 package import Hardware
 
 @safe
-package struct RPiFramebuffer<Depth: FixedWidthInteger & UnsignedInteger>: ~Copyable, Framebuffer {
+package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
     /// Actual physical width.
     package let width: UInt32
     /// Actual physical height.
     package let height: UInt32
     /// Pixel order.
     package let pixelOrder: PixelOrder
-    /// Framebuffer.
-    package let buffer: UnsafeMutableBufferPointer<Depth>
+    /// Framebuffer base address.
+    package let baseAddress: UInt
 
     package init(
         width: UInt32,
@@ -79,8 +79,7 @@ package struct RPiFramebuffer<Depth: FixedWidthInteger & UnsignedInteger>: ~Copy
         // swift-format-ignore: NeverForceUnwrap
         self.pixelOrder = unsafe .init(rawValue: mbox[24])!
         // GPU address to ARM address
-        let addr = UInt(gpuAddr & 0x3FFF_FFFF)
-        unsafe self.buffer = UnsafeMutableBufferPointer(start: .init(bitPattern: addr), count: pixelCount)
+        self.baseAddress = UInt(gpuAddr & 0x3FFF_FFFF)
 
         print("Framebufer is ready")
     }

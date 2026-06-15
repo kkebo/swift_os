@@ -52,7 +52,12 @@ let package = Package(
             ],
             swiftSettings: swiftSettings,
         ),
-        .target(name: "Hardware", swiftSettings: swiftSettings),
+        .target(
+            name: "Hardware",
+            swiftSettings: swiftSettings + [
+                .enableExperimentalFeature("Volatile")
+            ],
+        ),
         .target(name: "KernLibc", swiftSettings: swiftSettings),
         .target(
             name: "RaspberryPi",

@@ -1,5 +1,6 @@
 package protocol RenderTarget<Depth>: ~Copyable, ~Escapable {
-    associatedtype Depth: FixedWidthInteger & UnsignedInteger
+    associatedtype Depth: VolatileMappable
 
-    mutating func drawPoint(x: Int, y: Int, color: Depth)
+    @unsafe
+    subscript(uncheckedX x: Int, y y: Int) -> Depth { get set }
 }

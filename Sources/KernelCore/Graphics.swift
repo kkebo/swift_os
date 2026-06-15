@@ -8,23 +8,26 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     }
 
     package mutating func drawPoint(x: Int, y: Int, color: Target.Depth) {
-        self.target.drawPoint(x: x, y: y, color: color)
+        // TODO: check bounds
+        unsafe self.target[uncheckedX: x, y: y] = color
     }
 
     package mutating func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Target.Depth) {
+        // TODO: check bounds
         for y in y0...y1 {
             for x in x0...x1 {
-                self.target.drawPoint(x: x, y: y, color: color)
+                unsafe self.target[uncheckedX: x, y: y] = color
             }
         }
     }
 
     package mutating func drawChar(_ c: UInt8, x: Int, y: Int, color: Target.Depth) {
+        // TODO: check bounds
         guard c < font.count else { return }
         let glyph = font[Int(c)]
         for i in 0..<fontHeight {
             for j in 0..<fontWidth where glyph[i] & 1 << j != 0 {
-                self.target.drawPoint(x: x &+ j, y: y &+ i, color: color)
+                unsafe self.target[uncheckedX: x &+ j, y: y &+ i] = color
             }
         }
     }
