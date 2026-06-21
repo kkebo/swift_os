@@ -12,8 +12,12 @@ import _Volatile
 
 let gpioBase = mmioBase + 0x200000
 let gpfsel1 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x4)
-let gppud = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x94)
-let gppudclk0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x98)
+#if RASPI4
+    let gppuppdn0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0xE4)
+#else
+    let gppud = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x94)
+    let gppudclk0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x98)
+#endif
 
 let uartBase = gpioBase + 0x1000
 let uartDR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase)
@@ -60,12 +64,19 @@ package struct UART0: ~Copyable {
         selector |= 4 << 12 | 4 << 15  // ALT0
         gpfsel1.store(selector)
 
-        // disable pull up/down for pins 14 and 15
-        gppud.store(0)
-        delay(150)
-        gppudclk0.store(1 << 14 | 1 << 15)
-        delay(150)
-        gppudclk0.store(0)  // flush GPIO setup
+        // disable pull up/down for GPIO14 and GPIO15
+        #if RASPI4
+            var value = gppuppdn0.load()
+            value &= ~(0b11 << 28)  // GPIO14
+            value &= ~(0b11 << 30)  // GPIO15
+            gppuppdn0.store(value)
+        #else
+            gppud.store(0)
+            delay(150)
+            gppudclk0.store(1 << 14 | 1 << 15)
+            delay(150)
+            gppudclk0.store(0)  // flush GPIO setup
+        #endif
 
         uartICR.store(0x7FF)  // clear pending interrupts
         uartIBRD.store(1)  // 3000000 / (16 * 115200) = 1.627 = ~1
