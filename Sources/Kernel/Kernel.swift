@@ -30,6 +30,7 @@ struct Kernel {
         #if arch(arm64)
             registerVectorTable()
         #endif
+        enableIRQ()
 
         print("Hello Swift!")
 
