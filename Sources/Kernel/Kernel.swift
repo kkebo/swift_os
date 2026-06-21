@@ -30,6 +30,14 @@ struct Kernel {
             fatalError("not implemented")
         #endif
 
+        // Initialise the GIC-400 interrupt controller before enabling
+        // any device interrupts.
+        initGIC()
+        // Enable the UART0 SPI in the GIC Distributor so receive
+        // interrupts can reach the CPU.
+        gicEnableIRQ(gicUART0SPI)
+        enableIRQ()
+
         print("Hello Swift!")
 
         let memoryManager = MemoryManager()

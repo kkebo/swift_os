@@ -71,7 +71,12 @@ package struct UART0: ~Copyable {
         uartIBRD.store(1)  // 3000000 / (16 * 115200) = 1.627 = ~1
         uartFBRD.store(40)  // (0.627 * 64) + 0.5 = 40.6 = ~40
         uartLCRH.store(0b1110000)  // enable FIFO & 8 bit data transmission (1 stop bit, no parity)
-        uartIMSC.store(0b111_11110010)  // mask all interrupts
+        // Mask all interrupts except RXIM (bit 4) which is left clear
+        // so that the GIC delivers UART0 RX interrupts to the CPU.
+        // PL011 IMSC: 1 = masked, 0 = interrupt enabled
+        //   bit 4 = RXIM (receive)
+        // 0b111_11100010 masks everything except RXIM
+        uartIMSC.store(0b111_11100010)  // mask all except RX
         uartCR.store(0b11_00000001)  // enable Tx, Rx, UART0
     }
 }
@@ -95,4 +100,21 @@ extension UART0: UART {
 package func putchar(_ c: UInt8) {
     while transmitFIFOFull() {}
     uartDR.store(UInt32(c))
+}
+
+/// UART0 Receive Interrupt handler.
+///
+/// Called from the GIC IRQ dispatcher when UART0 fires a receive interrupt.
+/// Drains the receive FIFO and echoes each character back so the terminal
+/// reflects what the user types.
+package func handleUART0RX() {
+    // Drain the FIFO: read characters while the RX FIFO is not empty.
+    while !receiveFIFOEmpty() {
+        let byte = UInt8(uartDR.load() & 0xFF)
+        // Echo the received byte back to the terminal.
+        putchar(byte)
+        // Additional processing (e.g. key event dispatch) goes here.
+    }
+    // Clear the receive interrupt so the GIC line de-asserts.
+    uartICR.store(1 << 4)  // RXIC – clear receive interrupt
 }
