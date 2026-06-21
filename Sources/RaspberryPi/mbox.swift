@@ -36,10 +36,8 @@ struct Mbox: ~Copyable {
         mboxWrite.store(r)
         repeat {
             while receiveMboxEmpty() {}
-            if mboxRead.load() == r {
-                return unsafe mbox[1] == mboxResponse
-            }
-        } while true
+        } while mboxRead.load() != r
+        return unsafe mbox[1] == mboxResponse
     }
 }
 

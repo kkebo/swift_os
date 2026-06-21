@@ -9,6 +9,11 @@ private import KernelCore
 @main
 struct Kernel {
     static func main() {
+        Self.mainLoop()
+    }
+
+    @inline(always)
+    private static func mainLoop() -> Never {
         zeroBSS()
 
         #if RASPI
