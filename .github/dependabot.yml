@@ -1,5 +1,13 @@
 version: 2
 updates:
+  - package-ecosystem: "swift"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "kkebo"
+    commit-message:
+      prefix: "build"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
