@@ -1,3 +1,4 @@
+private import ArchAArch64
 private import AsmSupport
 private import Hardware
 private import KernelCore
@@ -10,6 +11,7 @@ private import KernelCore
 struct Kernel {
     static func main() {
         zeroBSS()
+        registerVectorTable()
 
         #if RASPI
             let _ = UARTConsole(uart: UART0())

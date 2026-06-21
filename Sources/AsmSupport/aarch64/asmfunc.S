@@ -17,4 +17,15 @@ get_el:
     lsr x0, x0, #2
     ret
 
+.global register_vector_table
+register_vector_table:
+    msr vbar_el1, x0
+    isb
+    ret
+
+.global svc0
+svc0:
+    svc #0
+    ret
+
 #endif

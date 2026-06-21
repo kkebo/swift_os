@@ -41,6 +41,7 @@ let package = Package(
                 .target(name: "KernLibc"),
                 .target(name: "AsmSupport"),
                 .target(name: "LinkerSupport"),
+                .target(name: "ArchAArch64"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
@@ -49,6 +50,13 @@ let package = Package(
             name: "KernelCore",
             dependencies: [
                 .target(name: "Hardware")
+            ],
+            swiftSettings: swiftSettings,
+        ),
+        .target(
+            name: "ArchAArch64",
+            dependencies: [
+                .target(name: "AsmSupport")
             ],
             swiftSettings: swiftSettings,
         ),
