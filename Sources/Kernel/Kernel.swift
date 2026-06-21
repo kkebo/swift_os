@@ -19,15 +19,16 @@ struct Kernel {
     @inline(always)
     private static func mainLoop() -> Never {
         zeroBSS()
-        #if arch(arm64)
-            registerVectorTable()
-        #endif
 
         #if RASPI
             let _ = UARTConsole(uart: UART0())
         #else
             // let console = OtherConsole()
             fatalError("not implemented")
+        #endif
+
+        #if arch(arm64)
+            registerVectorTable()
         #endif
 
         print("Hello Swift!")
