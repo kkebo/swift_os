@@ -1,5 +1,6 @@
 // swift-tools-version: 6.3
 
+import CompilerPluginSupport
 import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
@@ -19,6 +20,7 @@ let cSettings: [CSetting] = [
 
 let package = Package(
     name: "swift_os",
+    platforms: [.macOS(.v10_15)],
     products: [
         .executable(name: "Kernel", targets: ["Kernel"]),
         .library(name: "KernLibc", targets: ["KernLibc"]),
@@ -31,6 +33,9 @@ let package = Package(
         .trait(name: "RASPI2", enabledTraits: ["RASPI"]),
         .trait(name: "RASPI1", enabledTraits: ["RASPI"]),
         .trait(name: "RASPI"),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/swiftlang/swift-syntax", "603.0.2"..<"606.0.0")
     ],
     targets: [
         .executableTarget(
@@ -56,7 +61,16 @@ let package = Package(
         .target(
             name: "ArchAArch64",
             dependencies: [
-                .target(name: "AsmSupport")
+                .target(name: "AsmSupport"),
+                .target(name: "KernelMacros"),
+            ],
+            swiftSettings: swiftSettings,
+        ),
+        .macro(
+            name: "KernelMacros",
+            dependencies: [
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             ],
             swiftSettings: swiftSettings,
         ),

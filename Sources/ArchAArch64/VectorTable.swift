@@ -1,39 +1,50 @@
 private import AsmSupport
 
-private typealias VectorEntry = (
-    UInt32,  // ldr x16, #8
-    UInt32,  // br x16
-    @convention(c) () -> Void,  // handler
-    [14 of UInt64]  // padding
-)
+@freestanding(declaration, names: named(VectorEntry), named(vectorTable))
+private macro vectorTable(
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+    _: @escaping @convention(c) () -> Void,
+) = #externalMacro(module: "KernelMacros", type: "VectorTableMacro")
 
-@section(".vectors")
-@used
-nonisolated(unsafe) private var vectorTable: [16 of VectorEntry] = [
+#vectorTable(
     // Current EL with SP_EL0
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPEL0Sync, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPEL0IRQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPEL0FIQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPEL0SError, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    handleCurrentELSPEL0Sync,
+    handleCurrentELSPEL0IRQ,
+    handleCurrentELSPEL0FIQ,
+    handleCurrentELSPEL0SError,
 
     // Current EL with SP_ELx
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPELxSync, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPELxIRQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPELxFIQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleCurrentELSPELxSError, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    handleCurrentELSPELxSync,
+    handleCurrentELSPELxIRQ,
+    handleCurrentELSPELxFIQ,
+    handleCurrentELSPELxSError,
 
     // Lower EL using AArch64
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch64Sync, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch64IRQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch64FIQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch64SError, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    handleLowerELAArch64Sync,
+    handleLowerELAArch64IRQ,
+    handleLowerELAArch64FIQ,
+    handleLowerELAArch64SError,
 
     // Lower EL using AArch32
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch32Sync, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch32IRQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch32FIQ, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    (0x5800_0050, 0xd61f_0200, handleLowerELAArch32SError, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-]
+    handleLowerELAArch32Sync,
+    handleLowerELAArch32IRQ,
+    handleLowerELAArch32FIQ,
+    handleLowerELAArch32SError,
+)
 
 @c
 private func handleCurrentELSPEL0Sync() {
