@@ -31,15 +31,15 @@ package func handleCurrentELSP0SError() -> Never {
 @c
 @export(interface)
 package func handleCurrentELSPxSync(esr: UInt64, elr: UnsafeMutablePointer<UInt64>) {
-    let ec = (esr >> 26) & 0x3F
+    let ec = (esr >> 26) & 0x3f
     switch ec {
     case 0x3c:  // brk
-        let imm = esr & 0xffff
+        let imm = UInt16(truncatingIfNeeded: esr)
         print("Exception: handleCurrentELSPxSync: brk #", terminator: "")
         print(imm)
         unsafe elr.pointee += 4
     case 0x15:  // svc
-        let imm = esr & 0xffff
+        let imm = UInt16(truncatingIfNeeded: esr)
         print("Exception: handleCurrentELSPxSync: svc #", terminator: "")
         print(imm)
     case _:
