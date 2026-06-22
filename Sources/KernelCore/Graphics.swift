@@ -33,21 +33,19 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     }
 
     package mutating func drawString(_ s: StaticString, x: Int, y: Int, color: Target.Depth) {
-        guard s.hasPointerRepresentation else {
-            preconditionFailure("StaticString must be pointer-backed in Embedded Swift.")
-        }
-        let span = unsafe Span(_unsafeStart: s.utf8Start, count: s.utf8CodeUnitCount)
-        var x = x
-        var y = y
-        for i in span.indices {
-            switch span[i] {
-            case 0x0d: x = 0
-            case 0x0a:
-                x = 0
-                y &+= fontHeight
-            case let c:
-                self.drawChar(c, x: x, y: y, color: color)
-                x &+= fontWidth
+        s.withUTF8Buffer { buf in
+            var x = x
+            var y = y
+            for unsafe c in unsafe buf {
+                switch c {
+                case 0x0d: x = 0
+                case 0x0a:
+                    x = 0
+                    y &+= fontHeight
+                case let c:
+                    self.drawChar(c, x: x, y: y, color: color)
+                    x &+= fontWidth
+                }
             }
         }
     }
