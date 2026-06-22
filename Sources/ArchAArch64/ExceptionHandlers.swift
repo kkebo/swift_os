@@ -37,7 +37,7 @@ package func handleCurrentELSPxSync(esr: UInt64, elr: UnsafeMutablePointer<UInt6
         let imm = esr & 0xffff
         print("Exception: handleCurrentELSPxSync: brk #", terminator: "")
         print(imm)
-        unsafe elr[0] += 4
+        unsafe elr.pointee += 4
     case 0x15:  // svc
         let imm = esr & 0xffff
         print("Exception: handleCurrentELSPxSync: svc #", terminator: "")
