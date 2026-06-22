@@ -6,14 +6,14 @@ public func memcpy(
     _ src: UnsafeRawPointer,
     _ n: Int,
 ) -> UnsafeMutableRawPointer {
-    let dst = unsafe dst.bindMemory(to: UInt8.self, capacity: n)
-    var dstSpan = unsafe MutableSpan(_unsafeStart: dst, count: n)
-    let src = unsafe src.bindMemory(to: UInt8.self, capacity: n)
-    let srcSpan = unsafe Span(_unsafeStart: src, count: n)
-    for i in dstSpan.indices {
-        dstSpan[i] = srcSpan[i]
+    let d = unsafe dst.bindMemory(to: UInt8.self, capacity: n)
+    let s = unsafe src.bindMemory(to: UInt8.self, capacity: n)
+    var i = 0
+    while i < n {
+        unsafe d[i] = s[i]
+        i += 1
     }
-    return .init(dst)
+    return unsafe dst
 }
 
 /// <https://pubs.opengroup.org/onlinepubs/9799919799/functions/memmove.html>.
@@ -24,20 +24,22 @@ public func memmove(
     _ src: UnsafeRawPointer,
     _ n: Int,
 ) -> UnsafeMutableRawPointer {
-    let dst = unsafe dst.bindMemory(to: UInt8.self, capacity: n)
-    var dstSpan = unsafe MutableSpan(_unsafeStart: dst, count: n)
-    let src = unsafe src.bindMemory(to: UInt8.self, capacity: n)
-    let srcSpan = unsafe Span(_unsafeStart: src, count: n)
+    let d = unsafe dst.bindMemory(to: UInt8.self, capacity: n)
+    let s = unsafe src.bindMemory(to: UInt8.self, capacity: n)
     if unsafe dst < src {
-        for i in dstSpan.indices {
-            dstSpan[i] = srcSpan[i]
+        var i = 0
+        while i < n {
+            unsafe d[i] = s[i]
+            i += 1
         }
     } else {
-        for i in dstSpan.indices.reversed() {
-            dstSpan[i] = srcSpan[i]
+        var i = n - 1
+        while i >= 0 {
+            unsafe d[i] = s[i]
+            i -= 1
         }
     }
-    return .init(dst)
+    return unsafe dst
 }
 
 /// <https://pubs.opengroup.org/onlinepubs/9799919799/functions/memset.html>.
@@ -48,10 +50,11 @@ public func memset(
     _ val: CInt,
     _ len: Int,
 ) -> UnsafeMutableRawPointer {
-    let dst = unsafe dst.bindMemory(to: UInt8.self, capacity: len)
-    var span = unsafe MutableSpan(_unsafeStart: dst, count: len)
-    for i in span.indices {
-        span[i] = UInt8(truncatingIfNeeded: val)
+    let d = unsafe dst.bindMemory(to: UInt8.self, capacity: len)
+    var i = 0
+    while i < len {
+        unsafe d[i] = UInt8(truncatingIfNeeded: val)
+        i += 1
     }
-    return .init(dst)
+    return unsafe dst
 }
