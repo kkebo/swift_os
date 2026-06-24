@@ -33,5 +33,6 @@ SECTIONS {
         *(.debug*)
         *(.eh_frame*)
         *(.swift_modhash*)
+        *(.swift_ast)
     }
 }

@@ -2,7 +2,6 @@
     "schemaVersion": "1.0",
     "swiftCompiler": {
         "extraCLIOptions": [
-            "-Osize",
             "-enable-experimental-feature", "Embedded",
             "-Xfrontend", "-no-allocations",
             "-Xfrontend", "-function-sections",

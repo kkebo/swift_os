@@ -17,15 +17,15 @@ struct Mbox: ~Copyable {
 
     init() {}
 
-    @inline(always)
+    @_transparent
     private mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
         unsafe .init(unsafeBitPattern: withUnsafePointer(to: &self.storage[i], UInt.init(bitPattern:)))
     }
 
-    @inline(always)
-    @export(implementation)
     subscript(_ i: Int) -> UInt32 {
+        @_transparent
         mutating get { self.volatilePointer(at: i).load() }
+        @_transparent
         set { self.volatilePointer(at: i).store(newValue) }
     }
 
@@ -68,12 +68,12 @@ enum MboxTag {
     static let setVirtualOffset: UInt32 = 0x0004_8009
 }
 
-@inline(always)
+@_transparent
 private func transmitMboxFull() -> Bool {
     mboxStatus.load() & mboxFull > 0
 }
 
-@inline(always)
+@_transparent
 private func receiveMboxEmpty() -> Bool {
     mboxStatus.load() & mboxEmpty > 0
 }
