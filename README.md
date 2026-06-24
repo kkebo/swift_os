@@ -31,11 +31,13 @@ An operating system written in Swift.
 - [Swiftly](https://www.swift.org/install/)
 - Swift toolchain: Just run `swiftly install` after installing Swiftly
 
-## Building for emulators
+## Building
 
 ```shell
 swift build --triple aarch64-none-none-elf --toolset toolset.json --build-system native
 ```
+
+`.build/debug/Kernel` is the kernel binary.
 
 ## Running on QEMU
 
@@ -43,12 +45,29 @@ swift build --triple aarch64-none-none-elf --toolset toolset.json --build-system
 swift run --triple aarch64-none-none-elf --toolset toolset.json --build-system native
 ```
 
-## Building for real hardwares
+## Running on Raspberry Pi 4
+
+Debug build (recommended for development):
 
 ```shell
 swift build --triple aarch64-none-none-elf --toolset toolset.json --build-system native
+llvm-objcopy .build/debug/Kernel -O binary .build/kernel8.img
+```
+
+Release build (recommended for deployment):
+
+```shell
+swift build -c release --triple aarch64-none-none-elf --toolset toolset.json --build-system native
 llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 ```
+
+How to boot:
+
+1. Build `.build/kernel8.img` following the above instructions
+2. Read [this article](https://wiki.osdev.org/Raspberry_Pi_Bare_Bones#Testing_your_operating_system_(Real_Hardware)) and prepare a bootable SD card
+3. Replace `kernel8.img` on the SD card with `.build/kernel8.img` you built
+4. Insert the SD card to your Raspberry Pi 4
+5. Turn the power on
 
 ## Cleaning build outputs
 
