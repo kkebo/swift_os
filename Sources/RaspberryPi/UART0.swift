@@ -93,6 +93,7 @@ package struct UART0: ~Copyable {
 extension UART0: UART {
     /// Write a character to UART.
     @_transparent
+    @export(implementation)
     package func putchar(_ c: UInt8) {
         while transmitFIFOFull() {}
         uartDR.store(UInt32(c))
@@ -100,6 +101,7 @@ extension UART0: UART {
 
     /// Read a character from UART.
     @_transparent
+    @export(implementation)
     package func getchar() -> UInt8 {
         while receiveFIFOEmpty() {}
         return UInt8(uartDR.load())

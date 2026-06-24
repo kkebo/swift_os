@@ -4,8 +4,10 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     var target: Target
 
     @_transparent
+    @export(implementation)
     package var width: Int { Int(self.target.width) }
     @_transparent
+    @export(implementation)
     package var height: Int { Int(self.target.height) }
 
     package init(target: consuming Target) {
