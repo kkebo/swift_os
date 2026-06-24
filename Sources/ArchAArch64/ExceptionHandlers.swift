@@ -37,7 +37,11 @@ package func handleCurrentELSPxSync(esr: UInt64, elr: UnsafeMutablePointer<UInt6
         let imm = UInt16(truncatingIfNeeded: esr)
         print("Exception: handleCurrentELSPxSync: brk #", terminator: "")
         print(imm)
-        unsafe elr.pointee += 4
+        switch imm {
+        // debug
+        case 0: unsafe elr.pointee += 4
+        case _: repeat { halt() } while true
+        }
     case 0x15:  // svc
         let imm = UInt16(truncatingIfNeeded: esr)
         print("Exception: handleCurrentELSPxSync: svc #", terminator: "")
