@@ -11,6 +11,11 @@ package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
     /// Framebuffer base address.
     package let baseAddress: UInt
 
+    // FIXME: forces scalar lowering instead of SIMD (q0) load.
+    // Without this, Embedded Swift (main-snapshot-2026-06-12) may generate
+    // unsafe vectorized stack copies for this struct on AArch64 bare metal.
+    private let pad: UInt64 = 0
+
     package init(
         width: UInt32,
         height: UInt32,

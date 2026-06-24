@@ -16,7 +16,7 @@ struct Kernel {
         Self.mainLoop()
     }
 
-    @inline(always)
+    @_transparent
     private static func mainLoop() -> Never {
         zeroBSS()
 
