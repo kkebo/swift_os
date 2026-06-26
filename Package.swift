@@ -13,7 +13,6 @@ let swiftSettings: [SwiftSetting] = [
     .enableUpcomingFeature("ImmutableWeakCaptures"),
     .strictMemorySafety(),
     .treatAllWarnings(as: .error),
-    .treatWarning("EmbeddedRestrictions", as: .error),
 ]
 
 let cSettings: [CSetting] = [
