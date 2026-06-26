@@ -11,7 +11,7 @@ let swiftSettings: [SwiftSetting] = [
     .enableUpcomingFeature("InferIsolatedConformances"),
     .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
     .enableUpcomingFeature("ImmutableWeakCaptures"),
-    .unsafeFlags(["-strict-memory-safety"]),
+    .strictMemorySafety(),
     .treatAllWarnings(as: .error),
     .treatWarning("EmbeddedRestrictions", as: .error),
 ]
