@@ -33,10 +33,10 @@ public func memmove(
             i += 1
         }
     } else {
-        var i = n - 1
-        while i >= 0 {
-            unsafe d[i] = s[i]
+        var i = n
+        while i > 0 {
             i -= 1
+            unsafe d[i] = s[i]
         }
     }
     return unsafe dst
