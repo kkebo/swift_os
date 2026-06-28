@@ -49,4 +49,13 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
             }
         }
     }
+
+    package mutating func drawString<T>(_ value: T, x: Int, y: Int, color: Target.Depth)
+    where
+        T: BinaryInteger & FixedWidthInteger
+    {
+        withASCIIBytes(from: value) { i, c in
+            self.drawChar(c, x: x &+ i * fontWidth, y: y, color: color)
+        }
+    }
 }

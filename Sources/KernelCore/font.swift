@@ -1,5 +1,5 @@
-let fontWidth = 8
-let fontHeight = 8
+package let fontWidth = 8
+package let fontHeight = 8
 
 let font: [_ of [_ of UInt8]] = [
     [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],  // U+0000 (nul)

@@ -35,8 +35,10 @@ struct Kernel {
         print("Hello Swift!")
 
         let memoryManager = MemoryManager()
-        print("RAM:", terminator: " ")
-        print(memoryManager.total / 1024 / 1024, terminator: " ")
+        let ramLabel: StaticString = "RAM:"
+        let ramTotal = memoryManager.total / 1024 / 1024
+        print(ramLabel, terminator: " ")
+        print(ramTotal, terminator: " ")
         print("MiB")
 
         #if RASPI
@@ -49,6 +51,16 @@ struct Kernel {
         g.fillRect(x0: 0, y0: 0, x1: 100, y1: 100, color: 0xffffff)
         g.drawString("Hello Swift!", x: 0, y: 100, color: 0xffffff)
 
+        #if RASPI
+            g.drawString(ramLabel, x: 0, y: 100 + fontHeight, color: 0xffffff)
+            g.drawString(
+                ramTotal,
+                x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth,
+                y: 100 + fontHeight,
+                color: 0xffffff,
+            )
+        #endif
+
         #if arch(arm64)
             // For debugging
             brk0()
@@ -58,10 +70,13 @@ struct Kernel {
             print(elLabel, terminator: " ")
             print(el)
             #if RASPI
-                g.drawString(elLabel, x: 0, y: 108, color: 0xffffff)
-                for i in 0..<Int(el) {
-                    g.drawString("I", x: (elLabel.utf8CodeUnitCount + i) * 8, y: 108, color: 0xffffff)
-                }
+                g.drawString(elLabel, x: 0, y: 100 + 2 * fontHeight, color: 0xffffff)
+                g.drawString(
+                    el,
+                    x: (elLabel.utf8CodeUnitCount + 1) * fontWidth,
+                    y: 100 + 2 * fontHeight,
+                    color: 0xffffff,
+                )
             #endif
         #endif
 
