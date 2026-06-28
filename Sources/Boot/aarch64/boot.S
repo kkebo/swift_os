@@ -17,32 +17,11 @@ hang:
 primary:
     mrs x0, CurrentEL
     lsr x0, x0, #2
-
-    cmp x0, #3
-    b.eq from_el3
-
     cmp x0, #2
-    b.eq from_el2
+    b.eq el2_entry
+    b.lt el1_entry
 
-    b hang
-
-from_el2:
-    mov x0, #(1 << 31)  // aarch64
-    msr hcr_el2, x0
-
-    msr cntvoff_el2, xzr
-
-    mov x0, #5  // EL1h
-    orr x0, x0, #(0xF << 6)  // mask DAIF
-    msr spsr_el2, x0  // set return level to EL1
-
-    adr x0, el1_entry
-    msr elr_el2, x0
-
-    isb
-    eret
-
-from_el3:
+el3_entry:
     mov x0, #(1 << 31)  // aarch64
     msr hcr_el2, x0
 
@@ -56,6 +35,22 @@ from_el3:
 
     adr x0, el1_entry
     msr elr_el3, x0
+
+    isb
+    eret
+
+el2_entry:
+    mov x0, #(1 << 31)  // aarch64
+    msr hcr_el2, x0
+
+    msr cntvoff_el2, xzr
+
+    mov x0, #5  // EL1 with SP_EL1 (EL1h)
+    orr x0, x0, #(0xF << 6)  // mask DAIF
+    msr spsr_el2, x0  // set return level to EL1
+
+    adr x0, el1_entry
+    msr elr_el2, x0
 
     isb
     eret
