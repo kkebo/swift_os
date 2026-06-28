@@ -2,6 +2,8 @@
 
 An operating system written in Swift.
 
+I'm currently focusing on supporting AArch64 and Raspberry Pi 4, but I plan to support more CPU architectures and hardware in the future.
+
 ## Modules
 
 - `Boot` — Minimal boot code before entering Swift.
