@@ -24,6 +24,9 @@ primary:
     cmp x0, #2
     b.eq from_el2
 
+    cmp x0, #1
+    b.eq el1_entry
+
     b hang
 
 from_el2:
