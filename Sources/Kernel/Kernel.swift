@@ -42,24 +42,20 @@ struct Kernel {
         print("MiB")
 
         #if RASPI
-            let fb = RPiFramebuffer<UInt32>(width: 1920, height: 1080, pixelOrder: .rgb)
+            let fb = RPiFramebuffer<UInt32>(width: 1024, height: 576, pixelOrder: .rgb)
         #else
             // let fb = OtherFramebuffer()
             fatalError("not implemented")
         #endif
         var g = Graphics(target: fb)
-        g.fillRect(x0: 0, y0: 0, x1: 100, y1: 100, color: 0xffffff)
-        g.drawString("Hello Swift!", x: 0, y: 100, color: 0xffffff)
+        let bg: UInt32 = 0xf4faef
+        let fg: UInt32 = 0x3a5324
+        let accent: UInt32 = 0x68af2f
+        g.fillRect(x0: 0, y0: 0, x1: g.width - 1, y1: g.height - 1, color: bg)
+        g.drawString("Hello Swift!", x: 0, y: 0, color: fg)
 
-        #if RASPI
-            g.drawString(ramLabel, x: 0, y: 100 + fontHeight, color: 0xffffff)
-            g.drawString(
-                ramTotal,
-                x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth,
-                y: 100 + fontHeight,
-                color: 0xffffff,
-            )
-        #endif
+        g.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
+        g.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
 
         #if arch(arm64)
             // For debugging
@@ -69,15 +65,8 @@ struct Kernel {
             let elLabel: StaticString = "Exception Level:"
             print(elLabel, terminator: " ")
             print(el)
-            #if RASPI
-                g.drawString(elLabel, x: 0, y: 100 + 2 * fontHeight, color: 0xffffff)
-                g.drawString(
-                    el,
-                    x: (elLabel.utf8CodeUnitCount + 1) * fontWidth,
-                    y: 100 + 2 * fontHeight,
-                    color: 0xffffff,
-                )
-            #endif
+            g.drawString(elLabel, x: 0, y: 2 * fontHeight, color: fg)
+            g.drawString(el, x: (elLabel.utf8CodeUnitCount + 1) * fontWidth, y: 2 * fontHeight, color: accent)
         #endif
 
         repeat { halt() } while true

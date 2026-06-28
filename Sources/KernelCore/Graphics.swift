@@ -3,6 +3,11 @@ package import Hardware
 package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     var target: Target
 
+    @_transparent
+    package var width: Int { Int(self.target.width) }
+    @_transparent
+    package var height: Int { Int(self.target.height) }
+
     package init(target: consuming Target) {
         self.target = target
     }
