@@ -11,7 +11,7 @@ public func memcpy(
     var i = 0
     while i < n {
         unsafe d[i] = s[i]
-        i += 1
+        i &+= 1
     }
     return unsafe dst
 }

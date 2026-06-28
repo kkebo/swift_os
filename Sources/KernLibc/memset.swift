@@ -10,7 +10,7 @@ public func memset(
     var i = 0
     while i < len {
         unsafe d[i] = UInt8(truncatingIfNeeded: val)
-        i += 1
+        i &+= 1
     }
     return unsafe dst
 }

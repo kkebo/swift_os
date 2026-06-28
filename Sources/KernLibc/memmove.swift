@@ -12,12 +12,12 @@ public func memmove(
         var i = 0
         while i < n {
             unsafe d[i] = s[i]
-            i += 1
+            i &+= 1
         }
     } else {
         var i = n
         while i > 0 {
-            i -= 1
+            i &-= 1
             unsafe d[i] = s[i]
         }
     }
