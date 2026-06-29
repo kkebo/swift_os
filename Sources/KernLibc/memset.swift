@@ -6,10 +6,10 @@ public func memset(
     _ val: CInt,
     _ len: Int,
 ) -> UnsafeMutableRawPointer {
-    let d = unsafe dst.bindMemory(to: UInt8.self, capacity: len)
+    // TODO: copy word-by-word if possible
     var i = 0
     while i < len {
-        unsafe d[i] = UInt8(truncatingIfNeeded: val)
+        unsafe dst.storeBytes(of: UInt8(truncatingIfNeeded: val), toByteOffset: i, as: UInt8.self)
         i &+= 1
     }
     return unsafe dst
