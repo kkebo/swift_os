@@ -6,11 +6,10 @@ public func memcpy(
     _ src: UnsafeRawPointer,
     _ n: Int,
 ) -> UnsafeMutableRawPointer {
-    let d = unsafe dst.bindMemory(to: UInt8.self, capacity: n)
-    let s = unsafe src.bindMemory(to: UInt8.self, capacity: n)
+    // TODO: copy word-by-word if possible
     var i = 0
     while i < n {
-        unsafe d[i] = s[i]
+        unsafe dst.storeBytes(of: src.load(fromByteOffset: i, as: UInt8.self), toByteOffset: i, as: UInt8.self)
         i &+= 1
     }
     return unsafe dst

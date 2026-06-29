@@ -6,19 +6,19 @@ public func memmove(
     _ src: UnsafeRawPointer,
     _ n: Int,
 ) -> UnsafeMutableRawPointer {
-    let d = unsafe dst.bindMemory(to: UInt8.self, capacity: n)
-    let s = unsafe src.bindMemory(to: UInt8.self, capacity: n)
     if unsafe dst < src {
+        // TODO: copy word-by-word if possible
         var i = 0
         while i < n {
-            unsafe d[i] = s[i]
+            unsafe dst.storeBytes(of: src.load(fromByteOffset: i, as: UInt8.self), toByteOffset: i, as: UInt8.self)
             i &+= 1
         }
     } else {
+        // TODO: copy word-by-word if possible
         var i = n
         while i > 0 {
             i &-= 1
-            unsafe d[i] = s[i]
+            unsafe dst.storeBytes(of: src.load(fromByteOffset: i, as: UInt8.self), toByteOffset: i, as: UInt8.self)
         }
     }
     return unsafe dst
