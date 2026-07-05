@@ -41,20 +41,10 @@ let package = Package(
             dependencies: [
                 .target(name: "Boot"),
                 .target(name: "KernLibc"),
-                .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
         ),
         .target(name: "KernLibc", swiftSettings: swiftSettings),
-        .target(
-            name: "RaspberryPi",
-            dependencies: [
-                .target(name: "AsmSupport")
-            ],
-            swiftSettings: swiftSettings + [
-                .enableExperimentalFeature("Volatile")
-            ],
-        ),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
     ],
