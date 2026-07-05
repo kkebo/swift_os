@@ -26,7 +26,6 @@ let package = Package(
     products: [
         .executable(name: "Kernel", targets: ["Kernel"]),
         .library(name: "KernLibc", targets: ["KernLibc"]),
-        .library(name: "AppLibc", targets: ["AppLibc"]),
     ],
     traits: [
         .default(enabledTraits: ["RASPI4"]),
@@ -41,50 +40,22 @@ let package = Package(
             name: "Kernel",
             dependencies: [
                 .target(name: "Boot"),
-                .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
-                .target(name: "AsmSupport"),
-                .target(name: "LinkerSupport"),
-                .target(name: "ArchAArch64"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
-        ),
-        .target(
-            name: "KernelCore",
-            dependencies: [
-                .target(name: "Hardware")
-            ],
-            swiftSettings: swiftSettings,
-        ),
-        .target(
-            name: "ArchAArch64",
-            dependencies: [
-                .target(name: "AsmSupport")
-            ],
-            swiftSettings: swiftSettings,
-        ),
-        .target(
-            name: "Hardware",
-            swiftSettings: swiftSettings + [
-                .enableExperimentalFeature("Volatile")
-            ],
         ),
         .target(name: "KernLibc", swiftSettings: swiftSettings),
         .target(
             name: "RaspberryPi",
             dependencies: [
-                .target(name: "Hardware"),
-                .target(name: "AsmSupport"),
-                .target(name: "LinkerSupport"),
+                .target(name: "AsmSupport")
             ],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
             ],
         ),
-        .target(name: "LinkerSupport", swiftSettings: swiftSettings),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
-        .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
 )

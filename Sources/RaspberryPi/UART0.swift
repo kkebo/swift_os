@@ -1,5 +1,4 @@
 private import AsmSupport
-private import Hardware
 import _Volatile
 
 #if RASPI4
@@ -85,9 +84,7 @@ package struct UART0: ~Copyable {
         uartIMSC.store(0b111_11110010)  // mask all interrupts
         uartCR.store(0b11_00000001)  // enable Tx, Rx, UART0
     }
-}
 
-extension UART0: UART {
     /// Write a character to UART.
     @_transparent
     package func putchar(_ c: UInt8) {

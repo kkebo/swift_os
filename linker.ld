@@ -8,7 +8,7 @@ SECTIONS {
         . = ALIGN(2048);
         KEEP(*(.vectors))
     }
-    .data : { *(.rodata* .got* .data*) }
+    .data : { *(.rodata* .data*) }
     .bss (NOLOAD) : ALIGN(16) {  /* ALIGN(16) prevents unaligned stores */
         __bss_start = .;
         *(.bss*)
@@ -36,3 +36,4 @@ SECTIONS {
         *(.swift_ast)
     }
 }
+__bss_size = (__bss_end - __bss_start) >> 3;
