@@ -33,10 +33,10 @@ jump_to_main:
     mov     w0, #65
     bl      uart_putc
 
-1:
-    bl      uart_getc          // w0 = received character
-    bl      uart_putc          // transmit it back
-    b       1b
+    // jump to Swift code, should not return
+    bl Kernel_main
+    // for failsafe, halt this core too
+    b hang
 
 /* Raspberry Pi 4 MMIO base */
 .equ MMIO_BASE,      0xFE000000
