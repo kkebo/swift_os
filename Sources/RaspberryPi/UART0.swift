@@ -1,4 +1,5 @@
 private import AsmSupport
+private import UART0
 import _Volatile
 
 #if RASPI4
@@ -38,73 +39,66 @@ private func receiveFIFOEmpty() -> Bool {
     uartFR.load() & 1 << 4 > 0
 }
 
-// package struct UART0: ~Copyable {
-//     package init() {
-//         // disable UART0
-//         uartCR.store(0)
-//
-//         #if RASPI4 || RASPI3
-//             // set up clock to 3 MHz
-//             unsafe mbox[0] = 9 * 4
-//             unsafe mbox[1] = 0  // request
-//             unsafe mbox[2] = MboxTag.setClockRate
-//             unsafe mbox[3] = 12
-//             unsafe mbox[4] = 0  // request
-//             unsafe mbox[5] = 2  // UART clock
-//             unsafe mbox[6] = 3_000_000  // 3 Mhz
-//             unsafe mbox[7] = 0  // clear turbo
-//             unsafe mbox[8] = MboxTag.end
-//             guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
-//         #endif
-//
-//         // map UART0 to GPIO pins
-//         var selector = gpfsel1.load()
-//         selector &= ~(7 << 12 | 7 << 15)  // GPIO14, GPIO15
-//         selector |= 4 << 12 | 4 << 15  // ALT0
-//         gpfsel1.store(selector)
-//
-//         // disable pull up/down for GPIO14 and GPIO15
-//         #if RASPI4
-//             var value = gppuppdn0.load()
-//             value &= ~(0b11 << 28)  // GPIO14
-//             value &= ~(0b11 << 30)  // GPIO15
-//             gppuppdn0.store(value)
-//         #else
-//             gppud.store(0)
-//             delay(150)
-//             gppudclk0.store(1 << 14 | 1 << 15)
-//             delay(150)
-//             gppudclk0.store(0)  // flush GPIO setup
-//         #endif
-//
-//         uartICR.store(0x7FF)  // clear pending interrupts
-//         uartIBRD.store(1)  // 3000000 / (16 * 115200) = 1.627 = ~1
-//         uartFBRD.store(40)  // (0.627 * 64) + 0.5 = 40.6 = ~40
-//         uartLCRH.store(0b1110000)  // enable FIFO & 8 bit data transmission (1 stop bit, no parity)
-//         uartIMSC.store(0b111_11110010)  // mask all interrupts
-//         uartCR.store(0b11_00000001)  // enable Tx, Rx, UART0
-//     }
-//
-//     /// Write a character to UART.
-//     @_transparent
-//     package func putchar(_ c: UInt8) {
-//         while transmitFIFOFull() {}
-//         uartDR.store(UInt32(c))
-//     }
-//
-//     /// Read a character from UART.
-//     @_transparent
-//     package func getchar() -> UInt8 {
-//         while receiveFIFOEmpty() {}
-//         return UInt8(uartDR.load())
-//     }
-// }
+package struct UART0: ~Copyable {
+    package init() {
+        // disable UART0
+        uartCR.store(0)
 
-/// Read a character from UART.
-@_transparent
-package func getchar() -> UInt8 {
-    while receiveFIFOEmpty() {}
-    return UInt8(uartDR.load())
+        #if RASPI4 || RASPI3
+            // set up clock to 3 MHz
+            unsafe mbox.0 = 9 * 4
+            unsafe mbox.1 = 0  // request
+            unsafe mbox.2 = MboxTag.setClockRate
+            unsafe mbox.3 = 12
+            unsafe mbox.4 = 0  // request
+            unsafe mbox.5 = 2  // UART clock
+            unsafe mbox.6 = 3_000_000  // 3 Mhz
+            unsafe mbox.7 = 0  // clear turbo
+            unsafe mbox.8 = MboxTag.end
+            guard mboxCall(ch: .propertyARM2VC) else { fatalError() }
+        #endif
+
+        // map UART0 to GPIO pins
+        var selector = gpfsel1.load()
+        selector &= ~(7 << 12 | 7 << 15)  // GPIO14, GPIO15
+        selector |= 4 << 12 | 4 << 15  // ALT0
+        gpfsel1.store(selector)
+
+        // disable pull up/down for GPIO14 and GPIO15
+        #if RASPI4
+            var value = gppuppdn0.load()
+            value &= ~(0b11 << 28)  // GPIO14
+            value &= ~(0b11 << 30)  // GPIO15
+            gppuppdn0.store(value)
+        #else
+            gppud.store(0)
+            delay(150)
+            gppudclk0.store(1 << 14 | 1 << 15)
+            delay(150)
+            gppudclk0.store(0)  // flush GPIO setup
+        #endif
+
+        uartICR.store(0x7FF)  // clear pending interrupts
+        uartIBRD.store(1)  // 3000000 / (16 * 115200) = 1.627 = ~1
+        uartFBRD.store(40)  // (0.627 * 64) + 0.5 = 40.6 = ~40
+        uartLCRH.store(0b1110000)  // enable FIFO & 8 bit data transmission (1 stop bit, no parity)
+        uartIMSC.store(0b111_11110010)  // mask all interrupts
+        uartCR.store(0b11_00000001)  // enable Tx, Rx, UART0
+    }
+
+    /// Write a character to UART.
+    @_transparent
+    package func putchar(_ c: UInt8) {
+        while transmitFIFOFull() {}
+        uartDR.store(UInt32(c))
+    }
+
+    /// Read a character from UART.
+    @_transparent
+    package func getchar() -> UInt8 {
+        while receiveFIFOEmpty() {}
+        return UInt8(uartDR.load())
+    }
 }
 
 /// Write a character to UART.

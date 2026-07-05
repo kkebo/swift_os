@@ -42,7 +42,6 @@ let package = Package(
                 .target(name: "Boot"),
                 .target(name: "KernLibc"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
-                .target(name: "UART0", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
         ),
@@ -50,7 +49,8 @@ let package = Package(
         .target(
             name: "RaspberryPi",
             dependencies: [
-                .target(name: "AsmSupport")
+                .target(name: "AsmSupport"),
+                .target(name: "UART0"),
             ],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
