@@ -100,13 +100,6 @@ private func receiveFIFOEmpty() -> Bool {
 //     }
 // }
 
-/// Write a character to UART.
-@_transparent
-package func putchar(_ c: UInt8) {
-    while transmitFIFOFull() {}
-    uartDR.store(UInt32(c))
-}
-
 /// Read a character from UART.
 @_transparent
 package func getchar() -> UInt8 {
@@ -114,10 +107,10 @@ package func getchar() -> UInt8 {
     return UInt8(uartDR.load())
 }
 
-// /// Write a character to UART.
-// @c(__platform_putchar)
-// @export(interface)
-// package func putchar(_ c: UInt8) {
-//     while transmitFIFOFull() {}
-//     uartDR.store(UInt32(c))
-// }
+/// Write a character to UART.
+@c(__platform_putchar)
+@export(interface)
+package func putchar(_ c: UInt8) {
+    while transmitFIFOFull() {}
+    uartDR.store(UInt32(c))
+}

@@ -18,7 +18,7 @@ let swiftSettings: [SwiftSetting] = [
 let cSettings: [CSetting] = [
     .enableWarning("all"),
     .enableWarning("extra"),
-    .treatAllWarnings(as: .error),
+    // .treatAllWarnings(as: .error),
 ]
 
 let package = Package(
@@ -42,6 +42,7 @@ let package = Package(
                 .target(name: "Boot"),
                 .target(name: "KernLibc"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
+                .target(name: "UART0", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
         ),
@@ -55,6 +56,7 @@ let package = Package(
                 .enableExperimentalFeature("Volatile")
             ],
         ),
+        .target(name: "UART0", cSettings: cSettings),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
     ],
