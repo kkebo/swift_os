@@ -1,6 +1,9 @@
-private import AsmSupport
 private import Hardware
 import _Volatile
+
+#if !RASPI4
+    private import AsmSupport
+#endif
 
 #if RASPI4
     let mmioBase: UInt = 0xFE00_0000
