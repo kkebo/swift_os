@@ -1,3 +1,4 @@
+private import CRaspberryPi
 import _Volatile
 
 let videocoreMbox = mmioBase + 0xB880
@@ -11,39 +12,18 @@ let mboxResponse: UInt32 = 0x8000_0000
 let mboxFull: UInt32 = 0x8000_0000
 let mboxEmpty: UInt32 = 0x4000_0000
 
-@_alignment(16)
-struct Mbox: ~Copyable {
-    private var storage: [36 of UInt32] = .init(repeating: 0)
-
-    init() {}
-
-    @_transparent
-    private mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
-        unsafe .init(unsafeBitPattern: withUnsafePointer(to: &self.storage[i], UInt.init(bitPattern:)))
-    }
-
-    subscript(_ i: Int) -> UInt32 {
-        @_transparent
-        mutating get { self.volatilePointer(at: i).load() }
-        @_transparent
-        set { self.volatilePointer(at: i).store(newValue) }
-    }
-
-    mutating func call(ch: MboxChannel) -> Bool {
-        let addr = UInt32(withUnsafePointer(to: &self.storage, UInt.init(bitPattern:)))
-        let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
-        while transmitMboxFull() {}
-        mboxWrite.store(r)
-        repeat {
-            while receiveMboxEmpty() {}
-        } while mboxRead.load() != r
-        return self[1] == mboxResponse
-    }
+package func mboxCall(ch: MboxChannel) -> Bool {
+    let addr = unsafe UInt32(withUnsafePointer(to: &mbox, UInt.init(bitPattern:)))
+    let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
+    while transmitMboxFull() {}
+    mboxWrite.store(r)
+    repeat {
+        while receiveMboxEmpty() {}
+    } while mboxRead.load() != r
+    return unsafe mbox.1 == mboxResponse
 }
 
-nonisolated(unsafe) var mbox: Mbox = .init()
-
-enum MboxChannel: UInt8 {
+package enum MboxChannel: UInt8 {
     case power = 0
     case framebuffer
     case virtualUART

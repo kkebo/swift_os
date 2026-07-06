@@ -77,6 +77,7 @@ let package = Package(
                 .target(name: "Hardware"),
                 .target(name: "AsmSupport", condition: .when(traits: ["RASPI1", "RASPI2", "RASPI3"])),
                 .target(name: "LinkerSupport"),
+                .target(name: "CRaspberryPi"),
             ],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")
@@ -85,6 +86,7 @@ let package = Package(
         .target(name: "LinkerSupport", swiftSettings: swiftSettings),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
+        .target(name: "CRaspberryPi", cSettings: cSettings),
         .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
 )

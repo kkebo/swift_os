@@ -1,6 +1,10 @@
 private import Hardware
 import _Volatile
 
+#if RASPI4 || RASPI3
+    private import CRaspberryPi
+#endif
+
 #if !RASPI4
     private import AsmSupport
 #endif
@@ -49,16 +53,16 @@ package struct UART0: ~Copyable {
 
         #if RASPI4 || RASPI3
             // set up clock to 3 MHz
-            unsafe mbox[0] = 9 * 4
-            unsafe mbox[1] = 0  // request
-            unsafe mbox[2] = MboxTag.setClockRate
-            unsafe mbox[3] = 12
-            unsafe mbox[4] = 0  // request
-            unsafe mbox[5] = 2  // UART clock
-            unsafe mbox[6] = 3_000_000  // 3 Mhz
-            unsafe mbox[7] = 0  // clear turbo
-            unsafe mbox[8] = MboxTag.end
-            guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
+            unsafe mbox.0 = 9 * 4
+            unsafe mbox.1 = 0  // request
+            unsafe mbox.2 = MboxTag.setClockRate
+            unsafe mbox.3 = 12
+            unsafe mbox.4 = 0  // request
+            unsafe mbox.5 = 2  // UART clock
+            unsafe mbox.6 = 3_000_000  // 3 Mhz
+            unsafe mbox.7 = 0  // clear turbo
+            unsafe mbox.8 = MboxTag.end
+            guard mboxCall(ch: .propertyARM2VC) else { fatalError() }
         #endif
 
         // map UART0 to GPIO pins
