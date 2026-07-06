@@ -1,4 +1,3 @@
-private import AsmSupport
 private import LinkerSupport
 
 package struct MemoryManager: ~Copyable {

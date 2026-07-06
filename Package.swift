@@ -75,7 +75,7 @@ let package = Package(
             name: "RaspberryPi",
             dependencies: [
                 .target(name: "Hardware"),
-                .target(name: "AsmSupport"),
+                .target(name: "AsmSupport", condition: .when(traits: ["RASPI1", "RASPI2", "RASPI3"])),
                 .target(name: "LinkerSupport"),
             ],
             swiftSettings: swiftSettings + [
