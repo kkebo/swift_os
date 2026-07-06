@@ -13,6 +13,8 @@ SECTIONS {
         __bss_start = .;
         *(.bss*)
         *(COMMON)
+        . = ALIGN(16);
+        KEEP(*(.mbox))
 
         . = ALIGN(4096);
         __l1_table = .;
