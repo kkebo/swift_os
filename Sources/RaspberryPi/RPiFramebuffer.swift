@@ -81,6 +81,6 @@ package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
         // GPU address to ARM address
         self.baseAddress = UInt(gpuAddr & 0x3FFF_FFFF)
 
-        print("Framebufer is ready")
+        print("Framebuffer is ready")
     }
 }
