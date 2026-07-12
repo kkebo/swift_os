@@ -6,10 +6,10 @@ private nonisolated(unsafe) var kernelEndHead: UInt8
 private nonisolated(unsafe) var bssStartHead: UInt8
 @_extern(c, "__bss_end")
 private nonisolated(unsafe) var bssEndHead: UInt8
-@_extern(c, "__stack_start")
-private nonisolated(unsafe) var stackStartHead: UInt8
-@_extern(c, "__stack_end")
-private nonisolated(unsafe) var stackEndHead: UInt8
+@_extern(c, "__stack_bottom")
+private nonisolated(unsafe) var stackBottomHead: UInt8
+@_extern(c, "__stack_top")
+private nonisolated(unsafe) var stackTopHead: UInt8
 @_extern(c, "__kernel_image_end")
 private nonisolated(unsafe) var kernelImageEndHead: UInt8
 
@@ -31,12 +31,12 @@ package enum ImageLayout {
         unsafe withUnsafePointer(to: &bssEndHead, UInt.init(bitPattern:))
     }
     @_transparent
-    package static var stackStart: UInt {
-        unsafe withUnsafePointer(to: &stackStartHead, UInt.init(bitPattern:))
+    package static var stackBottom: UInt {
+        unsafe withUnsafePointer(to: &stackBottomHead, UInt.init(bitPattern:))
     }
     @_transparent
-    package static var stackEnd: UInt {
-        unsafe withUnsafePointer(to: &stackEndHead, UInt.init(bitPattern:))
+    package static var stackTop: UInt {
+        unsafe withUnsafePointer(to: &stackTopHead, UInt.init(bitPattern:))
     }
     @_transparent
     package static var kernelImageEnd: UInt {
