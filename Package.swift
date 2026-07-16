@@ -5,6 +5,7 @@ import PackageDescription
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Lifetimes"),
     .enableExperimentalFeature("Extern"),
+    .enableExperimentalFeature("CodeGenerationModel=implementation"),  // For kernels, not for libraries
     .enableUpcomingFeature("ExistentialAny"),
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),
@@ -24,9 +25,7 @@ let cSettings: [CSetting] = [
 let package = Package(
     name: "swift_os",
     products: [
-        .executable(name: "Kernel", targets: ["Kernel"]),
-        .library(name: "KernLibc", targets: ["KernLibc"]),
-        .library(name: "AppLibc", targets: ["AppLibc"]),
+        .executable(name: "Kernel", targets: ["Kernel"])
     ],
     traits: [
         .default(enabledTraits: ["RASPI4"]),
