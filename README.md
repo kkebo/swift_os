@@ -65,7 +65,7 @@ llvm-objcopy .build/debug/Kernel -O binary .build/kernel8.img
 Release build (recommended for deployment):
 
 ```shell
-swift build -c release -Xswiftc -Osize --triple aarch64-none-none-elf --toolset toolset.json --build-system native
+swift build -c release -Xswiftc -Osize --triple aarch64-none-none-elf --toolset toolset.json --experimental-lto-mode=full -Xswiftc -experimental-hermetic-seal-at-link --build-system native
 llvm-objcopy .build/release/Kernel -O binary .build/kernel8.img
 ```
 
