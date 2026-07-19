@@ -6,7 +6,6 @@
             "-Xfrontend", "-no-allocations",
             "-Xfrontend", "-function-sections",
             "-Xfrontend", "-disable-stack-protector",
-            "-Xcc", "-mgeneral-regs-only",
             "-Xlinker-driver", "-nostdlib",
             "-Xlinker-driver", "-fuse-ld=lld"
         ]
