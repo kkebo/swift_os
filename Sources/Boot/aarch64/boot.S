@@ -36,6 +36,9 @@ el3_entry:
     adr x0, el1_entry
     msr elr_el3, x0
 
+    mov x0, xzr
+    msr cptr_el3, x0  // disable SIMD/FP traps
+
     isb
     eret
 
@@ -52,12 +55,28 @@ el2_entry:
     adr x0, el1_entry
     msr elr_el2, x0
 
+    mov x0, xzr
+    msr cptr_el2, x0  // disable SIMD/FP traps
+
     isb
     eret
 
 el1_entry:
+    mrs x0, cpacr_el1
+    orr x0, x0, #(3 << 20)
+    msr cpacr_el1, x0  // enable SIMD/FP access
+    isb
+
     ldr x0, =__stack_top
     mov sp, x0
+
+    mrs x0, sctlr_el1
+    bic x0, x0, #(1 << 0)   // M = 0 (MMU disabled)
+    bic x0, x0, #(1 << 1)   // A = 0 (Alignment check disabled)
+    bic x0, x0, #(1 << 2)   // C = 0 (Data cache disabled)
+    bic x0, x0, #(1 << 12)  // I = 0 (Instruction cache disabled)
+    msr sctlr_el1, x0
+    isb
 
 jump_to_main:
     // jump to Swift code, should not return

@@ -59,9 +59,9 @@ enable_mmu:
     isb
 
     mrs x3, sctlr_el1
-    orr x3, x3, #1          // M = 1 (MMU enable)
-    orr x3, x3, #(1 << 2)   // C = 1 (Data Cache enable)
-    orr x3, x3, #(1 << 12)  // I = 1 (Instruction Cache enable)
+    orr x3, x3, #1          // M = 1 (MMU enabled)
+    orr x3, x3, #(1 << 2)   // C = 1 (Data cache enabled)
+    orr x3, x3, #(1 << 12)  // I = 1 (Instruction cache enabled)
     msr sctlr_el1, x3
     isb
     ret
