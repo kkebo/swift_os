@@ -13,6 +13,19 @@ SECTIONS {
         __bss_start = .;
         *(.bss*)
         *(COMMON)
+
+        . = ALIGN(4096);
+        __l1_table = .;
+        . += 4096;
+        __l2_table_0 = .;
+        . += 4096;
+        __l2_table_1 = .;
+        . += 4096;
+        __l2_table_2 = .;
+        . += 4096;
+        __l2_table_3 = .;
+        . += 4096;
+
         . = ALIGN(8);
         __bss_end = .;
     }
