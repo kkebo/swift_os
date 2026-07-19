@@ -4,6 +4,7 @@ package struct UARTConsole<T: ~Copyable & UART>: ~Copyable {
     package let uart: T
 
     @_transparent
+    @export(implementation)
     package init(uart: consuming T) {
         self.uart = uart
     }
@@ -11,6 +12,7 @@ package struct UARTConsole<T: ~Copyable & UART>: ~Copyable {
 
 extension UARTConsole: Console {
     @_transparent
+    @export(implementation)
     package func write(_ c: UInt8) {
         self.uart.putchar(c)
     }
