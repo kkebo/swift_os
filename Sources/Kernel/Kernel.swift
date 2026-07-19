@@ -34,12 +34,14 @@ struct Kernel {
 
         print("Hello Swift!")
 
-        let memoryManager = MemoryManager()
-        let ramLabel: StaticString = "RAM:"
-        let ramTotal = memoryManager.total / 1024 / 1024
-        print(ramLabel, terminator: " ")
-        print(ramTotal, terminator: " ")
-        print("MiB")
+        #if RASPI
+            let memoryManager = MemoryManager()
+            let ramLabel: StaticString = "RAM:"
+            let ramTotal = memoryManager.total / 1024 / 1024
+            print(ramLabel, terminator: " ")
+            print(ramTotal, terminator: " ")
+            print("MiB")
+        #endif
 
         #if RASPI
             let fb = RPiFramebuffer<UInt32>(width: 1024, height: 576, pixelOrder: .rgb)
@@ -54,8 +56,10 @@ struct Kernel {
         g.fillRect(x0: 0, y0: 0, x1: g.width - 1, y1: g.height - 1, color: bg)
         g.drawString("Hello Swift!", x: 0, y: 0, color: fg)
 
-        g.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
-        g.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
+        #if RASPI
+            g.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
+            g.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
+        #endif
 
         #if arch(arm64)
             // For debugging
