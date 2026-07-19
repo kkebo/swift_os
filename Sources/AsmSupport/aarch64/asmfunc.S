@@ -52,7 +52,7 @@ enable_mmu:
     msr ttbr0_el1, x2
     isb
 
-    // Invalidate TLB and Instruction Cache (single core)
+    // Invalidate TLB (single core)
     dsb sy
     tlbi vmalle1
     dsb sy
