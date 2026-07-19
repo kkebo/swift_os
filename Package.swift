@@ -60,7 +60,8 @@ let package = Package(
         .target(
             name: "ArchAArch64",
             dependencies: [
-                .target(name: "AsmSupport")
+                .target(name: "AsmSupport"),
+                .target(name: "LinkerSupport"),
             ],
             swiftSettings: swiftSettings,
         ),

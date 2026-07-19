@@ -20,6 +20,10 @@ struct Kernel {
     private static func mainLoop() -> Never {
         zeroBSS()
 
+        #if arch(arm64)
+            enableInitialMMU()
+        #endif
+
         #if RASPI
             let _ = UARTConsole(uart: UART0())
         #else
