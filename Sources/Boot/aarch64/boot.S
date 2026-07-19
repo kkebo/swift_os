@@ -36,6 +36,9 @@ el3_entry:
     adr x0, el1_entry
     msr elr_el3, x0
 
+    mov x0, xzr
+    msr cptr_el3, x0  // disable SIMD/FP traps
+
     isb
     eret
 
@@ -52,10 +55,18 @@ el2_entry:
     adr x0, el1_entry
     msr elr_el2, x0
 
+    mov x0, xzr
+    msr cptr_el2, x0  // disable SIMD/FP traps
+
     isb
     eret
 
 el1_entry:
+    mrs x0, cpacr_el1
+    orr x0, x0, #(3 << 20)
+    msr cpacr_el1, x0  // enable SIMD/FP access
+    isb
+
     ldr x0, =__stack_top
     mov sp, x0
 
