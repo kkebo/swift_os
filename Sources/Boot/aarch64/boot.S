@@ -70,6 +70,14 @@ el1_entry:
     ldr x0, =__stack_top
     mov sp, x0
 
+    mrs x0, sctlr_el1
+    bic x0, x0, #(1 << 0)   // M = 0 (MMU disabled)
+    bic x0, x0, #(1 << 1)   // A = 0 (Alignment check disabled)
+    bic x0, x0, #(1 << 2)   // C = 0 (Data cache disabled)
+    bic x0, x0, #(1 << 12)  // I = 0 (Instruction cache disabled)
+    msr sctlr_el1, x0
+    isb
+
 jump_to_main:
     // jump to Swift code, should not return
     bl Kernel_main
