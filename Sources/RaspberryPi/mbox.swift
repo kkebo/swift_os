@@ -22,6 +22,7 @@ struct Mbox: ~Copyable {
         unsafe .init(unsafeBitPattern: withUnsafePointer(to: &self.storage[i], UInt.init(bitPattern:)))
     }
 
+    @export(implementation)
     subscript(_ i: Int) -> UInt32 {
         @_transparent
         mutating get { self.volatilePointer(at: i).load() }

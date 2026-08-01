@@ -12,6 +12,7 @@ package protocol Framebuffer: ~Copyable, ~Escapable, RenderTarget {
 
 extension Framebuffer where Self: ~Copyable {
     @unsafe
+    @export(implementation)
     package subscript(uncheckedX x: Int, y y: Int) -> Depth {
         @_transparent
         get {
