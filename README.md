@@ -26,6 +26,7 @@ I'm currently focusing on supporting AArch64 and Raspberry Pi 4, but I plan to s
 ## Prerequisites
 
 - QEMU 9.0 or later
+  - FreeBSD 15 or later: `doas pkg install qemu`
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
   - Fedora 41 or later: `sudo dnf install qemu-system-aarch64-core`
   - Fedora 40: Build from [source](https://www.qemu.org/download/#source)
