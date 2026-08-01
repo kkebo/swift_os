@@ -75,8 +75,9 @@ let package = Package(
             name: "RaspberryPi",
             dependencies: [
                 .target(name: "Hardware"),
-                .target(name: "AsmSupport", condition: .when(traits: ["RASPI1", "RASPI2", "RASPI3"])),
+                .target(name: "AsmSupport"),
                 .target(name: "LinkerSupport"),
+                .target(name: "ArchAArch64"),
             ],
             swiftSettings: swiftSettings + [
                 .enableExperimentalFeature("Volatile")

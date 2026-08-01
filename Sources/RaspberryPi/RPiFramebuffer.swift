@@ -1,5 +1,9 @@
 package import Hardware
 
+#if arch(arm64)
+    private import ArchAArch64
+#endif
+
 @safe
 package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
     /// Actual physical width.
@@ -80,6 +84,10 @@ package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
         self.pixelOrder = unsafe .init(rawValue: mbox[24])!
         // GPU address to ARM address
         self.baseAddress = UInt(gpuAddr & 0x3FFF_FFFF)
+
+        #if arch(arm64)
+            setMemoryAttribute(physicalAddress: self.baseAddress, size: UInt(byteCount), attrIndex: 1)
+        #endif
 
         print("Framebuffer is ready")
     }
