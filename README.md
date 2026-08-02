@@ -59,9 +59,6 @@ swift build --triple aarch64-none-none-elf --toolset toolset.json --build-system
 llvm-objcopy .build/debug/Kernel -O binary .build/kernel8.img
 ```
 
-> [!WARNING]
-> Known issue: [#167](https://github.com/kkebo/swift_os/issues/167)
-
 Release build (recommended for deployment):
 
 ```shell
