@@ -30,7 +30,7 @@ package func enableInitialMMU() {
         let descriptor =
             switch addr {
             case 0..<initialDRAMSize:
-                // DRAM -> Normal Non-Cacheable, Inner Shareable
+                // DRAM -> Normal Write-Back Cacheable, Inner Shareable
                 // Lower attributes: AF=1, SH=3 (Inner Shareable), AP=0, AttrIndx=0
                 addr | 0x701
             case 0xfc00_0000...0xffff_ffff:
@@ -55,9 +55,9 @@ package func enableInitialMMU() {
 
     enableMMU(
         // MAIR_EL1:
-        // Index 0 = 0x44 (Normal Non-Cacheable)
+        // Index 0 = 0xFF (Normal Write-Back Cacheable)
         // Index 1 = 0x00 (Device nGnRnE)
-        mair: 0x44 | (0x00 << 8),
+        mair: 0xFF | (0x00 << 8),
         // TCR_EL1:
         // T0SZ = 25 (39-bit VA)
         // EPD1 = 1 (Disable TTBR1 walks)

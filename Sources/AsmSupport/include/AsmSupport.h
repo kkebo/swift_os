@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #include <stdint.h>
 
 void delay(uint64_t);
@@ -8,6 +9,12 @@ __attribute__((swift_name("enableIRQ()")))
 void enable_irq(void);
 __attribute__((swift_name("disableIRQ()")))
 void disable_irq(void);
+#ifndef __x86_64__
+__attribute__((swift_name("cleanDCache(start:size:)")))
+void clean_dcache_range(uintptr_t start, size_t size);
+__attribute__((swift_name("invalidateDCache(start:size:)")))
+void invalidate_dcache_range(uintptr_t start, size_t size);
+#endif
 #ifdef __aarch64__
 __attribute__((swift_name("getEL()")))
 uint32_t get_el(void);

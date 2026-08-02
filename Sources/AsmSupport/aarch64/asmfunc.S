@@ -21,6 +21,34 @@ disable_irq:
     msr daifset, #2
     ret
 
+.macro DCACHE_RANGE op
+    cbz x1, 2f
+    add x1, x0, x1
+    mrs x2, ctr_el0
+    lsr x2, x2, #16
+    and x2, x2, #0xf
+    mov x3, #4
+    lsl x3, x3, x2
+    sub x4, x3, #1
+    bic x0, x0, x4
+1:
+    dc \op, x0
+    add x0, x0, x3
+    cmp x0, x1
+    b.lo 1b
+    dsb ish
+2:
+    ret
+.endm
+
+.global clean_dcache_range
+clean_dcache_range:
+    DCACHE_RANGE cvac
+
+.global invalidate_dcache_range
+invalidate_dcache_range:
+    DCACHE_RANGE ivac
+
 .global get_el
 get_el:
     mrs x0, CurrentEL

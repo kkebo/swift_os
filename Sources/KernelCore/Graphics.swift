@@ -63,4 +63,8 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
             self.drawChar(c, x: x &+ i * fontWidth, y: y, color: color)
         }
     }
+
+    package func synchronize() {
+        self.target.synchronize()
+    }
 }

@@ -6,4 +6,6 @@ package protocol RenderTarget<Depth>: ~Copyable, ~Escapable {
 
     @unsafe
     subscript(uncheckedX x: Int, y y: Int) -> Depth { get set }
+
+    func synchronize()
 }

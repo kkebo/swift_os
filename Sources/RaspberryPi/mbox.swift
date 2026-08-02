@@ -1,3 +1,4 @@
+private import AsmSupport
 import _Volatile
 
 let videocoreMbox = mmioBase + 0xB880
@@ -30,13 +31,20 @@ struct Mbox: ~Copyable {
     }
 
     mutating func call(ch: MboxChannel) -> Bool {
-        let addr = UInt32(withUnsafePointer(to: &self.storage, UInt.init(bitPattern:)))
-        let r = addr & ~0xF | UInt32(ch.rawValue & 0xF)
+        let addr = UInt(withUnsafePointer(to: &self, UInt.init(bitPattern:)))
+        let size = MemoryLayout.size(ofValue: self)
+
+        cleanDCache(start: addr, size: size)
+
+        let r = UInt32(addr) & ~0xF | UInt32(ch.rawValue & 0xF)
         while transmitMboxFull() {}
         mboxWrite.store(r)
         repeat {
             while receiveMboxEmpty() {}
         } while mboxRead.load() != r
+
+        invalidateDCache(start: addr, size: size)
+
         return self[1] == mboxResponse
     }
 }

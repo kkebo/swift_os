@@ -1,3 +1,4 @@
+private import AsmSupport
 package import Hardware
 
 @safe
@@ -10,6 +11,7 @@ package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
     package let pixelOrder: PixelOrder
     /// Framebuffer base address.
     package let baseAddress: UInt
+    private let byteCount: Int
 
     package init(
         width: UInt32,
@@ -80,7 +82,12 @@ package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
         self.pixelOrder = unsafe .init(rawValue: mbox[24])!
         // GPU address to ARM address
         self.baseAddress = UInt(gpuAddr & 0x3FFF_FFFF)
+        self.byteCount = Int(byteCount)
 
         print("Framebuffer is ready")
+    }
+
+    package func synchronize() {
+        cleanDCache(start: self.baseAddress, size: self.byteCount)
     }
 }
