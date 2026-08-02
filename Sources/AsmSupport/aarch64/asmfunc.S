@@ -21,14 +21,6 @@ disable_irq:
     msr daifset, #2
     ret
 
-.global invalidate_tlb
-invalidate_tlb:
-    dsb sy
-    tlbi vmalle1is
-    dsb sy
-    isb
-    ret
-
 .macro DCACHE_RANGE op
     cbz x1, 2f
     add x1, x0, x1
@@ -88,8 +80,9 @@ enable_mmu:
     msr ttbr0_el1, x2
     isb
 
+    // Invalidate TLB (single core)
     dsb sy
-    tlbi vmalle1is
+    tlbi vmalle1
     dsb sy
     isb
 

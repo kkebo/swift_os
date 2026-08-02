@@ -9,8 +9,6 @@ __attribute__((swift_name("enableIRQ()")))
 void enable_irq(void);
 __attribute__((swift_name("disableIRQ()")))
 void disable_irq(void);
-__attribute__((swift_name("invalidateTLB()")))
-void invalidate_tlb(void);
 #ifndef __x86_64__
 __attribute__((swift_name("cleanDCache(start:size:)")))
 void clean_dcache_range(uintptr_t start, size_t size);

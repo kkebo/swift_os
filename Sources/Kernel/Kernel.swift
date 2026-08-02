@@ -77,6 +77,8 @@ struct Kernel {
             g.drawString(el, x: (elLabel.utf8CodeUnitCount + 1) * fontWidth, y: 2 * fontHeight, color: accent)
         #endif
 
+        g.synchronize()
+
         repeat { halt() } while true
     }
 }

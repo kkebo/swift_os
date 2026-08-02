@@ -1,12 +1,12 @@
 private import AsmSupport
 private import LinkerSupport
 
-private let l2BlockSize: UInt = 1 << 21
-
 package func enableInitialMMU() {
     // We cannot query the physical memory size before enabling the MMU.
     // Use a fixed size for the initial memory mapping.
     let initialDRAMSize: UInt = 1 << 30
+
+    let l2BlockSize: UInt = 1 << 21
     precondition(initialDRAMSize.isMultiple(of: l2BlockSize), "Mapped RAM size must be 2 MiB aligned")
 
     // Get physical addresses of L2 tables
@@ -35,9 +35,9 @@ package func enableInitialMMU() {
                 addr | 0x701
             case 0xfc00_0000...0xffff_ffff:
                 // MMIO -> Device-nGnRnE
-                // Lower attributes: AF=1, SH=0, AP=0, AttrIndx=2
+                // Lower attributes: AF=1, SH=0, AP=0, AttrIndx=1
                 // Upper attributes: PXN=1, UXN=1
-                addr | 0x0060_0000_0000_0409
+                addr | 0x0060_0000_0000_0405
             case _: 0 as UInt
             }
 
@@ -56,9 +56,8 @@ package func enableInitialMMU() {
     enableMMU(
         // MAIR_EL1:
         // Index 0 = 0xFF (Normal Write-Back Cacheable)
-        // Index 1 = 0x44 (Normal Non-Cacheable)
-        // Index 2 = 0x00 (Device nGnRnE)
-        mair: 0xFF | (0x44 << 8) | (0x00 << 16),
+        // Index 1 = 0x00 (Device nGnRnE)
+        mair: 0xFF | (0x00 << 8),
         // TCR_EL1:
         // T0SZ = 25 (39-bit VA)
         // EPD1 = 1 (Disable TTBR1 walks)
@@ -83,35 +82,4 @@ private func tcrIPS(from paRange: UInt64) -> UInt64 {
     case 0b0101: 0b101  // 48-bit
     case _: preconditionFailure("unsupported PARange")
     }
-}
-
-package func setMemoryAttribute(physicalAddress: UInt, size: UInt, attrIndex: UInt) {
-    let startBlock = Int(physicalAddress / l2BlockSize)
-    let endBlock = Int((physicalAddress &+ size &- 1) / l2BlockSize &+ 1)
-
-    let attrIndexMask: UInt = 0b111 << 2
-    for i in startBlock..<endBlock {
-        let (tableIndex, entryIndex) = i.quotientAndRemainder(dividingBy: 512)
-
-        let table =
-            switch tableIndex {
-            case 0: unsafe PageTable.l2Table0
-            case 1: unsafe PageTable.l2Table1
-            case 2: unsafe PageTable.l2Table2
-            case 3: unsafe PageTable.l2Table3
-            case _: preconditionFailure("unreachable")
-            }
-
-        var descriptor = unsafe table[entryIndex]
-        descriptor &= ~attrIndexMask
-        descriptor |= (attrIndex << 2) & attrIndexMask
-        unsafe table[entryIndex] = descriptor
-    }
-
-    let pageTableSize = 512 * MemoryLayout<UInt>.stride
-    cleanDCache(start: unsafe UInt(bitPattern: PageTable.l2Table0), size: pageTableSize)
-    cleanDCache(start: unsafe UInt(bitPattern: PageTable.l2Table1), size: pageTableSize)
-    cleanDCache(start: unsafe UInt(bitPattern: PageTable.l2Table2), size: pageTableSize)
-    cleanDCache(start: unsafe UInt(bitPattern: PageTable.l2Table3), size: pageTableSize)
-    invalidateTLB()
 }
