@@ -1,8 +1,8 @@
 private import LinkerSupport
 
 func zeroBSS() {
-    let start = ImageLayout.bssStart
-    let end = ImageLayout.bssEnd
+    let start = bssStart
+    let end = bssEnd
     let size = end - start
 
     precondition(start % 8 == 0)
