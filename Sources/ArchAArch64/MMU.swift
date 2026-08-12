@@ -10,16 +10,16 @@ package func enableInitialMMU() {
     precondition(initialDRAMSize.isMultiple(of: l2BlockSize), "Mapped RAM size must be 2 MiB aligned")
 
     // Get physical addresses of L2 tables
-    let paddr0 = UInt(bitPattern: unsafe PageTable.l2Table0)
-    let paddr1 = UInt(bitPattern: unsafe PageTable.l2Table1)
-    let paddr2 = UInt(bitPattern: unsafe PageTable.l2Table2)
-    let paddr3 = UInt(bitPattern: unsafe PageTable.l2Table3)
+    let paddr0 = UInt(bitPattern: unsafe l2Table0)
+    let paddr1 = UInt(bitPattern: unsafe l2Table1)
+    let paddr2 = UInt(bitPattern: unsafe l2Table2)
+    let paddr3 = UInt(bitPattern: unsafe l2Table3)
 
     // Set L1 entries pointing to L2 tables
-    unsafe PageTable.l1[0] = paddr0 | 3
-    unsafe PageTable.l1[1] = paddr1 | 3
-    unsafe PageTable.l1[2] = paddr2 | 3
-    unsafe PageTable.l1[3] = paddr3 | 3
+    unsafe l1Table[0] = paddr0 | 3
+    unsafe l1Table[1] = paddr1 | 3
+    unsafe l1Table[2] = paddr2 | 3
+    unsafe l1Table[3] = paddr3 | 3
 
     // Populate L2 tables mapping the 4 GiB space block by block
     for i in 0..<2048 {
@@ -42,10 +42,10 @@ package func enableInitialMMU() {
             }
 
         switch tableIndex {
-        case 0: unsafe PageTable.l2Table0[entryIndex] = descriptor
-        case 1: unsafe PageTable.l2Table1[entryIndex] = descriptor
-        case 2: unsafe PageTable.l2Table2[entryIndex] = descriptor
-        case 3: unsafe PageTable.l2Table3[entryIndex] = descriptor
+        case 0: unsafe l2Table0[entryIndex] = descriptor
+        case 1: unsafe l2Table1[entryIndex] = descriptor
+        case 2: unsafe l2Table2[entryIndex] = descriptor
+        case 3: unsafe l2Table3[entryIndex] = descriptor
         case _: preconditionFailure("unreachable")
         }
     }
@@ -67,7 +67,7 @@ package func enableInitialMMU() {
         // IRGN0 = 1 (Inner WB WA cacheable)
         // IPS = paRange
         tcr: (1 << 23) | (3 << 12) | (1 << 10) | (1 << 8) | 25 | (ips << 32),
-        ttbr0: UInt64(UInt(bitPattern: unsafe PageTable.l1)),
+        ttbr0: UInt64(UInt(bitPattern: unsafe l1Table)),
     )
 }
 

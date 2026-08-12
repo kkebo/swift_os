@@ -23,8 +23,8 @@ package struct MemoryManager: ~Copyable {
         let base = UInt(unsafe mbox[5])
         let size = UInt(unsafe mbox[6])
 
-        precondition(ImageLayout.kernelStart >= base)
-        precondition(ImageLayout.kernelEnd < base + size)
+        precondition(kernelStart >= base)
+        precondition(kernelEnd < base + size)
 
         self.baseAddress = base
         self.total = size

@@ -83,7 +83,7 @@ let package = Package(
                 .enableExperimentalFeature("Volatile")
             ],
         ),
-        .target(name: "LinkerSupport", swiftSettings: swiftSettings),
+        .target(name: "LinkerSupport", cSettings: cSettings),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
         .target(name: "AppLibc", swiftSettings: swiftSettings),
