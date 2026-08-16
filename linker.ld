@@ -8,7 +8,8 @@ SECTIONS {
         . = ALIGN(2048);
         KEEP(*(.vectors))
     }
-    .data : { *(.rodata* .data*) }
+    .rodata : { *(.rodata*) }
+    .data : { *(.data*) }
     .bss (NOLOAD) : ALIGN(16) {  /* ALIGN(16) prevents unaligned stores */
         __bss_start = .;
         *(.bss*)
