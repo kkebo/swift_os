@@ -41,13 +41,16 @@ package func enableInitialMMU() {
             case _: 0 as UInt
             }
 
-        switch tableIndex {
-        case 0: unsafe l2Table0[entryIndex] = descriptor
-        case 1: unsafe l2Table1[entryIndex] = descriptor
-        case 2: unsafe l2Table2[entryIndex] = descriptor
-        case 3: unsafe l2Table3[entryIndex] = descriptor
-        case _: preconditionFailure("unreachable")
-        }
+        let table: UnsafeMutablePointer<UInt> =
+            switch tableIndex {
+            case 0: unsafe l2Table0
+            case 1: unsafe l2Table1
+            case 2: unsafe l2Table2
+            case 3: unsafe l2Table3
+            case _: preconditionFailure("unreachable")
+            }
+
+        unsafe table[entryIndex] = descriptor
     }
 
     let paRange = getMMFR0() & 0xf
