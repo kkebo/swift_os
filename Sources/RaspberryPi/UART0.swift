@@ -1,36 +1,28 @@
 private import Hardware
-import _Volatile
+private import _Volatile
 
 #if !RASPI4
     private import AsmSupport
 #endif
 
+private let gpioBase = mmioBase + 0x200000
+private let gpfsel1 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x4)
 #if RASPI4
-    let mmioBase: UInt = 0xFE00_0000
-#elseif RASPI3 || RASPI2
-    let mmioBase: UInt = 0x3F00_0000
+    private let gppuppdn0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0xE4)
 #else
-    let mmioBase: UInt = 0x2000_0000
+    private let gppud = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x94)
+    private let gppudclk0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x98)
 #endif
 
-let gpioBase = mmioBase + 0x200000
-let gpfsel1 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x4)
-#if RASPI4
-    let gppuppdn0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0xE4)
-#else
-    let gppud = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x94)
-    let gppudclk0 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gpioBase + 0x98)
-#endif
-
-let uartBase = gpioBase + 0x1000
-let uartDR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase)
-let uartFR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x18)
-let uartIBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x24)
-let uartFBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x28)
-let uartLCRH = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x2C)
-let uartCR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x30)
-let uartIMSC = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x38)
-let uartICR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x44)
+private let uartBase = gpioBase + 0x1000
+private let uartDR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase)
+private let uartFR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x18)
+private let uartIBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x24)
+private let uartFBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x28)
+private let uartLCRH = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x2C)
+private let uartCR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x30)
+private let uartIMSC = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x38)
+private let uartICR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x44)
 
 @_transparent
 private func transmitFIFOFull() -> Bool {
