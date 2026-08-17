@@ -1,3 +1,4 @@
+private import Hardware
 private import KernelCore
 
 #if RASPI
@@ -5,7 +6,7 @@ private import KernelCore
 #endif
 
 #if RASPI
-    private nonisolated(unsafe) var console: UARTConsole<UART0>?
+    private nonisolated(unsafe) var console: (any Console & ~Copyable)?
 #else
     // private nonisolated(unsafe) var console: OtherConsole?
 #endif
@@ -23,5 +24,7 @@ func enableConsole() {
 @c(__platform_putchar)
 @export(interface)
 package func putchar(_ c: UInt8) {
-    unsafe console?.write(c)
+    if let console = unsafe console.ref {
+        console.write(c)
+    }
 }
