@@ -24,12 +24,7 @@ struct Kernel {
             enableInitialMMU()
         #endif
 
-        #if RASPI
-            let _ = UARTConsole(uart: UART0())
-        #else
-            // let console = OtherConsole()
-            fatalError("not implemented")
-        #endif
+        enableConsole()
 
         #if arch(arm64)
             registerVectorTable()
