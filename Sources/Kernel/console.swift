@@ -1,5 +1,8 @@
 private import KernelCore
-private import RaspberryPi
+
+#if RASPI
+    private import RaspberryPi
+#endif
 
 #if RASPI
     private nonisolated(unsafe) var console: UARTConsole<UART0>?
