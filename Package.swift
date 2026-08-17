@@ -13,6 +13,7 @@ let swiftSettings: [SwiftSetting] = [
     .enableUpcomingFeature("ImmutableWeakCaptures"),
     .strictMemorySafety(),
     .treatAllWarnings(as: .error),
+    .treatWarning("HeapAllocation", as: .error),
 ]
 
 let cSettings: [CSetting] = [
