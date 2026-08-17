@@ -3,6 +3,7 @@
     "swiftCompiler": {
         "extraCLIOptions": [
             "-enable-experimental-feature", "Embedded",
+            "-enable-experimental-feature", "CodeGenerationModel=implementation",
             "-Xfrontend", "-no-allocations",
             "-Xfrontend", "-function-sections",
             "-Xfrontend", "-disable-stack-protector",

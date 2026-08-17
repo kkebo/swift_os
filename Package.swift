@@ -5,7 +5,6 @@ import PackageDescription
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Lifetimes"),
     .enableExperimentalFeature("Extern"),
-    .enableExperimentalFeature("CodeGenerationModel=implementation"),  // For kernels, not for libraries
     .enableUpcomingFeature("ExistentialAny"),
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),
