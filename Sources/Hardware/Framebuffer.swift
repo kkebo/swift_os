@@ -10,7 +10,7 @@ package protocol Framebuffer: ~Copyable, ~Escapable, RenderTarget {
     var baseAddress: UInt { get }
 }
 
-extension Framebuffer where Self: ~Copyable {
+extension Framebuffer where Self: ~Copyable & ~Escapable {
     @unsafe
     package subscript(uncheckedX x: Int, y y: Int) -> Depth {
         @_transparent

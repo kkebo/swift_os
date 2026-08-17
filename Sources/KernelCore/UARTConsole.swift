@@ -9,7 +9,7 @@ package struct UARTConsole<T: ~Copyable & UART>: ~Copyable {
     }
 }
 
-extension UARTConsole: Console {
+extension UARTConsole: Console where T: ~Copyable {
     @_transparent
     package func write(_ c: UInt8) {
         self.uart.putchar(c)
