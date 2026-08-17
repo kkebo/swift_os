@@ -24,23 +24,14 @@ struct Kernel {
             enableInitialMMU()
         #endif
 
-        enableConsole()
+        enableSerialConsole()
+
+        print("Starting swift_os...")
 
         #if arch(arm64)
             registerVectorTable()
         #endif
         enableIRQ()
-
-        print("Hello Swift!")
-
-        #if RASPI
-            let memoryManager = MemoryManager()
-            let ramLabel: StaticString = "RAM:"
-            let ramTotal = memoryManager.total / 1024 / 1024
-            print(ramLabel, terminator: " ")
-            print(ramTotal, terminator: " ")
-            print("MiB")
-        #endif
 
         #if RASPI
             let fb = RPiFramebuffer<UInt32>(width: 1024, height: 576, pixelOrder: .rgb)
@@ -48,29 +39,31 @@ struct Kernel {
             // let fb = OtherFramebuffer()
             fatalError("not implemented")
         #endif
-        var gfx = Graphics(target: fb)
+
         let bg: UInt32 = 0xf4faef
         let fg: UInt32 = 0x3a5324
-        let accent: UInt32 = 0x68af2f
-        gfx.fill(color: bg)
-        gfx.drawString("Hello Swift!", x: 0, y: 0, color: fg)
+        enableGraphicsConsole(target: fb, fgColor: fg, bgColor: bg)
 
         #if RASPI
-            gfx.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
-            gfx.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
+            let memoryManager = MemoryManager()
+            let ramTotal = memoryManager.total / 1024 / 1024
+            print("RAM:", terminator: " ")
+            print(ramTotal, terminator: " ")
+            print("MiB")
         #endif
+
+        var gfx = Graphics(target: fb)
+        gfx.fill(color: bg)
 
         #if arch(arm64)
             // For debugging
             brk0()
 
-            let el = getEL()
-            let elLabel: StaticString = "Exception Level:"
-            print(elLabel, terminator: " ")
-            print(el)
-            gfx.drawString(elLabel, x: 0, y: 2 * fontHeight, color: fg)
-            gfx.drawString(el, x: (elLabel.utf8CodeUnitCount + 1) * fontWidth, y: 2 * fontHeight, color: accent)
+            print("Exception Level:", terminator: " ")
+            print(getEL())
         #endif
+
+        unsafe gfxConsole?.render(on: &gfx)
 
         gfx.synchronize()
 
