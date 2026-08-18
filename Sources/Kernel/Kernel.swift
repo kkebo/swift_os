@@ -52,7 +52,7 @@ struct Kernel {
         let bg: UInt32 = 0xf4faef
         let fg: UInt32 = 0x3a5324
         let accent: UInt32 = 0x68af2f
-        gfx.fillRect(x0: 0, y0: 0, x1: gfx.width - 1, y1: gfx.height - 1, color: bg)
+        gfx.fill(color: bg)
         gfx.drawString("Hello Swift!", x: 0, y: 0, color: fg)
 
         #if RASPI
