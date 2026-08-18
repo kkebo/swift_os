@@ -48,16 +48,16 @@ struct Kernel {
             // let fb = OtherFramebuffer()
             fatalError("not implemented")
         #endif
-        var g = Graphics(target: fb)
+        var gfx = Graphics(target: fb)
         let bg: UInt32 = 0xf4faef
         let fg: UInt32 = 0x3a5324
         let accent: UInt32 = 0x68af2f
-        g.fillRect(x0: 0, y0: 0, x1: g.width - 1, y1: g.height - 1, color: bg)
-        g.drawString("Hello Swift!", x: 0, y: 0, color: fg)
+        gfx.fillRect(x0: 0, y0: 0, x1: gfx.width - 1, y1: gfx.height - 1, color: bg)
+        gfx.drawString("Hello Swift!", x: 0, y: 0, color: fg)
 
         #if RASPI
-            g.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
-            g.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
+            gfx.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
+            gfx.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
         #endif
 
         #if arch(arm64)
@@ -68,11 +68,11 @@ struct Kernel {
             let elLabel: StaticString = "Exception Level:"
             print(elLabel, terminator: " ")
             print(el)
-            g.drawString(elLabel, x: 0, y: 2 * fontHeight, color: fg)
-            g.drawString(el, x: (elLabel.utf8CodeUnitCount + 1) * fontWidth, y: 2 * fontHeight, color: accent)
+            gfx.drawString(elLabel, x: 0, y: 2 * fontHeight, color: fg)
+            gfx.drawString(el, x: (elLabel.utf8CodeUnitCount + 1) * fontWidth, y: 2 * fontHeight, color: accent)
         #endif
 
-        g.synchronize()
+        gfx.synchronize()
 
         repeat { halt() } while true
     }
