@@ -20,7 +20,7 @@ func enableConsole() {
 }
 
 /// Write a character to the global console.
-@c(__platform_putchar)
+@c(__kernel_putchar)
 @export(interface)
 package func putchar(_ c: UInt8) {
     unsafe console?.write(c)

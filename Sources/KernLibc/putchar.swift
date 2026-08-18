@@ -1,4 +1,4 @@
-@_extern(c, "__platform_putchar")
+@_extern(c, "__kernel_putchar")
 private func putchar(_ c: UInt8)
 
 /// <https://pubs.opengroup.org/onlinepubs/9799919799/functions/putchar.html>.
