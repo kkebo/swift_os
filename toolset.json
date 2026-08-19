@@ -12,6 +12,11 @@
             "-Xlinker-driver", "-fuse-ld=lld"
         ]
     },
+    "cCompiler": {
+        "extraCLIOptions": [
+            "-fno-pic"
+        ]
+    },
     "linker": {
         "extraCLIOptions": [
             "-nostdlib",
