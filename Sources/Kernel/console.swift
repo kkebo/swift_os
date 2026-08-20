@@ -1,27 +1,36 @@
-private import KernelCore
+import Hardware
+import KernelCore
 
 #if RASPI
-    private import RaspberryPi
+    import RaspberryPi
 #endif
 
 #if RASPI
-    private nonisolated(unsafe) var console: UARTConsole<UART0>?
+    typealias GFXRenderTarget = RPiFramebuffer<UInt32>
+    private nonisolated(unsafe) var serialConsole: UARTConsole<UART0>?
 #else
+    // typealias GFXRenderTarget = OtherRenderTarget
     // private nonisolated(unsafe) var console: OtherConsole?
 #endif
+nonisolated(unsafe) var gfxConsole: GraphicsConsole<GFXRenderTarget>?
 
-func enableConsole() {
+func enableSerialConsole() {
     #if RASPI
-        unsafe console = UARTConsole(uart: UART0())
+        unsafe serialConsole = .init(uart: UART0())
     #else
         // unsafe console = OtherConsole()
         fatalError("not implemented")
     #endif
 }
 
+func enableGraphicsConsole(gfx: inout Graphics<GFXRenderTarget>, fgColor: UInt32, bgColor: UInt32) {
+    unsafe gfxConsole = .init(gfx: &gfx, fgColor: fgColor, bgColor: bgColor)
+}
+
 /// Write a character to the global console.
 @c(__kernel_putchar)
 @export(interface)
 package func putchar(_ c: UInt8) {
-    unsafe console?.write(c)
+    unsafe serialConsole?.write(c)
+    unsafe gfxConsole?.write(c)
 }

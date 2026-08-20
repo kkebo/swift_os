@@ -24,20 +24,19 @@ struct Kernel {
             enableInitialMMU()
         #endif
 
-        enableConsole()
+        enableSerialConsole()
+
+        print("Starting swift_os...")
 
         #if arch(arm64)
             registerVectorTable()
         #endif
         enableIRQ()
 
-        print("Hello Swift!")
-
         #if RASPI
             let memoryManager = MemoryManager()
-            let ramLabel: StaticString = "RAM:"
             let ramTotal = memoryManager.total / 1024 / 1024
-            print(ramLabel, terminator: " ")
+            print("RAM:", terminator: " ")
             print(ramTotal, terminator: " ")
             print("MiB")
         #endif
@@ -51,25 +50,15 @@ struct Kernel {
         var gfx = Graphics(target: fb)
         let bg: UInt32 = 0xf4faef
         let fg: UInt32 = 0x3a5324
-        let accent: UInt32 = 0x68af2f
+        enableGraphicsConsole(gfx: &gfx, fgColor: fg, bgColor: bg)
         gfx.fill(color: bg)
-        gfx.drawString("Hello Swift!", x: 0, y: 0, color: fg)
-
-        #if RASPI
-            gfx.drawString(ramLabel, x: 0, y: fontHeight, color: fg)
-            gfx.drawString(ramTotal, x: (ramLabel.utf8CodeUnitCount + 1) * fontWidth, y: fontHeight, color: accent)
-        #endif
 
         #if arch(arm64)
             // For debugging
             brk0()
 
-            let el = getEL()
-            let elLabel: StaticString = "Exception Level:"
-            print(elLabel, terminator: " ")
-            print(el)
-            gfx.drawString(elLabel, x: 0, y: 2 * fontHeight, color: fg)
-            gfx.drawString(el, x: (elLabel.utf8CodeUnitCount + 1) * fontWidth, y: 2 * fontHeight, color: accent)
+            print("Exception Level:", terminator: " ")
+            print(getEL())
         #endif
 
         gfx.synchronize()
