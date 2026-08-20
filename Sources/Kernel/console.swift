@@ -2,15 +2,17 @@ import Hardware
 import KernelCore
 
 #if RASPI
-    private import RaspberryPi
+    import RaspberryPi
 #endif
 
 #if RASPI
+    typealias GFXRenderTarget = RPiFramebuffer<UInt32>
     private nonisolated(unsafe) var serialConsole: UARTConsole<UART0>?
-    nonisolated(unsafe) var gfxConsole: GraphicsConsole<UInt32>?
 #else
+    // typealias GFXRenderTarget = OtherRenderTarget
     // private nonisolated(unsafe) var console: OtherConsole?
 #endif
+nonisolated(unsafe) var gfxConsole: GraphicsConsole<GFXRenderTarget>?
 
 func enableSerialConsole() {
     #if RASPI
@@ -21,12 +23,8 @@ func enableSerialConsole() {
     #endif
 }
 
-func enableGraphicsConsole<Target>(target: borrowing Target, fgColor: UInt32, bgColor: UInt32)
-where
-    Target: RenderTarget & ~Copyable,
-    Target.Depth == UInt32
-{
-    unsafe gfxConsole = .init(target: target, fgColor: fgColor, bgColor: bgColor)
+func enableGraphicsConsole(gfx: inout Graphics<GFXRenderTarget>, fgColor: UInt32, bgColor: UInt32) {
+    unsafe gfxConsole = .init(gfx: &gfx, fgColor: fgColor, bgColor: bgColor)
 }
 
 /// Write a character to the global console.

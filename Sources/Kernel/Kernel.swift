@@ -34,17 +34,6 @@ struct Kernel {
         enableIRQ()
 
         #if RASPI
-            let fb = RPiFramebuffer<UInt32>(width: 1024, height: 576, pixelOrder: .rgb)
-        #else
-            // let fb = OtherFramebuffer()
-            fatalError("not implemented")
-        #endif
-
-        let bg: UInt32 = 0xf4faef
-        let fg: UInt32 = 0x3a5324
-        enableGraphicsConsole(target: fb, fgColor: fg, bgColor: bg)
-
-        #if RASPI
             let memoryManager = MemoryManager()
             let ramTotal = memoryManager.total / 1024 / 1024
             print("RAM:", terminator: " ")
@@ -52,7 +41,16 @@ struct Kernel {
             print("MiB")
         #endif
 
+        #if RASPI
+            let fb = RPiFramebuffer<UInt32>(width: 1024, height: 576, pixelOrder: .rgb)
+        #else
+            // let fb = OtherFramebuffer()
+            fatalError("not implemented")
+        #endif
         var gfx = Graphics(target: fb)
+        let bg: UInt32 = 0xf4faef
+        let fg: UInt32 = 0x3a5324
+        enableGraphicsConsole(gfx: &gfx, fgColor: fg, bgColor: bg)
         gfx.fill(color: bg)
 
         #if arch(arm64)
@@ -62,8 +60,6 @@ struct Kernel {
             print("Exception Level:", terminator: " ")
             print(getEL())
         #endif
-
-        unsafe gfxConsole?.render(on: &gfx)
 
         gfx.synchronize()
 
