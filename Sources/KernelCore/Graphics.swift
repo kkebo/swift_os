@@ -4,8 +4,10 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     var target: Target
 
     @_transparent
+    @export(implementation)
     package var width: Int { Int(self.target.width) }
     @_transparent
+    @export(implementation)
     package var height: Int { Int(self.target.height) }
 
     package init(target: consuming Target) {
@@ -18,6 +20,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     }
 
     @_transparent
+    @export(implementation)
     package mutating func fill(color: Target.Depth) {
         self.fillRect(x0: 0, y0: 0, x1: self.width - 1, y1: self.height - 1, color: color)
     }
