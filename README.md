@@ -28,10 +28,8 @@ I'm currently focusing on supporting AArch64 and Raspberry Pi 4, but I plan to s
 - QEMU 9.0 or later
   - Arch Linux: `sudo pacman -S qemu-system-aarch64`
   - Fedora 41 or later: `sudo dnf install qemu-system-aarch64-core`
-  - Fedora 40: Build from [source](https://www.qemu.org/download/#source)
-  - Ubuntu 24.04/22.04: Build from [source](https://www.qemu.org/download/#source)
+  - Ubuntu 24.04: Build from [source](https://www.qemu.org/download/#source)
   - Debian 13 or later: `run0 apt install qemu-system-arm`
-  - Debian 12: `sudo apt install -t bookwarm-backports qemu-system-arm` (you need to [add backports to `sources.list`](https://backports.debian.org/Instructions/#index2h2))
   - macOS 14 or later: `brew install qemu`
 - [Swiftly](https://www.swift.org/install/)
 - Swift toolchain: Just run `swiftly install` after installing Swiftly
