@@ -69,6 +69,47 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         }
     }
 
+    package mutating func copyRect(
+        x0: Int,
+        y0: Int,
+        x1: Int,
+        y1: Int,
+        toX dstX0: Int,
+        toY dstY0: Int,
+    ) {
+        guard x0 < x1 && y0 < y1 else { return }
+
+        let width = x1 &- x0
+        let height = y1 &- y0
+
+        let xRange =
+            if x0 < dstX0 {
+                stride(from: width &- 1, through: 0, by: -1)
+            } else {
+                stride(from: 0, through: width &- 1, by: 1)
+            }
+        let yRange =
+            if y0 < dstY0 {
+                stride(from: height &- 1, through: 0, by: -1)
+            } else {
+                stride(from: 0, through: height &- 1, by: 1)
+            }
+
+        let validX = 0..<self.width
+        let validY = 0..<self.height
+        for dy in yRange {
+            let srcY = y0 &+ dy
+            let dstY = dstY0 &+ dy
+            guard validY.contains(srcY) && validY.contains(dstY) else { continue }
+            for dx in xRange {
+                let srcX = x0 &+ dx
+                let dstX = dstX0 &+ dx
+                guard validX.contains(srcX) && validX.contains(dstX) else { continue }
+                unsafe self.target[uncheckedX: dstX, y: dstY] = self.target[uncheckedX: srcX, y: srcY]
+            }
+        }
+    }
+
     package func synchronize() {
         self.target.synchronize()
     }
