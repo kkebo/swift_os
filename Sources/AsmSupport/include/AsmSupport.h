@@ -25,4 +25,8 @@ __attribute__((swift_name("getMMFR0()")))
 uint64_t get_mmfr0(void);
 __attribute__((swift_name("enableMMU(mair:tcr:ttbr0:)")))
 void enable_mmu(uint64_t mair, uint64_t tcr, uint64_t ttbr0);
+__attribute__((swift_name("getCNTPCT()")))
+uint64_t get_cntpct(void);
+__attribute__((swift_name("getCNTFRQ()")))
+uint32_t get_cntfrq(void);
 #endif

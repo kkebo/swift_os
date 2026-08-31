@@ -94,4 +94,14 @@ enable_mmu:
     isb
     ret
 
+.global get_cntpct
+get_cntpct:
+    mrs x0, CNTPCT_EL0
+    ret
+
+.global get_cntfrq
+get_cntfrq:
+    mrs x0, CNTFRQ_EL0
+    ret
+
 #endif
