@@ -27,6 +27,7 @@ el3_entry:
 
     mov x0, #(1 << 11)  // set ST bit (disable trapping of timer control registers)
     orr x0, x0, #(1 << 10)  // set RW bit (next lower EL in aarch64)
+    orr x0, x0, #1  // set NS bit (non-secure)
     msr scr_el3, x0
 
     mov x0, #5  // EL1 with SP_EL1 (EL1h)
