@@ -104,4 +104,25 @@ get_cntfrq:
     mrs x0, CNTFRQ_EL0
     ret
 
+.global get_cntp_ctl
+get_cntp_ctl:
+    mrs x0, CNTP_CTL_EL0
+    ret
+
+.global set_timer_period
+set_timer_period:
+    msr CNTP_TVAL_EL0, x0
+    ret
+
+.global enable_timer
+enable_timer:
+    mov x0, #0b11  // IMASK = 1, ENABLE = 1
+    msr CNTP_CTL_EL0, x0
+    ret
+
+.global disable_timer
+disable_timer:
+    msr CNTP_CTL_EL0, xzr
+    ret
+
 #endif

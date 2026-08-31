@@ -29,4 +29,12 @@ __attribute__((swift_name("getCNTPCT()")))
 uint64_t get_cntpct(void);
 __attribute__((swift_name("getCNTFRQ()")))
 uint32_t get_cntfrq(void);
+__attribute__((swift_name("getCNTPCTL()")))
+uint8_t get_cntp_ctl(void);
+__attribute__((swift_name("setTimerPeriod(_:)")))
+void set_timer_period(uint32_t val);
+__attribute__((swift_name("enableTimer()")))
+void enable_timer(void);
+__attribute__((swift_name("disableTimer()")))
+void disable_timer(void);
 #endif
