@@ -1,5 +1,6 @@
 // swift-tools-version: 6.3
 
+import CompilerPluginSupport
 import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
@@ -34,6 +35,9 @@ let package = Package(
         .trait(name: "RASPI2", enabledTraits: ["RASPI"]),
         .trait(name: "RASPI1", enabledTraits: ["RASPI"]),
         .trait(name: "RASPI"),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/swiftlang/swift-syntax", "603.0.2"..<"606.0.0"),
     ],
     targets: [
         .executableTarget(
@@ -86,6 +90,20 @@ let package = Package(
         .target(name: "LinkerSupport", cSettings: cSettings),
         .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
+        .macro(
+            name: "RegisterMacroImplementation",
+            dependencies: [
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
+            ],
+        ),
+        .target(
+            name: "Register",
+            dependencies: [
+                .target(name: "RegisterMacroImplementation")
+            ],
+            swiftSettings: swiftSettings,
+        ),
         .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
 )

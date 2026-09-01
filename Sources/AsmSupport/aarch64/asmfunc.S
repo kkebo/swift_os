@@ -125,4 +125,32 @@ disable_timer:
     msr CNTP_CTL_EL0, xzr
     ret
 
+.macro DEFINE_SYSREG name reg
+.global swift_os_sysreg_read_\name
+swift_os_sysreg_read_\name:
+    mrs x0, \reg
+    ret
+
+.global swift_os_sysreg_write_\name
+swift_os_sysreg_write_\name:
+    msr \reg, x0
+    ret
+.endm
+
+.macro DEFINE_READONLY_SYSREG name reg
+.global swift_os_sysreg_read_\name
+swift_os_sysreg_read_\name:
+    mrs x0, \reg
+    ret
+.endm
+
+DEFINE_SYSREG TCR_EL1 tcr_el1
+DEFINE_SYSREG SCTLR_EL1 sctlr_el1
+DEFINE_SYSREG MAIR_EL1 mair_el1
+DEFINE_SYSREG TTBR0_EL1 ttbr0_el1
+DEFINE_SYSREG TTBR1_EL1 ttbr1_el1
+DEFINE_SYSREG VBAR_EL1 vbar_el1
+DEFINE_SYSREG DAIF daif
+DEFINE_READONLY_SYSREG CurrentEL CurrentEL
+
 #endif
