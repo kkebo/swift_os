@@ -58,7 +58,7 @@ struct Kernel {
             brk0()
 
             print("Exception Level:", terminator: " ")
-            print(getEL())
+            print(CurrentEL.read().el)
         #endif
 
         gfx.synchronize()

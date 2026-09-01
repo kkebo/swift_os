@@ -53,14 +53,14 @@ package func enableInitialMMU() {
         unsafe table[entryIndex] = descriptor
     }
 
-    let paRange = getMMFR0() & 0xf
+    let paRange = ID_AA64MMFR0_EL1.read().paRange
     let ips = tcrIPS(from: paRange)
 
     enableMMU(
         // MAIR_EL1:
-        // Index 0 = 0xFF (Normal Write-Back Cacheable)
+        // Index 0 = 0xff (Normal Write-Back Cacheable)
         // Index 1 = 0x00 (Device nGnRnE)
-        mair: 0xFF | (0x00 << 8),
+        mair: 0xff | (0x00 << 8),
         // TCR_EL1:
         // T0SZ = 25 (39-bit VA)
         // EPD1 = 1 (Disable TTBR1 walks)
@@ -75,7 +75,7 @@ package func enableInitialMMU() {
 }
 
 @_transparent
-private func tcrIPS(from paRange: UInt64) -> UInt64 {
+private func tcrIPS(from paRange: UInt8) -> UInt64 {
     switch paRange {
     case 0b0000: 0b000  // 32-bit
     case 0b0001: 0b001  // 36-bit

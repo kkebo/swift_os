@@ -16,25 +16,25 @@ __attribute__((swift_name("invalidateDCache(start:size:)")))
 void invalidate_dcache_range(uintptr_t start, size_t size);
 #endif
 #ifdef __aarch64__
-__attribute__((swift_name("getEL()")))
-uint32_t get_el(void);
 __attribute__((swift_name("registerVectorTable()")))
 void register_vector_table(void);
 void brk0(void);
-__attribute__((swift_name("getMMFR0()")))
-uint64_t get_mmfr0(void);
 __attribute__((swift_name("enableMMU(mair:tcr:ttbr0:)")))
 void enable_mmu(uint64_t mair, uint64_t tcr, uint64_t ttbr0);
-__attribute__((swift_name("getCNTPCT()")))
-uint64_t get_cntpct(void);
-__attribute__((swift_name("getCNTFRQ()")))
-uint32_t get_cntfrq(void);
-__attribute__((swift_name("getCNTPCTL()")))
-uint8_t get_cntp_ctl(void);
 __attribute__((swift_name("setTimerPeriod(_:)")))
 void set_timer_period(uint32_t val);
 __attribute__((swift_name("enableTimer()")))
 void enable_timer(void);
 __attribute__((swift_name("disableTimer()")))
 void disable_timer(void);
+__attribute__((swift_name("getCNTFRQ_EL0()")))
+uint64_t get_cntfrq_el0(void);
+__attribute__((swift_name("getCNTPCT_EL0()")))
+uint64_t get_cntpct_el0(void);
+__attribute__((swift_name("getCNTP_CTL_EL0()")))
+uint64_t get_cntp_ctl_el0(void);
+__attribute__((swift_name("getCurrentEL()")))
+uint64_t get_currentel(void);
+__attribute__((swift_name("getID_AA64MMFR0_EL1()")))
+uint64_t get_id_aa64mmfr0_el1(void);
 #endif

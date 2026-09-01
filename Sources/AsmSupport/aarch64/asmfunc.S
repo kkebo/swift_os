@@ -49,12 +49,6 @@ clean_dcache_range:
 invalidate_dcache_range:
     DCACHE_RANGE ivac
 
-.global get_el
-get_el:
-    mrs x0, CurrentEL
-    lsr x0, x0, #2
-    ret
-
 .global register_vector_table
 register_vector_table:
     adrp x0, vector_table
@@ -66,11 +60,6 @@ register_vector_table:
 .global brk0
 brk0:
     brk #0
-    ret
-
-.global get_mmfr0
-get_mmfr0:
-    mrs x0, id_aa64mmfr0_el1
     ret
 
 .global enable_mmu
@@ -94,21 +83,6 @@ enable_mmu:
     isb
     ret
 
-.global get_cntpct
-get_cntpct:
-    mrs x0, CNTPCT_EL0
-    ret
-
-.global get_cntfrq
-get_cntfrq:
-    mrs x0, CNTFRQ_EL0
-    ret
-
-.global get_cntp_ctl
-get_cntp_ctl:
-    mrs x0, CNTP_CTL_EL0
-    ret
-
 .global set_timer_period
 set_timer_period:
     msr CNTP_TVAL_EL0, x0
@@ -124,5 +98,30 @@ enable_timer:
 disable_timer:
     msr CNTP_CTL_EL0, xzr
     ret
+
+.macro DEFINE_SYSREG name
+.global get_\name
+get_\name:
+    mrs x0, \name
+    ret
+
+.global set_\name
+set_\name:
+    msr \name, x0
+    ret
+.endm
+
+.macro DEFINE_RO_SYSREG name
+.global get_\name
+get_\name:
+    mrs x0, \name
+    ret
+.endm
+
+DEFINE_RO_SYSREG cntfrq_el0
+DEFINE_RO_SYSREG cntpct_el0
+DEFINE_RO_SYSREG cntp_ctl_el0
+DEFINE_RO_SYSREG currentel
+DEFINE_RO_SYSREG id_aa64mmfr0_el1
 
 #endif
