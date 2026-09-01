@@ -38,7 +38,7 @@ package func handleCurrentELSPxSync(esr: UInt64, elr: UnsafeMutablePointer<UInt6
     print("Exception: ", terminator: "")
     print(#function, terminator: ": ")
 
-    let ec = (esr >> 26) & 0x3f
+    let ec = (esr &>> 26) & 0x3f
     let iss = esr & 0x01ff_ffff
     func printValues() {
         print("  ELR = ", terminator: "")

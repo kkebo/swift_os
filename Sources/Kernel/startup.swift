@@ -11,5 +11,5 @@ func zeroBSS() {
     // swift-format-ignore: NeverForceUnwrap
     let ptr = unsafe UnsafeMutableRawPointer(bitPattern: start)!
 
-    unsafe ptr.initializeMemory(as: UInt64.self, repeating: 0, count: Int(size >> 3))
+    unsafe ptr.initializeMemory(as: UInt64.self, repeating: 0, count: Int(size &>> 3))
 }

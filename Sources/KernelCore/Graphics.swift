@@ -36,7 +36,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         guard c < font.count else { return }
         let glyph = font[Int(c)]
         for i in 0..<fontHeight {
-            for j in 0..<fontWidth where glyph[i] & 1 << j != 0 {
+            for j in 0..<fontWidth where glyph[i] & 1 &<< j != 0 {
                 unsafe self.target[uncheckedX: x &+ j, y: y &+ i] = color
             }
         }
