@@ -63,6 +63,20 @@ struct Kernel {
 
         gfx.synchronize()
 
+        #if arch(arm64)
+            setTimerPeriod(5 * CNTFRQ_EL0.read().freq)
+            enableTimer()
+            print("Timer started.")
+            gfx.synchronize()
+
+            while !CNTP_CTL_EL0.read().status {
+                // FIXME: halt() (wfi) requires interrupts to be configured in the GIC.
+                // halt()
+            }
+            print("Timer expired.")
+            gfx.synchronize()
+        #endif
+
         repeat { halt() } while true
     }
 }
