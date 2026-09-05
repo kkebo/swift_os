@@ -13,6 +13,8 @@ public struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     @export(implementation)
     public var height: Int { Int(self.target.height) }
 
+    @inline(always)
+    @export(implementation)
     public init(target: consuming Target) {
         self.target = target
     }

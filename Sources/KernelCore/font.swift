@@ -1,4 +1,6 @@
+@export(implementation)
 package let fontWidth = 8
+@export(implementation)
 package let fontHeight = 8
 
 let font: [_ of [_ of UInt8]] = [

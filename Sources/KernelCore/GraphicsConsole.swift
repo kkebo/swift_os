@@ -1,22 +1,33 @@
-package import Hardware
+public import Hardware
 
+@export(implementation)
 private let maxCols = 128
+@export(implementation)
 private let maxRows = 64
 
-package struct GraphicsConsole<Target: RenderTarget & ~Copyable>: ~Copyable, ~Escapable {
-    package let cols: Int
-    package let rows: Int
-    package var fgColor: Target.Depth
-    package var bgColor: Target.Depth
+// FIXME: Use the package access level when swiftlang/swift#90225 is fixed
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
+public struct GraphicsConsole<Target: RenderTarget & ~Copyable>: ~Copyable, ~Escapable {
+    public let cols: Int
+    public let rows: Int
+    public var fgColor: Target.Depth
+    public var bgColor: Target.Depth
 
+    @export(implementation)
     private var gfx: MutableRef<Graphics<Target>>
+    @export(implementation)
     private var buf: [8192 of UInt8]  // maxCols * maxRows
+    @export(implementation)
     private var head: Int
+    @export(implementation)
     private var x: Int
+    @export(implementation)
     private var y: Int
 
+    @inline(always)
+    @export(implementation)
     @_lifetime(&gfx)
-    package init(gfx: inout Graphics<Target>, fgColor: Target.Depth, bgColor: Target.Depth) {
+    public init(gfx: inout Graphics<Target>, fgColor: Target.Depth, bgColor: Target.Depth) {
         self.init(
             gfx: &gfx,
             cols: Int(gfx.width) / fontWidth,
@@ -26,8 +37,10 @@ package struct GraphicsConsole<Target: RenderTarget & ~Copyable>: ~Copyable, ~Es
         )
     }
 
+    @inline(always)
+    @export(implementation)
     @_lifetime(&gfx)
-    package init(gfx: inout Graphics<Target>, cols: Int, rows: Int, fgColor: Target.Depth, bgColor: Target.Depth) {
+    public init(gfx: inout Graphics<Target>, cols: Int, rows: Int, fgColor: Target.Depth, bgColor: Target.Depth) {
         precondition(cols > 0 && rows > 0)
         self.gfx = .init(&gfx)
         self.cols = min(cols, maxCols)

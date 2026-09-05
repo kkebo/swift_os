@@ -14,9 +14,12 @@ let mboxEmpty: UInt32 = 0x4000_0000
 
 @_alignment(16)
 struct Mbox: ~Copyable {
-    private var storage: [36 of UInt32] = .init(repeating: 0)
+    private var storage: [36 of UInt32]
 
-    init() {}
+    @_transparent
+    init() {
+        self.storage = .init(repeating: 0)
+    }
 
     // volatilePointer must be internal because the caller (subscript) is transparent
     @_transparent

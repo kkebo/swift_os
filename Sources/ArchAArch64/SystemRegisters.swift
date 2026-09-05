@@ -5,6 +5,8 @@ public import AsmSupport
 public struct CNTFRQ_EL0: BitwiseCopyable, Equatable, Hashable, Sendable {
     public var freq: UInt32
 
+    @_transparent
+    @export(implementation)
     public init(rawValue: UInt64) {
         self.freq = UInt32(truncatingIfNeeded: rawValue)
     }
@@ -19,6 +21,8 @@ public struct CNTFRQ_EL0: BitwiseCopyable, Equatable, Hashable, Sendable {
 public struct CNTPCT_EL0: BitwiseCopyable, Equatable, Hashable, Sendable {
     public var count: UInt64
 
+    @_transparent
+    @export(implementation)
     public init(rawValue: UInt64) {
         self.count = rawValue
     }
@@ -44,6 +48,8 @@ public struct CNTP_CTL_EL0: BitwiseCopyable, Equatable, Hashable, Sendable {
     @export(implementation)
     public var status: Bool { self.rawValue &>> 2 & 1 != 0 }
 
+    @_transparent
+    @export(implementation)
     public init(rawValue: UInt64) {
         self.rawValue = rawValue
     }
@@ -58,6 +64,8 @@ public struct CNTP_CTL_EL0: BitwiseCopyable, Equatable, Hashable, Sendable {
 public struct CurrentEL: BitwiseCopyable, Equatable, Hashable, Sendable {
     public var el: UInt8
 
+    @_transparent
+    @export(implementation)
     public init(rawValue: UInt64) {
         self.el = UInt8(truncatingIfNeeded: rawValue &>> 2 & 0b11)
     }
@@ -116,6 +124,8 @@ public struct ID_AA64MMFR0_EL1: BitwiseCopyable, Equatable, Hashable, Sendable {
     @export(implementation)
     public var ecv: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 60 & 0xf) }
 
+    @_transparent
+    @export(implementation)
     public init(rawValue: UInt64) {
         self.rawValue = rawValue
     }
