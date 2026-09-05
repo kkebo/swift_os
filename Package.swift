@@ -5,6 +5,7 @@ import PackageDescription
 let swiftSettings: [SwiftSetting] = [
     .enableExperimentalFeature("Lifetimes"),
     .enableExperimentalFeature("Extern"),
+    .enableExperimentalFeature("LiteralExpressions"),
     .enableUpcomingFeature("ExistentialAny"),
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),

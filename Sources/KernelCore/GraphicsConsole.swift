@@ -10,7 +10,7 @@ package struct GraphicsConsole<Target: RenderTarget & ~Copyable>: ~Copyable, ~Es
     package var bgColor: Target.Depth
 
     private var gfx: MutableRef<Graphics<Target>>
-    private var buf: [8192 of UInt8]  // maxCols * maxRows
+    private var buf: [(maxCols * maxRows) of UInt8]
     private var head: Int
     private var x: Int
     private var y: Int
