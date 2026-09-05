@@ -25,7 +25,7 @@ public struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
     @inline(always)
     @export(implementation)
     public mutating func fill(color: Target.Depth) {
-        self.fillRect(x0: 0, y0: 0, x1: self.width - 1, y1: self.height - 1, color: color)
+        self.fillRect(x0: 0, y0: 0, x1: self.width &- 1, y1: self.height &- 1, color: color)
     }
 
     public mutating func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Target.Depth) {

@@ -69,7 +69,7 @@ package func enableInitialMMU() {
         // ORGN0 = 1 (Outer WB WA cacheable)
         // IRGN0 = 1 (Inner WB WA cacheable)
         // IPS = paRange
-        tcr: (1 << 23) | (3 << 12) | (1 << 10) | (1 << 8) | 25 | (ips << 32),
+        tcr: (1 << 23) | (3 << 12) | (1 << 10) | (1 << 8) | 25 | (ips &<< 32),
         ttbr0: UInt64(UInt(bitPattern: unsafe l1Table)),
     )
 }

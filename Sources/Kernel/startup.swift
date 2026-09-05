@@ -3,7 +3,7 @@ private import LinkerSupport
 func zeroBSS() {
     let start = bssStart
     let end = bssEnd
-    let size = end - start
+    let size = end &- start
 
     precondition(start % 8 == 0)
     precondition(size % 8 == 0)
