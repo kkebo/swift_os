@@ -1,56 +1,62 @@
 import _Volatile
 
-package protocol VolatileMappable: FixedWidthInteger, UnsignedInteger, BitwiseCopyable {
+// FIXME: Use the package access level when swiftlang/swift#90225 is fixed
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
+public protocol VolatileMappable: FixedWidthInteger, UnsignedInteger, BitwiseCopyable {
     @unsafe
     static func volatileLoad(from address: UInt) -> Self
     @unsafe
     static func volatileStore(_ value: Self, to address: UInt)
 }
 
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
 extension UInt8: VolatileMappable {
     @unsafe
-    package static func volatileLoad(from address: UInt) -> Self {
+    public static func volatileLoad(from address: UInt) -> Self {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).load()
     }
 
     @unsafe
-    package static func volatileStore(_ value: Self, to address: UInt) {
+    public static func volatileStore(_ value: Self, to address: UInt) {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).store(value)
     }
 }
 
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
 extension UInt16: VolatileMappable {
     @unsafe
-    package static func volatileLoad(from address: UInt) -> Self {
+    public static func volatileLoad(from address: UInt) -> Self {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).load()
     }
 
     @unsafe
-    package static func volatileStore(_ value: Self, to address: UInt) {
+    public static func volatileStore(_ value: Self, to address: UInt) {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).store(value)
     }
 }
 
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
 extension UInt32: VolatileMappable {
     @unsafe
-    package static func volatileLoad(from address: UInt) -> Self {
+    public static func volatileLoad(from address: UInt) -> Self {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).load()
     }
 
     @unsafe
-    package static func volatileStore(_ value: Self, to address: UInt) {
+    public static func volatileStore(_ value: Self, to address: UInt) {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).store(value)
     }
 }
 
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
 extension UInt64: VolatileMappable {
     @unsafe
-    package static func volatileLoad(from address: UInt) -> Self {
+    public static func volatileLoad(from address: UInt) -> Self {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).load()
     }
 
     @unsafe
-    package static func volatileStore(_ value: Self, to address: UInt) {
+    public static func volatileStore(_ value: Self, to address: UInt) {
         unsafe VolatileMappedRegister(unsafeBitPattern: address).store(value)
     }
 }

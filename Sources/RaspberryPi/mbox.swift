@@ -18,8 +18,9 @@ struct Mbox: ~Copyable {
 
     init() {}
 
+    // volatilePointer must be internal because the caller (subscript) is transparent
     @_transparent
-    private mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
+    mutating func volatilePointer(at i: Int) -> VolatileMappedRegister<UInt32> {
         unsafe .init(unsafeBitPattern: withUnsafePointer(to: &self.storage[i], UInt.init(bitPattern:)))
     }
 

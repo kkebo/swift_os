@@ -1,5 +1,5 @@
-private import Hardware
-private import _Volatile
+public import Hardware
+public import _Volatile
 
 #if !RASPI4
     private import AsmSupport
@@ -15,7 +15,9 @@ private let gpfsel1 = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: gp
 #endif
 
 private let uartBase = gpioBase + 0x1000
+@export(implementation)
 private let uartDR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase)
+@export(implementation)
 private let uartFR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x18)
 private let uartIBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x24)
 private let uartFBRD = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x28)
@@ -25,17 +27,21 @@ private let uartIMSC = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: u
 private let uartICR = unsafe VolatileMappedRegister<UInt32>(unsafeBitPattern: uartBase + 0x44)
 
 @_transparent
+@export(implementation)
 private func transmitFIFOFull() -> Bool {
     uartFR.load() & 1 << 5 > 0
 }
 
 @_transparent
+@export(implementation)
 private func receiveFIFOEmpty() -> Bool {
     uartFR.load() & 1 << 4 > 0
 }
 
-package struct UART0: ~Copyable {
-    package init() {
+// FIXME: Use the package access level when swiftlang/swift#90225 is fixed
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
+public struct UART0: ~Copyable {
+    public init() {
         // disable UART0
         uartCR.store(0)
 
@@ -84,15 +90,17 @@ package struct UART0: ~Copyable {
 
 extension UART0: UART {
     /// Write a character to UART.
-    @_transparent
-    package func putchar(_ c: UInt8) {
+    @inline(always)
+    @export(implementation)
+    public func putchar(_ c: UInt8) {
         while transmitFIFOFull() {}
         uartDR.store(UInt32(c))
     }
 
     /// Read a character from UART.
-    @_transparent
-    package func getchar() -> UInt8 {
+    @inline(always)
+    @export(implementation)
+    public func getchar() -> UInt8 {
         while receiveFIFOEmpty() {}
         return UInt8(uartDR.load())
     }
