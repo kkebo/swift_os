@@ -1,4 +1,4 @@
-import AsmSupport
+private import AsmSupport
 
 package struct CNTFRQ_EL0: BitwiseCopyable, Equatable, Hashable, Sendable {
     package var freq: UInt32
