@@ -1,9 +1,13 @@
-package enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
+// FIXME: Use the package access level when swiftlang/swift#90225 is fixed
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
+public enum PixelOrder: UInt32, BitwiseCopyable, Sendable {
     case bgr = 0
     case rgb
 }
 
-package protocol Framebuffer: ~Copyable, ~Escapable, RenderTarget {
+// FIXME: Use the package access level when swiftlang/swift#90225 is fixed
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
+public protocol Framebuffer: ~Copyable, ~Escapable, RenderTarget {
     var width: UInt32 { get }
     var height: UInt32 { get }
     var pixelOrder: PixelOrder { get }
@@ -11,9 +15,10 @@ package protocol Framebuffer: ~Copyable, ~Escapable, RenderTarget {
 }
 
 extension Framebuffer where Self: ~Copyable & ~Escapable {
+    @inline(always)
+    @export(implementation)
     @unsafe
     package subscript(uncheckedX x: Int, y y: Int) -> Depth {
-        @_transparent
         get {
             let x = UInt(x)
             let y = UInt(y)
@@ -21,7 +26,6 @@ extension Framebuffer where Self: ~Copyable & ~Escapable {
             let stride = UInt(MemoryLayout<Depth>.stride)
             return unsafe Depth.volatileLoad(from: self.baseAddress &+ (y &* width &+ x) &* stride)
         }
-        @_transparent
         set(color) {
             let x = UInt(x)
             let y = UInt(y)

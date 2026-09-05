@@ -1,28 +1,34 @@
-package import Hardware
+public import Hardware
 
-package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
+// FIXME: Use the package access level when swiftlang/swift#90225 is fixed
+// swift-format-ignore: AllPublicDeclarationsHaveDocumentation
+public struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
+    @export(implementation)
     var target: Target
 
     @_transparent
-    package var width: Int { Int(self.target.width) }
+    @export(implementation)
+    public var width: Int { Int(self.target.width) }
     @_transparent
-    package var height: Int { Int(self.target.height) }
+    @export(implementation)
+    public var height: Int { Int(self.target.height) }
 
-    package init(target: consuming Target) {
+    public init(target: consuming Target) {
         self.target = target
     }
 
-    package mutating func drawPoint(x: Int, y: Int, color: Target.Depth) {
+    public mutating func drawPoint(x: Int, y: Int, color: Target.Depth) {
         // TODO: check bounds
         unsafe self.target[uncheckedX: x, y: y] = color
     }
 
-    @_transparent
-    package mutating func fill(color: Target.Depth) {
+    @inline(always)
+    @export(implementation)
+    public mutating func fill(color: Target.Depth) {
         self.fillRect(x0: 0, y0: 0, x1: self.width - 1, y1: self.height - 1, color: color)
     }
 
-    package mutating func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Target.Depth) {
+    public mutating func fillRect(x0: Int, y0: Int, x1: Int, y1: Int, color: Target.Depth) {
         // TODO: check bounds
         for y in y0...y1 {
             for x in x0...x1 {
@@ -31,7 +37,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         }
     }
 
-    package mutating func drawChar(_ c: UInt8, x: Int, y: Int, color: Target.Depth) {
+    public mutating func drawChar(_ c: UInt8, x: Int, y: Int, color: Target.Depth) {
         // TODO: check bounds
         guard c < font.count else { return }
         let glyph = font[Int(c)]
@@ -42,7 +48,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         }
     }
 
-    package mutating func drawString(_ s: StaticString, x: Int, y: Int, color: Target.Depth) {
+    public mutating func drawString(_ s: StaticString, x: Int, y: Int, color: Target.Depth) {
         s.withUTF8Buffer { buf in
             var x = x
             var y = y
@@ -60,7 +66,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         }
     }
 
-    package mutating func drawString<T>(_ value: T, x: Int, y: Int, color: Target.Depth)
+    public mutating func drawString<T>(_ value: T, x: Int, y: Int, color: Target.Depth)
     where
         T: BinaryInteger & FixedWidthInteger
     {
@@ -69,7 +75,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         }
     }
 
-    package mutating func copyRect(
+    public mutating func copyRect(
         x0: Int,
         y0: Int,
         x1: Int,
@@ -110,7 +116,7 @@ package struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
         }
     }
 
-    package func synchronize() {
+    public func synchronize() {
         self.target.synchronize()
     }
 }
