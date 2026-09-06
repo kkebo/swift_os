@@ -3,7 +3,7 @@ public import Hardware
 // FIXME: Use the package access level when swiftlang/swift#90225 is fixed
 // swift-format-ignore: AllPublicDeclarationsHaveDocumentation
 public struct Graphics<Target: RenderTarget & ~Copyable>: ~Copyable {
-    @export(implementation)
+    @usableFromInline
     var target: Target
 
     @_transparent
