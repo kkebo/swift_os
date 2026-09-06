@@ -1,4 +1,4 @@
-// swift-tools-version: 6.3
+// swift-tools-version: 6.5
 
 import PackageDescription
 
@@ -39,7 +39,6 @@ let package = Package(
         .executableTarget(
             name: "Kernel",
             dependencies: [
-                .target(name: "Boot"),
                 .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
                 .target(name: "AsmSupport"),
@@ -47,6 +46,7 @@ let package = Package(
                 .target(name: "ArchAArch64"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
+            cSettings: cSettings,
             swiftSettings: swiftSettings,
         ),
         .target(
@@ -84,7 +84,6 @@ let package = Package(
             ],
         ),
         .target(name: "LinkerSupport", cSettings: cSettings),
-        .target(name: "Boot", cSettings: cSettings),
         .target(name: "AsmSupport", cSettings: cSettings),
         .target(name: "AppLibc", swiftSettings: swiftSettings),
     ],
