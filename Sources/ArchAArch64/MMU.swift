@@ -23,7 +23,7 @@ package func enableInitialMMU() {
 
     // Populate L2 tables mapping the 4 GiB space block by block
     for i in 0..<2048 {
-        let addr = UInt(i) * l2BlockSize
+        let addr = UInt(i) &* l2BlockSize
         let (tableIndex, entryIndex) = i.quotientAndRemainder(dividingBy: 512)
 
         // FIXME: The physical memory map is currently BCM2711-specific.
