@@ -27,7 +27,7 @@ func enableGraphicsConsole(gfx: inout Graphics<GFXRenderTarget>, fgColor: UInt32
     unsafe gfxConsole = .init(gfx: &gfx, fgColor: fgColor, bgColor: bgColor)
 }
 
-/// Write a character to the global console.
+/// Writes a character to the global console.
 @c(__kernel_putchar)
 @export(interface)
 package func putchar(_ c: UInt8) {

@@ -89,7 +89,7 @@ public struct UART0: ~Copyable {
 }
 
 extension UART0: UART {
-    /// Write a character to UART.
+    /// Writes a character to UART.
     @inline(always)
     @export(implementation)
     public func putchar(_ c: UInt8) {
@@ -97,7 +97,7 @@ extension UART0: UART {
         uartDR.store(UInt32(c))
     }
 
-    /// Read a character from UART.
+    /// Reads a character from UART.
     @inline(always)
     @export(implementation)
     public func getchar() -> UInt8 {
