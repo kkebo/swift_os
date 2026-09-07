@@ -122,5 +122,6 @@ DEFINE_RO_SYSREG cntpct_el0
 DEFINE_RO_SYSREG cntp_ctl_el0
 DEFINE_RO_SYSREG currentel
 DEFINE_RO_SYSREG id_aa64mmfr0_el1
+DEFINE_SYSREG mair_el1
 
 #endif

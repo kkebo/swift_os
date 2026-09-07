@@ -1,6 +1,95 @@
 private import AsmSupport
 private import LinkerSupport
 
+private struct BlockEntry {
+    private let type: DescriptorType = .block
+    var attrs: BlockEntryAttrs
+    var outputAddr: UInt
+
+    @inline(always)
+    var rawValue: UInt {
+        self.outputAddr | UInt(self.type.rawValue) | self.attrs.rawValue
+    }
+}
+
+private enum DescriptorType: UInt8 {
+    case block = 0b01
+    case table = 0b11
+}
+
+private struct BlockEntryAttrs {
+    var index: UInt
+    var ns: SecurityBit
+    var ap: AccessPermission
+    var sh: Shareability
+    var af: AccessFlag
+    var pxn: Executability
+    var uxn: Executability
+
+    @inline(always)
+    var rawValue: UInt {
+        self.index &<< 2
+            | UInt(self.ns.rawValue) &<< 5
+            | UInt(self.ap.rawValue) &<< 6
+            | UInt(self.sh.rawValue) &<< 8
+            | UInt(self.af.rawValue) &<< 10
+            | UInt(self.pxn.rawValue) &<< 53
+            | UInt(self.uxn.rawValue) &<< 54
+    }
+}
+
+// This only works at EL3 or Secure EL1.
+private enum SecurityBit: UInt8 {
+    case secure = 0
+    case nonSecure = 1
+}
+
+private enum AccessPermission: UInt8 {
+    case privilegedRW = 0b00
+    case fullRW = 0b01
+    case privilegedRO = 0b10
+    case fullRO = 0b11
+}
+
+private enum Shareability: UInt8 {
+    case nonShareable = 0b00
+    case outerShareable = 0b10
+    case innerShareable = 0b11
+}
+
+private enum AccessFlag: UInt8 {
+    case notUsed = 0
+    case used = 1
+}
+
+private enum Executability: UInt8 {
+    case executable = 0
+    case nonExecutable = 1
+}
+
+private let dramIndex: UInt = 0
+private let mmioIndex: UInt = 1
+private let dramDescAttrs = BlockEntryAttrs(
+    index: dramIndex,
+    ns: .secure,  // ignored at non-secure EL1
+    ap: .privilegedRW,
+    sh: .innerShareable,
+    af: .used,
+    pxn: .executable,
+    uxn: .executable,
+)
+private let mmioDescAttrs = BlockEntryAttrs(
+    index: mmioIndex,
+    ns: .secure,  // ignored at non-secure EL1
+    ap: .privilegedRW,
+    sh: .nonShareable,
+    af: .used,
+    pxn: .nonExecutable,
+    uxn: .nonExecutable,
+)
+private let dramMemAttr = MAIRAttr.normalWBRAWANonTransient
+private let mmioMemAttr = MAIRAttr.deviceNGNRNE
+
 package func enableInitialMMU() {
     // We cannot query the physical memory size before enabling the MMU.
     // Use a fixed size for the initial memory mapping.
@@ -26,21 +115,6 @@ package func enableInitialMMU() {
         let addr = UInt(i) &* l2BlockSize
         let (tableIndex, entryIndex) = i.quotientAndRemainder(dividingBy: 512)
 
-        // FIXME: The physical memory map is currently BCM2711-specific.
-        let descriptor =
-            switch addr {
-            case 0..<initialDRAMSize:
-                // DRAM -> Normal Write-Back Cacheable, Inner Shareable
-                // Lower attributes: AF=1, SH=3 (Inner Shareable), AP=0, AttrIndx=0
-                addr | 0x701
-            case 0xfc00_0000...0xffff_ffff:
-                // MMIO -> Device-nGnRnE
-                // Lower attributes: AF=1, SH=0, AP=0, AttrIndx=1
-                // Upper attributes: PXN=1, UXN=1
-                addr | 0x0060_0000_0000_0405
-            case _: 0 as UInt
-            }
-
         let table: UnsafeMutablePointer<UInt> =
             switch tableIndex {
             case 0: unsafe l2Table0
@@ -50,17 +124,23 @@ package func enableInitialMMU() {
             case _: preconditionFailure("unreachable")
             }
 
-        unsafe table[entryIndex] = descriptor
+        // FIXME: The physical memory map is currently BCM2711-specific.
+        unsafe table[entryIndex] =
+            switch addr {
+            case 0..<initialDRAMSize: BlockEntry(attrs: dramDescAttrs, outputAddr: addr).rawValue
+            case 0xfc00_0000...0xffff_ffff: BlockEntry(attrs: mmioDescAttrs, outputAddr: addr).rawValue
+            case _: 0 as UInt
+            }
     }
 
+    var mair = MAIR_EL1(rawValue: 0)
+    mair[Int(dramIndex)] = dramMemAttr
+    mair[Int(mmioIndex)] = mmioMemAttr
     let paRange = ID_AA64MMFR0_EL1.read().paRange
     let ips = tcrIPS(from: paRange)
 
     enableMMU(
-        // MAIR_EL1:
-        // Index 0 = 0xff (Normal Write-Back Cacheable)
-        // Index 1 = 0x00 (Device nGnRnE)
-        mair: 0xff | (0x00 << 8),
+        mair: mair.rawValue,
         // TCR_EL1:
         // T0SZ = 25 (39-bit VA)
         // EPD1 = 1 (Disable TTBR1 walks)

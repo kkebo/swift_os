@@ -40,3 +40,45 @@ struct ID_AA64MMFR0_EL1: BitwiseCopyable {
     @_transparent
     static func read() -> Self { Self(rawValue: getID_AA64MMFR0_EL1()) }
 }
+
+struct MAIR_EL1: BitwiseCopyable {
+    private(set) var rawValue: UInt64
+
+    subscript(i: Int) -> MAIRAttr? {
+        @_transparent
+        get {
+            precondition(0..<8 ~= i, "index out of range")
+            return .init(rawValue: UInt8(truncatingIfNeeded: self.rawValue &>> (i &* 8) & 0xff))
+        }
+        @_transparent
+        set {
+            precondition(0..<8 ~= i, "index out of range")
+            let shiftWidth = i &* 8
+            guard let newValue else {
+                self.rawValue = self.rawValue & ~(0xff &<< shiftWidth)
+                return
+            }
+            self.rawValue = self.rawValue & ~(0xff &<< shiftWidth) | UInt64(newValue.rawValue) &<< shiftWidth
+        }
+    }
+
+    @_transparent
+    init(rawValue: UInt64) {
+        self.rawValue = rawValue
+    }
+
+    @_transparent
+    static func read() -> Self { Self(rawValue: getMAIR_EL1()) }
+
+    @_transparent
+    func write() { setMAIR_EL1(self.rawValue) }
+}
+
+enum MAIRAttr: UInt8 {
+    case deviceNGNRNE = 0b00000000
+    case deviceNGNRE = 0b00000100
+    case deviceNGRE = 0b00001000
+    case deviceGRE = 0b00001100
+    case normalNonCacheable = 0b01000100
+    case normalWBRAWANonTransient = 0b11111111
+}

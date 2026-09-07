@@ -37,4 +37,8 @@ __attribute__((swift_name("getCurrentEL()")))
 uint64_t get_currentel(void);
 __attribute__((swift_name("getID_AA64MMFR0_EL1()")))
 uint64_t get_id_aa64mmfr0_el1(void);
+__attribute__((swift_name("getMAIR_EL1()")))
+uint64_t get_mair_el1(void);
+__attribute__((swift_name("setMAIR_EL1(_:)")))
+void set_mair_el1(uint64_t val);
 #endif
