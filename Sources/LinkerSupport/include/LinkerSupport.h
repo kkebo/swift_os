@@ -51,4 +51,3 @@ static uintptr_t *const l2_table_2_ptr = (uintptr_t *)&__l2_table_2;
 
 __attribute__((swift_name("l2Table3")))
 static uintptr_t *const l2_table_3_ptr = (uintptr_t *)&__l2_table_3;
-
