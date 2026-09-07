@@ -69,10 +69,9 @@ enable_mmu:
     msr ttbr0_el1, x2
     isb
 
-    // Invalidate TLB (single core)
-    dsb sy
-    tlbi vmalle1
-    dsb sy
+    dsb ishst  // ensure write has completed
+    tlbi vmalle1  // invalidate all TLB entries for current OS (single core)
+    dsb ish  // ensure completion of TLB invalidation
     isb
 
     mrs x3, sctlr_el1
