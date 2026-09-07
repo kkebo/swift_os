@@ -1,9 +1,11 @@
 private import AsmSupport
+private import EarlyKernel
 private import Hardware
 private import KernelCore
 
 #if arch(arm64)
     private import ArchAArch64
+    private import EarlyArchAArch64
 #endif
 
 #if RASPI

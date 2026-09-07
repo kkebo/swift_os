@@ -1,6 +1,7 @@
 private import LinkerSupport
 
-func zeroBSS() {
+/// Initializes the bss section to zero.
+public func zeroBSS() {
     let start = bssStart
     let end = bssEnd
     let size = end &- start

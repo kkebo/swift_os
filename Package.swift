@@ -15,6 +15,7 @@ let swiftSettings: [SwiftSetting] = [
     .treatAllWarnings(as: .error),
     .treatWarning("HeapAllocation", as: .error),
 ]
+let earlySwiftSettings = swiftSettings + [.unsafeFlags(["-Xcc", "-mno-unaligned-access"])]
 
 let cSettings: [CSetting] = [
     .enableWarning("all"),
@@ -40,14 +41,22 @@ let package = Package(
             name: "Kernel",
             dependencies: [
                 .target(name: "Boot"),
+                .target(name: "EarlyKernel"),
+                .target(name: "EarlyArchAArch64"),
                 .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
                 .target(name: "AsmSupport"),
-                .target(name: "LinkerSupport"),
                 .target(name: "ArchAArch64"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
             ],
             swiftSettings: swiftSettings,
+        ),
+        .target(
+            name: "EarlyKernel",
+            dependencies: [
+                .target(name: "LinkerSupport")
+            ],
+            swiftSettings: earlySwiftSettings,
         ),
         .target(
             name: "KernelCore",
@@ -59,10 +68,17 @@ let package = Package(
         .target(
             name: "ArchAArch64",
             dependencies: [
+                .target(name: "AsmSupport")
+            ],
+            swiftSettings: swiftSettings,
+        ),
+        .target(
+            name: "EarlyArchAArch64",
+            dependencies: [
                 .target(name: "AsmSupport"),
                 .target(name: "LinkerSupport"),
             ],
-            swiftSettings: swiftSettings,
+            swiftSettings: earlySwiftSettings,
         ),
         .target(
             name: "Hardware",
