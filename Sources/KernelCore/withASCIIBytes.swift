@@ -13,18 +13,18 @@ where
     var divisor: T.Magnitude = 1
 
     while magnitude / divisor >= 10 {
-        divisor &*= 10
+        divisor *= 10
     }
 
     if value < 0 {
         consumer(i, 45)  // "-"
-        i &+= 1
+        i += 1
     }
 
     while divisor != 0 {
         let (q, r) = magnitude.quotientAndRemainder(dividingBy: divisor)
-        consumer(i, UInt8(q) &+ 48)
-        i &+= 1
+        consumer(i, UInt8(q) + 48)
+        i += 1
         magnitude = r
         divisor /= 10
     }
@@ -44,13 +44,13 @@ where
     var divisor: T.Magnitude = 1
 
     while magnitude / divisor >= 10 {
-        divisor &*= 10
+        divisor *= 10
     }
 
     while divisor != 0 {
         let (q, r) = magnitude.quotientAndRemainder(dividingBy: divisor)
-        consumer(i, UInt8(q) &+ 48)
-        i &+= 1
+        consumer(i, UInt8(q) + 48)
+        i += 1
         magnitude = r
         divisor /= 10
     }

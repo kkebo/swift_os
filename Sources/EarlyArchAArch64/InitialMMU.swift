@@ -28,13 +28,13 @@ private struct BlockEntryAttrs {
 
     @inline(always)
     var rawValue: UInt {
-        self.index &<< 2
-            | UInt(self.ns.rawValue) &<< 5
-            | UInt(self.ap.rawValue) &<< 6
-            | UInt(self.sh.rawValue) &<< 8
-            | UInt(self.af.rawValue) &<< 10
-            | UInt(self.pxn.rawValue) &<< 53
-            | UInt(self.uxn.rawValue) &<< 54
+        self.index << 2
+            | UInt(self.ns.rawValue) << 5
+            | UInt(self.ap.rawValue) << 6
+            | UInt(self.sh.rawValue) << 8
+            | UInt(self.af.rawValue) << 10
+            | UInt(self.pxn.rawValue) << 53
+            | UInt(self.uxn.rawValue) << 54
     }
 }
 
@@ -112,7 +112,7 @@ package func enableInitialMMU() {
 
     // Populate L2 tables mapping the 4 GiB space block by block
     for i in 0..<2048 {
-        let addr = UInt(i) &* l2BlockSize
+        let addr = UInt(i) * l2BlockSize
         let (tableIndex, entryIndex) = i.quotientAndRemainder(dividingBy: 512)
 
         let table: UnsafeMutablePointer<UInt> =
@@ -149,7 +149,7 @@ package func enableInitialMMU() {
         // ORGN0 = 1 (Outer WB WA cacheable)
         // IRGN0 = 1 (Inner WB WA cacheable)
         // IPS = paRange
-        tcr: (1 << 23) | (3 << 12) | (1 << 10) | (1 << 8) | 25 | (ips &<< 32),
+        tcr: (1 << 23) | (3 << 12) | (1 << 10) | (1 << 8) | 25 | (ips << 32),
         ttbr0: UInt64(UInt(bitPattern: unsafe l1Table)),
     )
 }

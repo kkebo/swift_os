@@ -6,31 +6,31 @@ struct ID_AA64MMFR0_EL1: BitwiseCopyable {
     @_transparent
     var paRange: UInt8 { UInt8(truncatingIfNeeded: self.rawValue & 0xf) }
     @_transparent
-    var asidBits: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 4 & 0xf) }
+    var asidBits: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 4 & 0xf) }
     @_transparent
-    var bigEnd: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 8 & 0xf) }
+    var bigEnd: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 8 & 0xf) }
     @_transparent
-    var snsMem: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 12 & 0xf) }
+    var snsMem: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 12 & 0xf) }
     @_transparent
-    var bigEndEL0: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 16 & 0xf) }
+    var bigEndEL0: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 16 & 0xf) }
     @_transparent
-    var tGran16: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 20 & 0xf) }
+    var tGran16: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 20 & 0xf) }
     @_transparent
-    var tGran64: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 24 & 0xf) }
+    var tGran64: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 24 & 0xf) }
     @_transparent
-    var tGran4: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 28 & 0xf) }
+    var tGran4: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 28 & 0xf) }
     @_transparent
-    var tGran16Stg2: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 32 & 0xf) }
+    var tGran16Stg2: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 32 & 0xf) }
     @_transparent
-    var tGran64Stg2: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 36 & 0xf) }
+    var tGran64Stg2: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 36 & 0xf) }
     @_transparent
-    var tGran4Stg2: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 40 & 0xf) }
+    var tGran4Stg2: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 40 & 0xf) }
     @_transparent
-    var exS: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 44 & 0xf) }
+    var exS: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 44 & 0xf) }
     @_transparent
-    var fgt: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 56 & 0xf) }
+    var fgt: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 56 & 0xf) }
     @_transparent
-    var ecv: UInt8 { UInt8(truncatingIfNeeded: self.rawValue &>> 60 & 0xf) }
+    var ecv: UInt8 { UInt8(truncatingIfNeeded: self.rawValue >> 60 & 0xf) }
 
     @_transparent
     init(rawValue: UInt64) {
@@ -48,17 +48,17 @@ struct MAIR_EL1: BitwiseCopyable {
         @_transparent
         get {
             precondition(0..<8 ~= i, "index out of range")
-            return .init(rawValue: UInt8(truncatingIfNeeded: self.rawValue &>> (i &* 8) & 0xff))
+            return .init(rawValue: UInt8(truncatingIfNeeded: self.rawValue >> (i * 8) & 0xff))
         }
         @_transparent
         set {
             precondition(0..<8 ~= i, "index out of range")
-            let shiftWidth = i &* 8
+            let shiftWidth = i * 8
             guard let newValue else {
-                self.rawValue = self.rawValue & ~(0xff &<< shiftWidth)
+                self.rawValue = self.rawValue & ~(0xff << shiftWidth)
                 return
             }
-            self.rawValue = self.rawValue & ~(0xff &<< shiftWidth) | UInt64(newValue.rawValue) &<< shiftWidth
+            self.rawValue = self.rawValue & ~(0xff << shiftWidth) | UInt64(newValue.rawValue) << shiftWidth
         }
     }
 

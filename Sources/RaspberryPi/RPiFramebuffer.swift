@@ -66,14 +66,14 @@ package struct RPiFramebuffer<Depth: VolatileMappable>: ~Copyable, Framebuffer {
         // success?
         guard unsafe mbox.call(ch: .propertyARM2VC) else { fatalError() }
 
-        let pixelCount = unsafe Int(mbox[10] &* mbox[11])
+        let pixelCount = unsafe Int(mbox[10] * mbox[11])
         let byteCount = unsafe mbox[29]
         let gpuAddr = unsafe mbox[28]
 
         guard
             unsafe mbox[20] == depth,
             gpuAddr != 0,
-            byteCount >= pixelCount &* MemoryLayout<Depth>.size
+            byteCount >= pixelCount * MemoryLayout<Depth>.size
         else { fatalError() }
 
         self.width = unsafe mbox[10]
