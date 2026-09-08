@@ -33,7 +33,14 @@ struct Kernel {
         #if arch(arm64)
             registerVectorTable()
         #endif
-        enableIRQ()
+        #if RASPI
+            typealias InterruptController = RPiInterruptController
+        #else
+            // typealias InterruptController = OtherInterruptController
+            #error("not implemented")
+        #endif
+        InterruptController.enable()
+        enableCPUIRQ()
 
         #if RASPI
             let memoryManager = MemoryManager()
@@ -47,7 +54,7 @@ struct Kernel {
             let fb = RPiFramebuffer<UInt32>(width: 1024, height: 576, pixelOrder: .rgb)
         #else
             // let fb = OtherFramebuffer()
-            fatalError("not implemented")
+            #error("not implemented")
         #endif
         var gfx = Graphics(target: fb)
         let bg: UInt32 = 0xf4faef
@@ -69,13 +76,6 @@ struct Kernel {
             setTimerPeriod(5 * CNTFRQ_EL0.read().freq)
             enableTimer()
             print("Timer started.")
-            gfx.synchronize()
-
-            while !CNTP_CTL_EL0.read().status {
-                // FIXME: halt() (wfi) requires interrupts to be configured in the GIC.
-                // halt()
-            }
-            print("Timer expired.")
             gfx.synchronize()
         #endif
 
