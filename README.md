@@ -15,7 +15,7 @@ I'm currently focusing on supporting AArch64 and Raspberry Pi 4, but I plan to s
   - `EarlyKernelCore` — Pre-MMU kernel logic.
 - `Hardware` — Hardware abstraction layer defining device interfaces independent of CPU architecture and platform (console, timer, framebuffer, etc.).
 - CPU architecture support
-  - `ArchAArch64` - AArch64 CPU support (exceptions, vector tables, system registers).
+  - `ArchAArch64` - AArch64 CPU support (exceptions, MMU, vector tables, system registers).
     - `EarlyArchAArch64` - Pre-MMU AArch64 CPU support.
   - `ArchX8664` - (planned) x86_64 CPU support (IDT, paging, interrupts).
 - Platform support
