@@ -70,15 +70,22 @@ struct Kernel {
             print(CurrentEL.read().el)
         #endif
 
-        gfx.synchronize()
-
         #if arch(arm64)
-            setTimerPeriod(5 * CNTFRQ_EL0.read().freq)
-            enableTimer()
-            print("Timer started.")
-            gfx.synchronize()
+            let timer = GenericTimer()
+            timer.enable()
+        #else
+            // let timer = OtherTimer()
+            #error("Timer is not yet implemented in this architecture.")
         #endif
 
-        repeat { halt() } while true
+        gfx.synchronize()
+
+        repeat {
+            gfx.fillRect(x0: 0, y0: gfx.height - fontHeight, x1: gfx.width, y1: gfx.height, color: bg)
+            gfx.drawString(timer.counter / timer.freq, x: 0, y: gfx.height - fontHeight, color: fg)
+            gfx.synchronize()
+
+            halt()
+        } while true
     }
 }

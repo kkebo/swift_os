@@ -28,6 +28,7 @@ extension RPiInterruptController: InterruptController {
     package static func enable() {
         #if RASPI4
             gic.enable(30)
+            setTimerPeriod(CNTFRQ_EL0.read().freq / 100)  // 10 ms
         #else
             fatalError("not implemented")
         #endif
@@ -35,8 +36,7 @@ extension RPiInterruptController: InterruptController {
 }
 
 private func handlePPI30() {
-    print("Timer expired.")
-    disableTimer()
+    setTimerPeriod(CNTFRQ_EL0.read().freq / 100)  // 10 ms
 }
 
 @c(__platform_handle_irq)

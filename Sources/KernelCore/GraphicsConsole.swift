@@ -27,19 +27,6 @@ public struct GraphicsConsole<Target: RenderTarget & ~Copyable>: ~Copyable, ~Esc
     @inline(always)
     @export(implementation)
     @_lifetime(&gfx)
-    public init(gfx: inout Graphics<Target>, fgColor: Target.Depth, bgColor: Target.Depth) {
-        self.init(
-            gfx: &gfx,
-            cols: Int(gfx.width) / fontWidth,
-            rows: Int(gfx.height) / fontHeight,
-            fgColor: fgColor,
-            bgColor: bgColor,
-        )
-    }
-
-    @inline(always)
-    @export(implementation)
-    @_lifetime(&gfx)
     public init(gfx: inout Graphics<Target>, cols: Int, rows: Int, fgColor: Target.Depth, bgColor: Target.Depth) {
         precondition(cols > 0 && rows > 0)
         self.gfx = .init(&gfx)
