@@ -41,7 +41,7 @@ let package = Package(
             name: "Kernel",
             dependencies: [
                 .target(name: "Boot"),
-                .target(name: "EarlyKernel"),
+                .target(name: "EarlyKernelCore"),
                 .target(name: "EarlyArchAArch64"),
                 .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
@@ -52,7 +52,7 @@ let package = Package(
             swiftSettings: swiftSettings,
         ),
         .target(
-            name: "EarlyKernel",
+            name: "EarlyKernelCore",
             dependencies: [
                 .target(name: "LinkerSupport")
             ],

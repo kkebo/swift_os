@@ -1,5 +1,5 @@
 private import AsmSupport
-private import EarlyKernel
+private import EarlyKernelCore
 private import Hardware
 private import KernelCore
 
