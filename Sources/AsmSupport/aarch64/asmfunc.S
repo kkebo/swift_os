@@ -11,13 +11,13 @@ halt:
     wfi
     ret
 
-.global enable_irq
-enable_irq:
+.global enable_cpu_irq
+enable_cpu_irq:
     msr daifclr, #2
     ret
 
-.global disable_irq
-disable_irq:
+.global disable_cpu_irq
+disable_cpu_irq:
     msr daifset, #2
     ret
 
@@ -89,7 +89,7 @@ set_timer_period:
 
 .global enable_timer
 enable_timer:
-    mov x0, #0b11  // IMASK = 1, ENABLE = 1
+    mov x0, #1
     msr CNTP_CTL_EL0, x0
     ret
 

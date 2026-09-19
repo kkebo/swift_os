@@ -5,10 +5,10 @@
 
 void delay(uint64_t);
 void halt(void);
-__attribute__((swift_name("enableIRQ()")))
-void enable_irq(void);
-__attribute__((swift_name("disableIRQ()")))
-void disable_irq(void);
+__attribute__((swift_name("enableCPUIRQ()")))
+void enable_cpu_irq(void);
+__attribute__((swift_name("disableCPUIRQ()")))
+void disable_cpu_irq(void);
 #ifndef __x86_64__
 __attribute__((swift_name("cleanDCache(start:size:)")))
 void clean_dcache_range(uintptr_t start, size_t size);

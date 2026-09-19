@@ -11,13 +11,13 @@ halt:
     hlt
     ret
 
-.global enable_irq
-enable_irq:
+.global enable_cpu_irq
+enable_cpu_irq:
     sti
     ret
 
-.global disable_irq
-disable_irq:
+.global disable_cpu_irq
+disable_cpu_irq:
     cli
     ret
 

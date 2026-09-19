@@ -77,12 +77,13 @@ package func handleCurrentELSPxSync(esr: UInt64, elr: UnsafeMutablePointer<UInt6
     }
 }
 
+@_extern(c, "__platform_handle_irq")
+private func handleIRQ()
+
 @c
 @export(interface)
-package func handleCurrentELSPxIRQ() -> Never {
-    print("Exception: ", terminator: "")
-    print(#function)
-    repeat { halt() } while true
+package func handleCurrentELSPxIRQ() {
+    handleIRQ()
 }
 
 @c

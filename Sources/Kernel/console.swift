@@ -24,7 +24,13 @@ func enableSerialConsole() {
 }
 
 func enableGraphicsConsole(gfx: inout Graphics<GFXRenderTarget>, fgColor: UInt32, bgColor: UInt32) {
-    unsafe gfxConsole = .init(gfx: &gfx, fgColor: fgColor, bgColor: bgColor)
+    unsafe gfxConsole = .init(
+        gfx: &gfx,
+        cols: Int(gfx.width) / fontWidth,
+        rows: Int(gfx.height) / fontHeight - 1,
+        fgColor: fgColor,
+        bgColor: bgColor,
+    )
 }
 
 /// Writes a character to the global console.
