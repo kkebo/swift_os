@@ -11,12 +11,12 @@ I'm currently focusing on supporting AArch64 and Raspberry Pi 4, but I plan to s
 
 - `Boot` — Minimal boot code before entering Swift.
 - `Kernel` — Kernel executable and system entry point.
-- `EarlyKernelCore` — Pre-MMU architecture- and platform-independent kernel logic.
-- `KernelCore` — Post-MMU architecture- and platform-independent kernel logic (scheduler, memory management, core services).
+- `KernelCore` — Architecture- and platform-independent kernel logic (scheduler, memory management, core services).
+  - `EarlyKernelCore` — Pre-MMU kernel logic.
 - `Hardware` — Hardware abstraction layer defining device interfaces independent of CPU architecture and platform (console, timer, framebuffer, etc.).
 - CPU architecture support
-  - `EarlyArchAArch64` - Pre-MMU AArch64 CPU support (MMU).
-  - `ArchAArch64` - Post-MMU AArch64 CPU support (exceptions, vector tables, system registers).
+  - `ArchAArch64` - AArch64 CPU support (exceptions, vector tables, system registers).
+    - `EarlyArchAArch64` - Pre-MMU AArch64 CPU support.
   - `ArchX8664` - (planned) x86_64 CPU support (IDT, paging, interrupts).
 - Platform support
   - `RaspberryPi` — Raspberry Pi platform implementation (UART, mailbox, framebuffer, interrupt controller).
