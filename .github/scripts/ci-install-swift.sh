@@ -26,7 +26,7 @@ elif [[ -f /etc/os-release ]]; then
   # shellcheck source=/etc/os-release
   . /etc/os-release
   if [[ "$NAME" == "Ubuntu" ]]; then
-    sudo apt-get update && sudo apt-get install --no-install-recommends -y libcurl4-openssl-dev
+    sudo apt-get update && sudo apt-get install --no-install-recommends -y libcurl4-openssl-dev binutils-gold
     install_swiftly_linux
   else
     echo "Unsupported Linux Distribution: $NAME"
