@@ -45,6 +45,7 @@ let package = Package(
                 .target(name: "EarlyArchAArch64"),
                 .target(name: "KernelCore"),
                 .target(name: "KernLibc"),
+                .target(name: "EmbeddedPlatform"),
                 .target(name: "AsmSupport"),
                 .target(name: "ArchAArch64"),
                 .target(name: "RaspberryPi", condition: .when(traits: ["RASPI"])),
@@ -90,6 +91,7 @@ let package = Package(
             ],
         ),
         .target(name: "KernLibc", swiftSettings: swiftSettings),
+        .target(name: "EmbeddedPlatform", swiftSettings: swiftSettings),
         .target(
             name: "RaspberryPi",
             dependencies: [
