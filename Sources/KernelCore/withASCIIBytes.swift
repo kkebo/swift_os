@@ -40,8 +40,8 @@ where
     }
 
     var i = 0
-    var magnitude = value.magnitude
-    var divisor: T.Magnitude = 1
+    var magnitude = value
+    var divisor: T = 1
 
     while magnitude / divisor >= 10 {
         divisor *= 10
