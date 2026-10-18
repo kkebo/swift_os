@@ -21,6 +21,7 @@ I'm currently focusing on supporting AArch64 and Raspberry Pi 4, but I plan to s
 - Platform support
   - `RaspberryPi` — Raspberry Pi platform implementation (UART, mailbox, framebuffer, interrupt controller).
 - `KernLibc` — Minimal libc for kernel space.
+- `EmbeddedPlatform` — The Embedded Swift Platform Abstraction Layer implementation.
 - `AppLibc` — Minimal libc for user space.
 - `AsmSupport` — Assembly helper functions.
 - `LinkerSupport` — Swift bindings for linker-defined symbols.
