@@ -16,7 +16,7 @@ public struct GraphicsConsole<Target: RenderTarget & ~Copyable>: ~Copyable, ~Esc
     @export(implementation)
     private var gfx: MutableRef<Graphics<Target>>
     @export(implementation)
-    private var buf: [8192 of UInt8]  // maxCols * maxRows
+    private var buf: [(maxCols * maxRows) of UInt8]
     @export(implementation)
     private var head: Int
     @export(implementation)
